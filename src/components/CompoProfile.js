@@ -187,7 +187,7 @@ const CompoProfileContext = ({ navigation }) => {
               />
             </Animated.View>
 
-            {/*/////////////////////////////////// CITY INPUT /////////////////////////////////*/
+            {/*/////////////////////////////////// CITY INPUT ////////////////////////////////aa/*/
               /*{!cities_available.payload.cities?null:
                 <Select
                 key={1}
