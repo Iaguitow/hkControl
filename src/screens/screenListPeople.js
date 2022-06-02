@@ -1,5 +1,5 @@
 import React from 'react';
-import { Center, NativeBaseProvider } from "native-base";
+import { Center } from "native-base";
 import ListPeople from "../components/CompoListPeople";
 
 const ScreenListPeople = () => {

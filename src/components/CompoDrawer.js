@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons, MaterialIcons, AntDesign, Ionicons, FontAwesome5, EvilIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons, AntDesign, FontAwesome5, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerContentScrollView, useDrawerStatus } from "@react-navigation/drawer";
 import { useSelector } from "react-redux";
 import { LinearGradient } from 'expo-linear-gradient';
 import { allDrawerScreens } from "../utils/ConstDrawerScreens";
 import ScreenProfile from "../screens/ScreenProfile";
+import ScreenRequests from "../screens/ScreenRequests";
 import {
   Box,
   Pressable,
@@ -35,10 +36,10 @@ const getIcon = (screenName) => {
   switch (screenName) {
     case allDrawerScreens.PROFILE:
       return "profile";
-    case allDrawerScreens.EXPERIENCE:
-      return "work-outline";
-    case allDrawerScreens.SCHOOL:
-      return "ios-school-outline";
+    case allDrawerScreens.REQUESTS:
+      return "tasks";
+    case allDrawerScreens.TASKS:
+      return "tasks";
     case allDrawerScreens.SKILLS:
       return "head-check-outline";
     case allDrawerScreens.PROJECTS:
@@ -113,10 +114,12 @@ function MyDrawer({ navigation }) {
         drawerContent={(props) => <CustomDrawerContent {...props} imageDrawerProfile={ imageDrawerProfile } />}
       >
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
-        <Drawer.Screen name={allDrawerScreens.EXPERIENCE} component={Component} />
-        <Drawer.Screen name={allDrawerScreens.SCHOOL} component={Component} />
+        <Drawer.Screen name={allDrawerScreens.REQUESTS} component={ScreenRequests} />
+        <Drawer.Screen name={allDrawerScreens.TASKS} component={Component} />
+        {/*
         <Drawer.Screen name={allDrawerScreens.SKILLS} component={Component} />
         <Drawer.Screen name={allDrawerScreens.PROJECTS} component={Component} />
+        */}
         <Drawer.Screen name={allDrawerScreens.CONFIGURATION} component={Component} />
         <Drawer.Screen name={allDrawerScreens.COMPETITORS} component={Component} />
         <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
@@ -178,10 +181,10 @@ function CustomDrawerContent(props) {
                           as={() => {
                               if (name === allDrawerScreens.PROFILE) {
                                 return (<AntDesign size={30}  color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
-                              } else if (name === (allDrawerScreens.EXPERIENCE || allDrawerScreens.LOGOUT)) {
-                                return (<MaterialIcons size={30} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
-                              } else if (name === allDrawerScreens.SCHOOL) {
-                                return (<Ionicons size={30} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
+                              } else if (name === (allDrawerScreens.REQUESTS || allDrawerScreens.LOGOUT)) {
+                                return (<FontAwesome size={30} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
+                              } else if (name === allDrawerScreens.TASKS) {
+                                return (<FontAwesome5 size={30} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
                               } else if (name === allDrawerScreens.PROJECTS) {
                                 return (<FontAwesome5 size={25} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
                               } else if (name === allDrawerScreens.CONFIGURATION) {

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import ImagePicker from "../utils/ImagePicker";
 import gdriverService from "../classes/ClassGDrive";
-import { tagActions } from "../Actions/ActionTags";
 import { ProfileActions } from "../Actions/ActionProfile"
 import { useSelector, useDispatch } from "react-redux";
 import { allFilesTypeNames } from "../utils/ConstFilesTypeNames";
+import  PerformanceLineChart  from "../components/CompoLineChart"
 import CompoLoadingView from "../components/CompoApiLoadingView";
 import {
     Stack,
@@ -20,19 +20,16 @@ import {
     VStack,
     View,
     ScrollView,
-    Button,
     Divider
 } from "native-base";
 
 const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
 
     const user = useSelector(state => state.reducerLogin);
-    const tags = useSelector(state => state.reducerTags);
     const profile = useSelector(state => state.reducerProfile);
 
     const dispatch = useDispatch();
-    const getProfile = (idpeople, token_api) => {dispatch(ProfileActions.getProfile(idpeople, token_api)) }
-    const getTags = (idpeople, token_api) => {dispatch(tagActions.getTags(idpeople, token_api,{ setIsMounted })) }
+    const getProfile = (idpeople, token_api) => {dispatch(ProfileActions.getProfile(idpeople, token_api ,{ setIsMounted })) }
 
     const [imgProfile, setImgProfile] = useState(null);
     const [imgBackProfile, setImgBackProfile] = useState(null);
@@ -66,7 +63,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
         }).finally(endPoint =>{
             //setIsMounted(true);
             getProfile(idpeople,token_api);
-            getTags(idpeople,token_api);
+            //getTags(idpeople,token_api);
             
         });
     },[]);
@@ -81,7 +78,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                 {...nativeBaseProps.ASPECT_RATIO}>
                                 <Image 
                                     source={imgBackProfile === null?require('../../assets/defaultImgBackProfile.jpg'):{uri: imgBackProfile}}
-                                    maxH={165}
+                                    maxH={175}
                                     key={imgBackProfile} 
                                     alt="Background"    
                                 />
@@ -155,12 +152,12 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                     {profile.payload.name}
                                 </Heading>
                                 <Text {...nativeBaseProps.SCHOOL_INFO}>
-                                    {profile.payload.schoolTitle}
+                                    {profile.payload.profession}
                                 </Text>
                             </Stack>
                             <Stack space={1}>
                                 <Text {...nativeBaseProps.ADDRESS_CONTACT}>
-                                        {profile.payload.lives}
+                                        {"London - England"}
                                 </Text>
                                 <Text {...nativeBaseProps.ADDRESS_CONTACT}>
                                         {profile.payload.email}
@@ -172,59 +169,25 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                             <Divider {...nativeBaseProps.DIVIDERS} />
                             <VStack>
                                 <Text {...nativeBaseProps.TITLE_TEXT}>
-                                        PROFESSION:
+                                        PERFORMANCE ON LAST SIX MONTHS:
                                 </Text>
-                                <Text {...nativeBaseProps.INFO_TEXT}>
-                                        {profile.payload.profession}
-                                </Text>
+                                <PerformanceLineChart />
                             </VStack>
-                            <VStack>
-                                <Text {...nativeBaseProps.TITLE_TEXT}>
-                                        ABOUT YOU:
-                                </Text>
-                                <Text {...nativeBaseProps.INFO_TEXT}>
-                                        {profile.payload.aboutyou}
-                                </Text>
-                            </VStack>
-                            <VStack>
-                                <Text {...nativeBaseProps.TITLE_TEXT}>
-                                        MY GOAL:
-                                </Text>
-                                <Text {...nativeBaseProps.INFO_TEXT}>
-                                        {profile.payload.goal}
-                                </Text>
-                            </VStack>
+                                <HStack>
+                                    <Text {...nativeBaseProps.INFO_TEXT}>
+                                        This chart is calculated based of the average time to finish a request and if you have done all tasks as expected. It shows your percentagem performance.
+                                    </Text>
+                                </HStack>
                             <HStack>
                                 <HStack>
                                     <Text {...nativeBaseProps.EDIT_DATE_TEXT}>
-                                        LAST EDIT: 15/10/1991
+                                        LAST UPDATE: 15/10/1991
                                     </Text>
                                 </HStack>
                             </HStack>
                         </Stack>
                     </Box>
                 </Box>
-                    <Box {...nativeBaseProps.FIRST_BOX}>
-                        <Badge {...nativeBaseProps.EDIT_PROFILE_BADGE_ICON}>
-                            <Icon {...nativeBaseProps.ICON_COLOR} as={<AntDesign name={"edit"}/>} />        
-                        </Badge>
-                        <Heading {...nativeBaseProps.INTERESETED}>
-                                    INTERESTING TAGS:
-                         </Heading>
-                         <Divider {...nativeBaseProps.DIVIDERS} />
-                        <View {...nativeBaseProps.TAGS_VIEW}>
-                            {tags.payload.tags && tags.payload.tags.map((item,index) => {
-                                return(
-                                    <Button
-                                        rightIcon={<Icon size={5} as={<AntDesign name={"check"}/>} />}
-                                        {...nativeBaseProps.TAGS}
-                                        key={item.tags_idtags}>
-                                        {item.tagname}
-                                    </Button>
-                                )
-                            })}
-                        </View>
-                    </Box>
             </Stack>
         </ScrollView>
     )
@@ -248,28 +211,7 @@ const nativeBaseProps = {
         orientation:"horizontal",
         w:"98%"
       },
-    TAGS_VIEW:{
-        flexDirection:"row",
-        flexGrow:10,
-        maxW:"100%",
-        alignItems:"flex-start",
-        flexWrap:"wrap",
-        mb:4,
-        mt:2
-    }, 
-    TAGS:{
-        borderColor:"coolGray.600",
-        _text:{fontWeight:"bold"}, 
-        borderWidth:"2",
-        backgroundColor:"rgb(0,185,243)",
-        color:"white",
-        borderRadius:"20",
-        p:1,
-        marginTop:2 ,
-        flexDirection:"column", 
-        marginLeft:1 
-        
-    },
+
     EDIT_DATE_TEXT:{
         color:"rgb(0,185,243)", 
         fontWeight:"700"
@@ -294,7 +236,7 @@ const nativeBaseProps = {
         w:"100%", 
         ratio:22/9,
         borderBottomWidth:3,
-        borderColor:"coolGray.300",
+        borderColor:"rgb(0,185,243)",
         borderBottomRadius:5
     },
     STACK_INFO:{
@@ -305,11 +247,7 @@ const nativeBaseProps = {
         size:"lg", 
         ml:"-1"
     },
-    INTERESETED:{
-        size:"lg", 
-        marginTop:-6, marginBottom:2, marginLeft:2,
-        alignSelf:"flex-start"
-    },
+
     SCHOOL_INFO:{
         fontSize:"md", 
         color:"gray.600", 
