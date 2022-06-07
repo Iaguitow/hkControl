@@ -62,7 +62,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
             
         }).finally(endPoint =>{
             //setIsMounted(true);
-            getProfile(idpeople,token_api);
+            getProfile(idpeople,token_api, {setIsMounted});
             //getTags(idpeople,token_api);
             
         });

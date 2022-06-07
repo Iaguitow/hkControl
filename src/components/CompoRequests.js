@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react"
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from "react-redux";
+import { RequestActions } from "../Actions/ActionRequests";
 import {
   Box,
   FlatList,
@@ -7,27 +9,17 @@ import {
   Switch,
   Text,
   Divider,
+  VStack,
+  Button
 } from "native-base";
 
-const CompoRequests = () => {
+const CompoRequests = ({ setIsMounted }) => {
 
-    const data = [{
-        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-        WHOREQUESTED: "Aafreen Khan",
-    }, {
-        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-        WHOREQUESTED: "Sujitha Mathur",
-    }, {
-        id: "58694a0f-3da1-471f-bd96-145571e29d72",
-        WHOREQUESTED: "Anci Barroco",
-    }, {
-        id: "68694a0f-3da1-431f-bd56-142371e29d72",
-        WHOREQUESTED: "Aniket Kumar",
-    }, {
-        id: "28694a0f-3da1-471f-bd96-142456e29d72",
-        WHOREQUESTED: "Kiara",
-    }];
-
+  const dispatch = useDispatch();
+  const updateRequest = (idrequests, requestdone, idpeople, token_api,) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, {setIsMounted})) }
+  const requests = useSelector(state => state.reducerRequests);
+  const user = useSelector(state => state.reducerLogin);
+  
   return (
     <Box flex={1} minWidth={"100%"}>
     <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}>
@@ -59,36 +51,55 @@ const CompoRequests = () => {
         </Text>
       </HStack>
       <FlatList
-        data={data}
+        data={requests.payload.requests}
         renderItem={({ item }) => (
-          <HStack 
-           borderBottomColor={Math.random()*100<50?"red.500":"#8bff94"}
-           {...NativeBaseProps.HSTACK_FLATLIST_ITEM}
-          >
-            
-            <Text fontSize={12} {...NativeBaseProps.TEXT_BY}>
-              SERG. {/*WHO REQUESTED*/}
-            </Text>
-            <Divider {...NativeBaseProps.DIVIDER} />
-            <Text fontSize={11} {...NativeBaseProps.TEXT_TIME}>
-              15:40 {/*DT REQUEST*/}
-            </Text>
-            <Divider {...NativeBaseProps.DIVIDER} />
-            <Text {...NativeBaseProps.TEXT_DESCRIPTION}>
-              2 - SHAVERS asdas asdas duefhue pwerjhwe weuhr uii klit kit kit ki ki {/*DESCRIPTION*/}
-            </Text>
-            <Divider {...NativeBaseProps.DIVIDER} />
-            <Text fontSize={12} {...NativeBaseProps.TEXT_ROOM_NO}>
-              255
-            </Text>
-            <Divider {...NativeBaseProps.DIVIDER} />
-            <Text fontSize={11} {...NativeBaseProps.TEXT_TIME_DONE}>
-              15:50 {/*DT DONE*/}
-            </Text>
-            <Divider {...NativeBaseProps.DIVIDER} />
-              <Switch defaultIsChecked {...NativeBaseProps.SWITCH} />
-          </HStack>
+          <VStack {...NativeBaseProps.VSTACK_FLATLIST} >
+            <HStack 
+              {...NativeBaseProps.HSTACK_FLATLIST_ITEM}
+              keyExtractor={(item) => item.idresquests}
+            >
+              <Text fontSize={12} {...NativeBaseProps.TEXT_BY}>
+                {item.whoresquested}
+              </Text>
+              <Divider {...NativeBaseProps.DIVIDER} />
+              <Text fontSize={11} {...NativeBaseProps.TEXT_TIME}>
+                {item.dtrequested}
+              </Text>
+              <Divider {...NativeBaseProps.DIVIDER} />
+              <Text {...NativeBaseProps.TEXT_DESCRIPTION}>
+                {item.howmanyitem+"-"+item.requestdsc}
+              </Text>
+              <Divider {...NativeBaseProps.DIVIDER} />
+              <Text fontSize={12} {...NativeBaseProps.TEXT_ROOM_NO}>
+                {item.roomnumber}
+              </Text>
+              <Divider {...NativeBaseProps.DIVIDER} />
+              <Text fontSize={11} {...NativeBaseProps.TEXT_TIME_DONE}>
+                {item.dtrequestdone}
+              </Text>
+              <Divider {...NativeBaseProps.DIVIDER} />
+                <Switch
+                  onChange={() => {
+                    setIsMounted(false);
+                    const token_api = user.payload.tokenapi;
+                    const idpeople = user.payload.idpeople;
+                    const requestdone = item.dtrequestdone==null?!false:null
+                    updateRequest(item.idresquests,requestdone,idpeople,token_api, {setIsMounted});
+                  }} 
+                  isChecked={item.dtrequestdone==null?false:true} 
+                  offTrackColor={item.priority=="CRITICAL"?"red.600":"#FFFF00"}  
+                  {...NativeBaseProps.SWITCH} 
+                />
+            </HStack>
+            <Button
+              {...NativeBaseProps.PICTURE_BUTTON}
+              borderBottomColor={item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
+            > 
+              PICTURE 
+            </Button>
+          </VStack>
         )}
+        keyExtractor={(item) => item.idresquests}
       />
     </LinearGradient>
     </Box>
@@ -96,14 +107,28 @@ const CompoRequests = () => {
 }
 
 const NativeBaseProps = {
+  PICTURE_BUTTON:{
+    mb:2, 
+    minW:"99%", 
+    maxW:"99%", 
+    borderTopRadius:0, 
+    borderBottomWidth:4,
+    _text:{
+      fontWeight: "bold",
+      fontSize: "16",
+      color: "white"
+    },  
+  },
+  VSTACK_FLATLIST:{
+    alignItems:"center"
+  },
   DIVIDER:{
     bg:"gray.400",
     thickness:"2",
     orientation:"vertical"
   },
   SWITCH:{
-    onTrackColor:"#8bff94", 
-    offTrackColor:"red.600", 
+    onTrackColor:"#00FF00",  
     maxW:"12%", 
     minW:"12%"
   },
@@ -163,10 +188,9 @@ const NativeBaseProps = {
     alignItems:"center",
     alignSelf:"center", 
     minH:60,   
-    borderBottomWidth:4, 
-    borderRadius:5,
+    borderTopRadius:5,
     bgColor:"rgba(255,255,255,0.4)",
-    mb:1
+    mb:0
   },
   HSTACK_HEADER:{
     space:1,

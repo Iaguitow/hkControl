@@ -21,11 +21,11 @@ const actionsTypes = {
     UPDATE_FILES: "UPDATE_FILES",
     UPDATE_FILES_ERROR: "UPDATE_FILES_ERROR",
 
-///////////////////TAGS ACTION/////////////////////
-    GET_TAGS: "GET_TAGS",
-    GET_TAGS_ERROR: "GET_TAGS_ERROR",
-    UPDATE_TAGS: "UPDATE_TAGS",
-    UPDATE_TAGS_ERROR: "UPDATES_TAGS_ERROR",
+///////////////////REQUESTS ACTION/////////////////////
+    GET_REQUESTS: "GET_TAGS",
+    GET_REQUESTS_ERROR: "GET_TAGS_ERROR",
+    UPDATE_REQUESTS: "UPDATE_TAGS",
+    UPDATE_REQUESTS_ERROR: "UPDATES_TAGS_ERROR",
     
 ///////////////////CITY ACTIONS////////////////////
     GET_CITIES: "GET_CITIES",

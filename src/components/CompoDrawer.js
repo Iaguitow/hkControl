@@ -72,11 +72,22 @@ function MyDrawer({ navigation }) {
             );
           },
           headerTitle: (title) => {
-            if (title.children !== allDrawerScreens.COMPETITORS) {
+            if (title.children === allDrawerScreens.PROFILE) {
               return (
-                // NECESSARY PUT DYNAMIC, CREATE A FUNCTION WITH SWITCH CASE TAKING THE CURRENTLY HOUR AND RETURNING THE GREEDING.
-                <Text color={"white"}>
-                  Good Morning Iago
+                <Text color={"white"} fontWeight="bold" fontSize={16}>
+                  {allDrawerScreens.PROFILE.toUpperCase()}
+                </Text>
+              );
+            }else if (title.children === allDrawerScreens.REQUESTS){
+              return (
+                <Text color={"white"} fontWeight="bold" fontSize={16}>
+                  {allDrawerScreens.REQUESTS.toUpperCase()}
+                </Text>
+              );
+            }else if (title.children === allDrawerScreens.TASKS){
+              return (
+                <Text color={"white"} fontWeight="bold" fontSize={16}>
+                  {allDrawerScreens.TASKS.toUpperCase()}
                 </Text>
               );
             }else if(title.children === allDrawerScreens.COMPETITORS){
@@ -114,7 +125,7 @@ function MyDrawer({ navigation }) {
         drawerContent={(props) => <CustomDrawerContent {...props} imageDrawerProfile={ imageDrawerProfile } />}
       >
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
-        <Drawer.Screen name={allDrawerScreens.REQUESTS} component={ScreenRequests} />
+        <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
         <Drawer.Screen name={allDrawerScreens.TASKS} component={Component} />
         {/*
         <Drawer.Screen name={allDrawerScreens.SKILLS} component={Component} />
