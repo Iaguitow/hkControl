@@ -3,11 +3,15 @@ import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons, AntDesign, FontAwesome5, FontAwesome, EvilIcons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerContentScrollView, useDrawerStatus } from "@react-navigation/drawer";
-import { useSelector } from "react-redux";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from "react-redux";
+
 import { allDrawerScreens } from "../utils/ConstDrawerScreens";
+
 import ScreenProfile from "../screens/ScreenProfile";
 import ScreenRequests from "../screens/ScreenRequests";
+import ScreenTasks from "../screens/ScreenTasks";
+
 import {
   Box,
   Pressable,
@@ -126,7 +130,7 @@ function MyDrawer({ navigation }) {
       >
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
         <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
-        <Drawer.Screen name={allDrawerScreens.TASKS} component={Component} />
+        <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />
         {/*
         <Drawer.Screen name={allDrawerScreens.SKILLS} component={Component} />
         <Drawer.Screen name={allDrawerScreens.PROJECTS} component={Component} />

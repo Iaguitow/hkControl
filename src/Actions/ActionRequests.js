@@ -1,6 +1,5 @@
 import { actionsTypes } from "./ConstActions";
 import dbRequests from "../classes/ClassDBRequests";
-import { useSelector } from "react-redux";
 
 const RequestActions = {
     getRequests: (idpeople, token_api, {setIsMounted}) => dispatch => {

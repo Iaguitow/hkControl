@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
@@ -95,7 +95,7 @@ const CompoRequests = ({ setIsMounted }) => {
               {...NativeBaseProps.PICTURE_BUTTON}
               borderBottomColor={item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
             > 
-              PICTURE 
+              VIEW PICTURE 
             </Button>
           </VStack>
         )}

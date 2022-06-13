@@ -31,7 +31,13 @@ const actionsTypes = {
     GET_CITIES: "GET_CITIES",
     GET_CITIES_ERROR: "GET_CITIES_ERROR",
     UPDATE_CITY: "UPDATE_CITY",
-    UPDATE_CITY_ERROR: "UPDATE_CITY_ERROR",    
+    UPDATE_CITY_ERROR: "UPDATE_CITY_ERROR",
+
+///////////////////TASKS ACTIONS////////////////////
+    GET_TASKS: "GET_CITIES",
+    GET_TASKS_ERROR: "GET_CITIES_ERROR",
+    UPDATE_TASKS: "UPDATE_CITY",
+    UPDATE_TASKS_ERROR: "UPDATE_CITY_ERROR",    
 };
 
 export { actionsTypes }
