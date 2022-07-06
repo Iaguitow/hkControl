@@ -1,7 +1,6 @@
 import React from 'react';
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TasksActions } from '../Actions/ActionTasks';
 import {
@@ -13,9 +12,9 @@ import {
   Center,
   Icon,
   Button,
-  VStack
+  VStack,
+  ScrollView
 } from "native-base";
-
 
 const CompoTasks = ({ setIsMounted }) => {
 
@@ -55,7 +54,7 @@ const CompoTasks = ({ setIsMounted }) => {
 
   return (
     <Box flex={1} Width={"100%"}>
-      <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}>
+      <ScrollView>
         <HStack
           {...NativeBaseProps.HSTACK_HEADER}
         >
@@ -133,7 +132,7 @@ const CompoTasks = ({ setIsMounted }) => {
           )
         })
         }
-      </LinearGradient>
+        </ScrollView>
     </Box>
   );
 }
@@ -159,13 +158,6 @@ const NativeBaseProps = {
   },
   ICON_INPUT: {
     color: "white"
-  },
-  LINEAR_BACK_GROUND_COLOR: {
-    colors: ['#00b9f3', '#061b21', '#061b21'],
-    start: [1, 0],
-    end: [0, 3],
-    locations: [0.7, 0.1, 0.2],
-    style: { flex: 1 },
   },
   HSTACK_FLATLIST_ITEM: {
     space: 1,

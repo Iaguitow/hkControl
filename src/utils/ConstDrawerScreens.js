@@ -2,7 +2,7 @@ const allDrawerScreens = {
     PROFILE: "Profile",
     REQUESTS: "Requests",
     TASKS: "Tasks",
-    SKILLS: "Skills",
+    CHECK_LIST: "Check List",
     PROJECTS: "Projects",
     CONFIGURATION: "Configuration",
     LOGOUT: "Logout",

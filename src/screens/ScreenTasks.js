@@ -5,6 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { TasksActions } from "../Actions/ActionTasks";
 import { useSelector, useDispatch } from "react-redux";
 import CompoLoadingView from "../components/CompoApiLoadingView";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ScreenTasks = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -25,10 +26,24 @@ const ScreenTasks = () => {
 
     return (
         <Box flex={1}>
+            <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}  />
             <CompoTasks setIsMounted={ setIsMounted }/>
             {!isMounted && <CompoLoadingView />}
         </Box>
     );
+    
 };
+
+const NativeBaseProps = {
+    LINEAR_BACK_GROUND_COLOR: {
+      colors: ['#00b9f3', '#061b21', '#061b21'],
+      start: [1, 0],
+      end: [0, 3],
+      locations: [0.7, 0.1, 0.2],
+      style: { flex: 1,position:"absolute", width:"100%", height:"100%" }
+    }
+}
+
+
 
 export default ScreenTasks;

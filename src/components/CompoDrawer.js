@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons, MaterialIcons, AntDesign, FontAwesome5, FontAwesome, EvilIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons, FontAwesome5, FontAwesome, EvilIcons, Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerContentScrollView, useDrawerStatus } from "@react-navigation/drawer";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from "react-redux";
-
 import { allDrawerScreens } from "../utils/ConstDrawerScreens";
-
 import ScreenProfile from "../screens/ScreenProfile";
 import ScreenRequests from "../screens/ScreenRequests";
 import ScreenTasks from "../screens/ScreenTasks";
+import ScreenCheckList from "../screens/ScreenCheckList";
+import FabButoon from "../components/CompoFabButon"
 
 import {
   Box,
@@ -39,13 +39,13 @@ function Component(props) {
 const getIcon = (screenName) => {
   switch (screenName) {
     case allDrawerScreens.PROFILE:
-      return "profile";
+      return "ios-people-outline";
     case allDrawerScreens.REQUESTS:
       return "tasks";
     case allDrawerScreens.TASKS:
       return "tasks";
-    case allDrawerScreens.SKILLS:
-      return "head-check-outline";
+    case allDrawerScreens.CHECK_LIST:
+      return "check-square-o";
     case allDrawerScreens.PROJECTS:
       return "laptop-code";
     case allDrawerScreens.CONFIGURATION:
@@ -79,7 +79,7 @@ function MyDrawer({ navigation }) {
             if (title.children === allDrawerScreens.PROFILE) {
               return (
                 <Text color={"white"} fontWeight="bold" fontSize={16}>
-                  {allDrawerScreens.PROFILE.toUpperCase()}
+                  PROFILE
                 </Text>
               );
             }else if (title.children === allDrawerScreens.REQUESTS){
@@ -131,12 +131,14 @@ function MyDrawer({ navigation }) {
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
         <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
         <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />
+        <Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />
         {/*
         <Drawer.Screen name={allDrawerScreens.SKILLS} component={Component} />
         <Drawer.Screen name={allDrawerScreens.PROJECTS} component={Component} />
         */}
-        <Drawer.Screen name={allDrawerScreens.CONFIGURATION} component={Component} />
+        
         <Drawer.Screen name={allDrawerScreens.COMPETITORS} component={Component} />
+        <Drawer.Screen name={allDrawerScreens.CONFIGURATION} component={Component} />
         <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
 
       </Drawer.Navigator>
@@ -195,15 +197,15 @@ function CustomDrawerContent(props) {
                         <Icon
                           as={() => {
                               if (name === allDrawerScreens.PROFILE) {
-                                return (<AntDesign size={30}  color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
-                              } else if (name === (allDrawerScreens.REQUESTS || allDrawerScreens.LOGOUT)) {
+                                return (<Ionicons size={30}  color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
+                              } else if ((name === allDrawerScreens.REQUESTS) || (name === allDrawerScreens.CHECK_LIST)) {
                                 return (<FontAwesome size={30} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
-                              } else if (name === allDrawerScreens.TASKS) {
+                              } else if (name === (allDrawerScreens.TASKS)) {
                                 return (<FontAwesome5 size={30} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
                               } else if (name === allDrawerScreens.PROJECTS) {
                                 return (<FontAwesome5 size={25} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
                               } else if (name === allDrawerScreens.CONFIGURATION) {
-                                return (<EvilIcons size={35} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
+                                return (<EvilIcons style={{marginLeft:-4}} size={35} color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} name={getIcon(name)} />)
                               }
                               else {
                                 return (<MaterialCommunityIcons color={index === props.state.index ? nativeBaseProps.OptionsColor.selected : nativeBaseProps.OptionsColor.unselected} size={30} name={getIcon(name)} />)
@@ -235,6 +237,7 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
   return (
     <NavigationContainer independent={true}>
       <MyDrawer navigation={ navigation } nativeBaseProps = { nativeBaseProps } />
+      <FabButoon/>
     </NavigationContainer>
   );
 }

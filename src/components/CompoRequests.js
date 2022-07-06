@@ -1,5 +1,5 @@
-import React from "react"
-import { LinearGradient } from 'expo-linear-gradient';
+import React, {useState} from "react"
+import { RefreshControl } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
 import {
@@ -17,12 +17,23 @@ const CompoRequests = ({ setIsMounted }) => {
 
   const dispatch = useDispatch();
   const updateRequest = (idrequests, requestdone, idpeople, token_api,) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, {setIsMounted})) }
+  const getRequests = (idpeople, token_api) => {dispatch(RequestActions.getRequests(idpeople, token_api, {setIsMounted, setRefreshing})) }
   const requests = useSelector(state => state.reducerRequests);
   const user = useSelector(state => state.reducerLogin);
   
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setIsMounted(false);
+    const token_api = user.payload.tokenapi;
+    const idpeople = user.payload.idpeople;
+    getRequests(idpeople,token_api,{setIsMounted, setRefreshing});
+  }, []);
+
   return (
     <Box flex={1} minWidth={"100%"}>
-    <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}>
+      
       <HStack
         {...NativeBaseProps.HSTACK_HEADER}
       >
@@ -51,6 +62,7 @@ const CompoRequests = ({ setIsMounted }) => {
         </Text>
       </HStack>
       <FlatList
+        refreshControl={<RefreshControl tintColor={'white'} title={'UPDATING...'} titleColor={'white'} refreshing={refreshing} onRefresh={onRefresh} />}
         data={requests.payload.requests}
         renderItem={({ item }) => (
           <VStack {...NativeBaseProps.VSTACK_FLATLIST} >
@@ -92,22 +104,21 @@ const CompoRequests = ({ setIsMounted }) => {
                 />
             </HStack>
             <Button
-              {...NativeBaseProps.PICTURE_BUTTON}
+              {...NativeBaseProps.DETAILS_BUTTON}
               borderBottomColor={item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
             > 
-              VIEW PICTURE 
+              VIEW DETAILS... 
             </Button>
           </VStack>
         )}
         keyExtractor={(item) => item.idresquests}
       />
-    </LinearGradient>
     </Box>
   )
 }
 
 const NativeBaseProps = {
-  PICTURE_BUTTON:{
+  DETAILS_BUTTON:{
     mb:2, 
     minW:"99%", 
     maxW:"99%", 
@@ -156,7 +167,7 @@ const NativeBaseProps = {
   TEXT_DESCRIPTION:{
     maxW:"44%", 
     minW:"44%", 
-    noOfLines:5, 
+    noOfLines:2, 
     textAlign:"center", 
     fontWeight:"bold", 
     color:"white"

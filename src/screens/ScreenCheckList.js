@@ -1,35 +1,35 @@
 import React, { useState } from 'react';
-import { Center } from "native-base";
-import CompoResquests from "../components/CompoRequests";
+import { Box } from "native-base";
+import CompoCheckList from "../components/CompoCheckList";
 import { useFocusEffect } from '@react-navigation/native';
-import { RequestActions } from "../Actions/ActionRequests";
+import { CheckListActions } from "../Actions/ActionCheckList";
 import { useSelector, useDispatch } from "react-redux";
-import { LinearGradient } from 'expo-linear-gradient';
 import CompoLoadingView from "../components/CompoApiLoadingView";
+import { LinearGradient } from 'expo-linear-gradient';
 
-const ScreenRequests = () => {
+const ScreenCheckList = () => {
     const [isMounted, setIsMounted] = useState(false);
 
     const dispatch = useDispatch();
-    const getRequests = (idpeople, token_api) => {dispatch(RequestActions.getRequests(idpeople, token_api, {setIsMounted})) }
+    const getChecklist = (idpeople, token_api) => {dispatch(CheckListActions.getCheckList(idpeople, token_api, {setIsMounted})) }
     const user = useSelector(state => state.reducerLogin);
-
+    
     useFocusEffect(
         React.useCallback(() => {
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
         
-        getRequests(idpeople,token_api,{setIsMounted});
+        getChecklist(idpeople,token_api,{setIsMounted});
         return () => setIsMounted(false);
         }, [])
     );
 
     return (
-        <Center flex={1}>
-            <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}  />
-            <CompoResquests setIsMounted={ setIsMounted }/>
+        <Box flex={1}>
+        <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}  />
+            <CompoCheckList setIsMounted={ setIsMounted }/>
             {!isMounted && <CompoLoadingView />}
-        </Center>
+        </Box>
     );
 };
 
@@ -43,4 +43,5 @@ const NativeBaseProps = {
     }
 }
 
-export default ScreenRequests;
+
+export default ScreenCheckList;

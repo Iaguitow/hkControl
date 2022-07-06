@@ -2,7 +2,7 @@ import { actionsTypes } from "./ConstActions";
 import dbRequests from "../classes/ClassDBRequests";
 
 const RequestActions = {
-    getRequests: (idpeople, token_api, {setIsMounted}) => dispatch => {
+    getRequests: (idpeople, token_api, {setIsMounted, setRefreshing = ""}) => dispatch => {
         dbRequests.getRequests(idpeople,token_api).then(response =>{
             dispatch({
                 type: actionsTypes.GET_REQUESTS,
@@ -15,6 +15,9 @@ const RequestActions = {
             });
         }).finally(endpoint =>{
             setIsMounted(true);
+            if(typeof setRefreshing === "function"){
+                setRefreshing(false);
+            }
         });
     },
     updateRquests: (idrequests, requestdone, idpeople, token_api, {setIsMounted}) => dispatch => {

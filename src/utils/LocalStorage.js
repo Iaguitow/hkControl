@@ -1,6 +1,39 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class LocalStorage {
+
+    async storeCheckListItems(idItem,amountItem){
+        try {
+
+            let checkListArray = [];
+            let checkListObj = JSON.stringify({
+                idItem: idItem,
+                amountItem: amountItem
+            });
+
+            checkListArray.push(checkListObj);
+
+            await AsyncStorage.setItem("checklist", checkListArray).then(result =>{
+                return result;
+            });
+
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async retrieveCheckListItems(key = "checklist"){
+        try {
+            const session = await AsyncStorage.getItem(checklist);
+            if(session !== undefined){
+                return session;
+            }
+            return false;
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     async storeUserSession(idpeople,email,name,token, googleAcessToken){
         try {
             await AsyncStorage.setItem(
