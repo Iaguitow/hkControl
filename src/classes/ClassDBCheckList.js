@@ -9,7 +9,7 @@ class CheckLists{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/checklist",
+                    url: "http://192.168.1.144:3000/routes/checklist/checklist",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/checklist",
                     withCredentials: true,

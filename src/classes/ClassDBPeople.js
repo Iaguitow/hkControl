@@ -9,7 +9,7 @@ class People {
         return axios({
           method: 'get',
           //HOUSE IP
-          url: "http://192.168.1.144:3000/routes/people",
+          url: "http://192.168.1.144:3000/routes/people/people",
           //SCHOOL IP
           //url: "http://172.26.192.211:3000/routes/people",
           withCredentials: true,

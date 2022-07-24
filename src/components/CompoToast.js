@@ -44,6 +44,14 @@ class Toasts extends Component {
             duration: 2000000,
         })
       break;
+      case "Empty Fields":
+        Toast.show({
+            title: "Fill up all FIELDS.",
+            status: "error",
+            description: "You MUST fill up all FIELDS before click on Save. Otherwise you are not going to be able to create a request.",
+            duration: 2000000,
+        })
+      break;
       case "Code Not Found":
         Toast.show({
             title: "Code Not Found",
@@ -54,10 +62,19 @@ class Toasts extends Component {
       break;
       case "Sucessfully Registered":
         Toast.show({
-            title: "Sucessfully Registered",
+            title: "Successfully Registered",
             status: "success",
-            description: "Sucessfully Registered, please finish your profile, then others will be able to see you.",
+            description: "Successfully Registered, please finish your profile, then others will be able to see you.",
             duration: 2000000,
+        })
+      break;
+      case "Request Successfully Saved":
+        Toast.show({
+            title: "Request Successfully Saved",
+            status: "success",
+            description: "Successfully Saved, Your request was directed to one of our responsibles.",
+            duration: 6000,
+            
         })
       break;
       case "Recovery Code":

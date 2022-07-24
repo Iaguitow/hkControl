@@ -2,25 +2,35 @@ import React, {useState} from 'react';
 import { Fab,Box, Icon } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import ModalNewRequest from "./CompoModalNewRequest";
+import { RequestTypeActions } from "../Actions/ActionRequestType";
+import { useSelector, useDispatch } from "react-redux";
 
 const FabButton = () => {
 
-  const [isLoading, setIsloading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.reducerLogin);
+  const getRequestType = (token_api) => {dispatch(RequestTypeActions.getRequestType(token_api,{setIsMounted})) }
   
     return(
       <Box>
-        <ModalNewRequest showModal={ showModal } setShowModal={ setShowModal }/>
+        <ModalNewRequest isMounted={isMounted} showModal={ showModal } setShowModal={ setShowModal } setIsMounted={ setIsMounted }/>
         <Fab
           {...NATIVEBASE_PROPS.FAB} 
           icon={<Icon as={AntDesign} {...NATIVEBASE_PROPS.ICON}/>}
-          onPress={() =>{setShowModal(true)}}
+          onPress={() =>{
+            setIsMounted(true);
+            const token_api = user.payload.tokenapi;
+            getRequestType(token_api);
+            setShowModal(true)
+            }}
           _spinner={
             {
               size:"lg"
             }
           }
-          isLoading={isLoading}
         />
       </Box>
     );

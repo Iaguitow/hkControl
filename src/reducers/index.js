@@ -8,6 +8,7 @@ import { reducers as reducerProfile } from "./reducerProfile";
 import { reducers as reducerCities } from "./reducerCities";
 import { reducers as reducerTasks } from "./reducerTasks";
 import { reducers as reducerCheckList } from "./reducerCheckList";
+import { reducers as reducerRequestType } from "./reducerRequestType"
 
 const reducers = combineReducers({
     reducerLogin,
@@ -17,7 +18,8 @@ const reducers = combineReducers({
     reducerProfile,
     reducerCities,
     reducerTasks,
-    reducerCheckList
+    reducerCheckList,
+    reducerRequestType
 });
 
 export { reducers }

@@ -9,7 +9,7 @@ class GDrive{
                 return axios({
                     method: "post",
                     //HOUSE IP
-                    url:"http://192.168.1.144:3000/routes/gdrive",
+                    url:"http://192.168.1.144:3000/routes/gdrive/gdrive",
                     //SCHOOL IP
                     //url: "http://192.168.1.144:3000/routes/gdrive",
                     withCredentials: true,
@@ -44,7 +44,7 @@ class GDrive{
                 return axios({
                     method: "get",
                     //HOUSE IP
-                    url:"http://192.168.1.144:3000/routes/gdrive",
+                    url:"http://192.168.1.144:3000/routes/gdrive/gdrive",
                     //SCHOOL IP
                     //url: "http://192.168.1.144:3000/routes/gdrive",
                     withCredentials: true,

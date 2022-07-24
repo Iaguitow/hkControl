@@ -25,7 +25,7 @@ const CompoRequests = ({ setIsMounted }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setIsMounted(false);
+    setIsMounted(true);
     const token_api = user.payload.tokenapi;
     const idpeople = user.payload.idpeople;
     getRequests(idpeople,token_api,{setIsMounted, setRefreshing});
@@ -92,7 +92,7 @@ const CompoRequests = ({ setIsMounted }) => {
               <Divider {...NativeBaseProps.DIVIDER} />
                 <Switch
                   onChange={() => {
-                    setIsMounted(false);
+                    setIsMounted(true);
                     const token_api = user.payload.tokenapi;
                     const idpeople = user.payload.idpeople;
                     const requestdone = item.dtrequestdone==null?!false:null

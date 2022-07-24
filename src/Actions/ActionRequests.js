@@ -14,7 +14,7 @@ const RequestActions = {
                 payload: {requests:null, error_message: error.message},
             });
         }).finally(endpoint =>{
-            setIsMounted(true);
+            setIsMounted(false);
             if(typeof setRefreshing === "function"){
                 setRefreshing(false);
             }
@@ -32,7 +32,26 @@ const RequestActions = {
                 payload: {requests:null, error_message: error.message},
             });
         }).finally(endpoint =>{
-            setIsMounted(true);
+            setIsMounted(false);
+        });
+    },
+
+    insertNewRequest: (requestObj, token_api, idpeople, {setIsMounted, startEffect, setShowModal}) => dispatch => {
+        dbRequests.insertNewRequest(requestObj, token_api, idpeople).then(response =>{
+            //startEffect();
+            dispatch({
+                type: actionsTypes.INSERT_NEW_REQUEST,
+                payload: {requests:response.data, error_message: null},
+            });
+        }).catch(error => {
+            dispatch({
+                type: actionsTypes.INSERT_NEW_REQUEST_ERROR,
+                payload: {requests:null, error_message: error.message},
+            });
+            return;
+        }).finally(endpoint =>{
+            setIsMounted(false);
+            setShowModal(false);
         });
     }
 }

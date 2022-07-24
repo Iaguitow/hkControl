@@ -16,11 +16,14 @@ const ScreenRequests = () => {
 
     useFocusEffect(
         React.useCallback(() => {
+
+        setIsMounted(true);
+    
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
         
         getRequests(idpeople,token_api,{setIsMounted});
-        return () => setIsMounted(false);
+        return () => setIsMounted(true);
         }, [])
     );
 
@@ -28,7 +31,7 @@ const ScreenRequests = () => {
         <Center flex={1}>
             <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}  />
             <CompoResquests setIsMounted={ setIsMounted }/>
-            {!isMounted && <CompoLoadingView />}
+            {isMounted && <CompoLoadingView />}
         </Center>
     );
 };

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView, Animated, View } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
-import { cityActions } from "../Actions/ActionCities";
 import {
   Stack,
   Text,
@@ -47,12 +46,9 @@ const CompoProfileContext = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.reducerLogin);
-  const cities_available = useSelector(state => state.reducerCities);
-  const getCities = (token_api) => {dispatch(cityActions.getCities(token_api)) }
 
   useEffect(() => {
     const token_api = user.payload.tokenapi;
-    getCities(token_api);
   
   },[]);
 
