@@ -1,10 +1,12 @@
 //PACKAGES
+import React, {useEffect} from 'react';
 import { StatusBar,LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider, View} from 'native-base';
 import { Provider } from "react-redux";
-import { store } from "./store"
+import { store } from "./store";
+import generalUtils from './src/utils/GeneralUtils';
 import 'react-native-gesture-handler';
 
 // SCREENS
@@ -20,6 +22,11 @@ const Stack = createNativeStackNavigator();
 StatusBar.setHidden(false);
 
 export default function App() {
+
+  useEffect(() => {
+    generalUtils.registerForPushNotificationsAsync();
+  },[])
+
   return (
     <NativeBaseProvider>
       <Provider store={store}>

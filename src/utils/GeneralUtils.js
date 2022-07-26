@@ -1,3 +1,6 @@
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+
 class GeneralUtils {
 
     validateEmail(email) {
@@ -8,6 +11,22 @@ class GeneralUtils {
         }
         return false;
     };
+
+    validateRooms(roomNumber, rooms, requestType){
+
+        const onlyRooms = [];
+
+        for(var i = 0; i<rooms.payload.rooms.length; i++){
+            onlyRooms.push(rooms.payload.rooms[i].roomnumber.toString());
+        }
+
+        if(onlyRooms.includes(roomNumber.toString()) || (requestType == "OTHER" && roomNumber == 0)){
+            return(true);
+        }else{
+            return(false);
+        }
+        
+    }
 
     date_DBformat(dateToday){
         var newDateToday = new Date();
@@ -24,6 +43,35 @@ class GeneralUtils {
         }
         return password;
     }
+
+    registerForPushNotificationsAsync = async () => {
+        if (Device.isDevice) {
+          const { status: existingStatus } = await Notifications.getPermissionsAsync();
+          let finalStatus = existingStatus;
+          if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+          }
+          if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+          }
+          const token = (await Notifications.getExpoPushTokenAsync()).data;
+          console.log(token);
+          return({ expoPushToken: token });
+        } else {
+          alert('Must use physical device for Push Notifications');
+        }
+      
+        if (Platform.OS === 'android') {
+          Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+          });
+        }
+    };
 }
 
 var generalUtils = new GeneralUtils();

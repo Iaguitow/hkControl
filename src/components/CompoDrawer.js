@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5, FontAwesome, EvilIcons, Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerContentScrollView, useDrawerStatus } from "@react-navigation/drawer";
 import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { allDrawerScreens } from "../utils/ConstDrawerScreens";
 import ScreenProfile from "../screens/ScreenProfile";
 import ScreenRequests from "../screens/ScreenRequests";
 import ScreenTasks from "../screens/ScreenTasks";
 import ScreenCheckList from "../screens/ScreenCheckList";
-import FabButoon from "../components/CompoFabButon"
+import FabButoon from "../components/CompoFabButon";
+import { ActionRooms } from "../Actions/ActionRooms.js";
 
 import {
   Box,
@@ -233,6 +234,15 @@ function CustomDrawerContent(props) {
 }
 
 export default function CompoDrawer({ navigation, nativeBaseProps}) {
+
+  const dispatch = useDispatch();
+  const getRooms = (token_api) => {dispatch(ActionRooms.getRooms(token_api)) }
+  const user = useSelector(state => state.reducerLogin);
+
+  useEffect(() => {
+    const token_api = user.payload.tokenapi;
+    getRooms(token_api);
+  },)
 
   return (
     <NavigationContainer independent={true}>

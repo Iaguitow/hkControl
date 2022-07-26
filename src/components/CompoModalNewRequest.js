@@ -19,6 +19,7 @@ import {
 } from "native-base";
 import CompoLoadingView from "../components/CompoApiLoadingView";
 import { actionsTypesAPI } from "../Actions/ConstActionsApi";
+import generalUtils from "../utils/GeneralUtils";
 import Alerts from "./CompoAlerts";
 import Toasts from "./CompoToast";
 
@@ -28,6 +29,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
 
     const dispatch = useDispatch();
     const user = useSelector(state => state.reducerLogin);
+    const rooms = useSelector(state => state.reducerRooms);
     const requests = useSelector(state => state.reducerRequests);
     const requestsType = useSelector(state => state.reducerRequestType);
     const insertNewRequest = (requestObj, token_api, idpeople) => {dispatch(RequestActions.insertNewRequest(requestObj, token_api, idpeople,{setIsMounted, startEffect, setShowModal})) }
@@ -35,7 +37,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
     const [requestType, setRequestType] = useState("");
     const [idTypeRequest, setIdTypeRequest] = useState("");
     const [priorityValue, setPriorityValue] = useState(false);
-    const [disabledTextArea, setDisabledTextArea] = useState(true);
+    const [disabledTextArea, setDisabledTextArea] = useState(false);
     const [textAreaValue, setTextAreaValue] = useState("");
     const [amountValue, setAmountValue] = useState("");
     const [roomValue, setRoomValue] = useState("");
@@ -86,7 +88,15 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
 
     return (
         <Center>
-            <Modal avoidKeyboard={true} closeOnOverlayClick={false} size={"xl"} isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal avoidKeyboard={true} closeOnOverlayClick={false} size={"xl"} isOpen={showModal} onClose={() => {
+                    setRequestType("");
+                    setTextAreaValue("");
+                    setAmountValue("");
+                    setRoomValue("");
+                    setPriorityValue(false);
+                    setFadeEffect(new Animated.Value(0));
+                    setShowModal(false);
+                }}>
                 <Modal.Content >
                     <Modal.CloseButton />
                     <Modal.Header>NEW REQUEST</Modal.Header>
@@ -97,16 +107,14 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 selectedValue={requestType}
                                 onValueChange={itemValue => {
                                         setRequestType(itemValue);
-                                        if(itemValue == "OTHER"){
-                                            setDisabledTextArea(false);
-                                        }
-                                        else{
-                                            setTextAreaValue("Room: "+roomValue+" | "+"Amount: "+amountValue+" - "+itemValue);
+                                        if(itemValue !== "OTHER" && itemValue !== ""){
                                             let selectedRequest = requestTypeArray.filter(function (e) {
                                                 return e.requestTypeDescription === itemValue.toString();
                                             });
+
                                             setIdTypeRequest(selectedRequest[0].id);
-                                        }   
+                                        }
+
                                     }
                                 }
                                 {...NATIVEBASE_PROPS.SELECT}
@@ -140,9 +148,6 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                         value={amountValue}
                                         onChangeText={(amount) => {
                                             setAmountValue(amount);
-                                            if(requestType!="OTHER"){
-                                                setTextAreaValue("Room: "+roomValue+" | "+"Amount: "+amount+" - "+requestType);
-                                            }
                                         }}
                                     />
                                 </VStack>
@@ -155,8 +160,10 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                         value={roomValue}
                                         onChangeText={(room) =>{
                                             setRoomValue(room);
-                                            if(requestType!="OTHER"){
-                                                setTextAreaValue("Room: "+room+" | "+"Amount: "+amountValue+" - "+requestType);
+                                        }}
+                                        onEndEditing={() =>{
+                                            if(requestType!=="OTHER"){
+                                                setTextAreaValue("Room: "+roomValue+" | "+"Amount: "+amountValue+" - "+requestType);
                                             }
                                         }}          
                                     />
@@ -175,9 +182,16 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                             <Text {...NATIVEBASE_PROPS.TEXT}> REQUEST DESCRIPTION: </Text>
                             <TextArea
                                 isDisabled={disabledTextArea}
-                                value={textAreaValue}
+                                onChangeText={(text) =>{
+                                    if(requestType!=="OTHER"){
+                                        setTextAreaValue("Room: "+roomValue+" | "+"Amount: "+amountValue+" - "+requestType + " " + text);
+                                    }
+                                    setTextAreaValue(text);
+                                }}
                                 {...NATIVEBASE_PROPS.TEXTAREA}
-                            />
+                            >
+                            {textAreaValue}
+                            </TextArea>
                         </VStack>
                         <Divider mt={3} {...NATIVEBASE_PROPS.DIVIDERS} />
                     </Modal.Body>
@@ -190,13 +204,13 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                             </Button>
                             <Button onPress={() => {
                                 setIsMounted(true);
-                                if(requestType == "" || amountValue == "" || roomValue == "" || textAreaValue == ""){
+                                if(requestType == "" || amountValue == "" || roomValue == "" || (requestsType=="OTHER" && textAreaValue == "") || (!generalUtils.validateRooms(roomValue, rooms, requestType))){
                                     setIsOpenAlert(true);
                                     setIsMounted(false);
                                     return;
-                                }
+                                } 
                                 var responsible = user.payload.idpeople;
-                                var idrequest = idTypeRequest;
+                                var idrequest = requestType!="OTHER"?idTypeRequest:null;
                                 var who_requested = user.payload.idpeople;
                                 var roomnumber = roomValue;
                                 var amount = amountValue;

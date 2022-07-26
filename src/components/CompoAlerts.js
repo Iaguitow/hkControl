@@ -3,8 +3,7 @@ import
     {
         Center,
         AlertDialog,
-        Button,
-        Alert
+        Button
     }
 from "native-base"
 
@@ -19,7 +18,7 @@ const Alerts = ({alertType,isOpenAlert, setIsOpenAlert}) => {
                 <AlertDialog.CloseButton />
                 <AlertDialog.Header>EMPTY FIELDS.</AlertDialog.Header>
                 <AlertDialog.Body>
-                  Please, fill up every single field before try to save it.
+                  Please, fill up every single field before try to save it. Or check the room number typed. It should be a real room number.
                 </AlertDialog.Body>
                 <AlertDialog.Footer bgColor={"red.300"}>
                   <Button.Group space={2}>

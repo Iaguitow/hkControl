@@ -32,7 +32,7 @@ const CompoRequests = ({ setIsMounted }) => {
   }, []);
 
   return (
-    <Box flex={1} minWidth={"100%"}>
+    <Box flex={1} minWidth={"100%"} mb={8}>
       
       <HStack
         {...NativeBaseProps.HSTACK_HEADER}
@@ -79,7 +79,7 @@ const CompoRequests = ({ setIsMounted }) => {
               </Text>
               <Divider {...NativeBaseProps.DIVIDER} />
               <Text {...NativeBaseProps.TEXT_DESCRIPTION}>
-                {item.howmanyitem+"-"+item.requestdsc}
+                {item.requestdsc}
               </Text>
               <Divider {...NativeBaseProps.DIVIDER} />
               <Text fontSize={12} {...NativeBaseProps.TEXT_ROOM_NO}>
@@ -151,8 +151,8 @@ const NativeBaseProps = {
     color:"white"
   },
   TEXT_TIME_DONE:{
-    maxW:"8%", 
-    minW:"8%",
+    maxW:"9%", 
+    minW:"9%",
     textAlign:"center", 
     fontWeight:"bold", 
     color:"white"
@@ -165,23 +165,23 @@ const NativeBaseProps = {
     color:"white"
   },
   TEXT_DESCRIPTION:{
-    maxW:"44%", 
-    minW:"44%", 
+    maxW:"40%", 
+    minW:"40%", 
     noOfLines:2, 
     textAlign:"center", 
     fontWeight:"bold", 
     color:"white"
   },
   TEXT_TIME:{
-    maxW:"8%",
-    minW:"8%", 
+    maxW:"9%",
+    minW:"9%", 
     textAlign:"center", 
     fontWeight:"bold", 
     color:"white",
   },
   TEXT_BY:{
-    maxW:"9%",
-    minW:"9%",
+    maxW:"11%",
+    minW:"11%",
     textAlign:"center",
     fontWeight:"bold",
     color:"white"
