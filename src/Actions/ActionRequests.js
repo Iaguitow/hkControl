@@ -2,8 +2,8 @@ import { actionsTypes } from "./ConstActions";
 import dbRequests from "../classes/ClassDBRequests";
 
 const RequestActions = {
-    getRequests: (idpeople, token_api, {setIsMounted, setRefreshing = ""}) => dispatch => {
-        dbRequests.getRequests(idpeople,token_api).then(response =>{
+    getRequests: (idpeople, joblevel, token_api, {setIsMounted, setRefreshing = ""}) => dispatch => {
+        dbRequests.getRequests(idpeople,joblevel,token_api).then(response =>{
             dispatch({
                 type: actionsTypes.GET_REQUESTS,
                 payload: {requests:response.data, error_message: null},
@@ -20,8 +20,8 @@ const RequestActions = {
             }
         });
     },
-    updateRquests: (idrequests, requestdone, idpeople, token_api, {setIsMounted}) => dispatch => {
-        dbRequests.updateRequests(idrequests, requestdone, idpeople, token_api).then(response =>{
+    updateRquests: (idrequests, requestdone, idpeople, token_api, joblevel, {setIsMounted}) => dispatch => {
+        dbRequests.updateRequests(idrequests, requestdone, idpeople, token_api, joblevel).then(response =>{
             dispatch({
                 type: actionsTypes.UPDATE_REQUESTS,
                 payload: {requests:response.data, error_message: null},
@@ -36,8 +36,8 @@ const RequestActions = {
         });
     },
 
-    insertNewRequest: (requestObj, token_api, idpeople, {setIsMounted, startEffect, setShowModal}) => dispatch => {
-        dbRequests.insertNewRequest(requestObj, token_api, idpeople).then(response =>{
+    insertNewRequest: (requestObj, token_api, idpeople, joblevel,{setIsMounted, startEffect, setShowModal}) => dispatch => {
+        dbRequests.insertNewRequest(requestObj, token_api, idpeople,joblevel).then(response =>{
             //startEffect();
             dispatch({
                 type: actionsTypes.INSERT_NEW_REQUEST,

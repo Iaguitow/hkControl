@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     payload: {requests: null},
     api_status: actionsTypesAPI.STATUS_IDLE,
     api_requests: 0,
-    api_inserts_requests: 0
+    api_inserts_requests: 0,
+    api_update_requests: 0
 }
 
 const reducers = (state = INITIAL_STATE, action) => {
@@ -17,10 +18,10 @@ const reducers = (state = INITIAL_STATE, action) => {
             return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_requests: state.api_requests+1}
         break;
         case actionsTypes.UPDATE_REQUESTS:
-            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK, api_requests: state.api_requests+1}
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK, api_requests: state.api_requests+1, api_update_requests: state.api_update_requests+1}
         break;
         case actionsTypes.UPDATE_REQUESTS_ERROR:
-            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_requests: state.api_requests+1}
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_requests: state.api_requests+1, api_update_requests: state.api_update_requests+1}
         break;
         case actionsTypes.INSERT_NEW_REQUEST:
             return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK, api_requests: state.api_requests+1, api_inserts_requests: state.api_inserts_requests+1}

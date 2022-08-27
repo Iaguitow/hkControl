@@ -1,7 +1,9 @@
-import React, {useState} from "react"
-import { RefreshControl } from "react-native"
+import React, {useState, useEffect} from "react"
+import { RefreshControl, Alert } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
+import { actionsTypesAPI } from "../Actions/ConstActionsApi";
+import Toasts from "./CompoToast";
 import {
   Box,
   FlatList,
@@ -10,14 +12,15 @@ import {
   Text,
   Divider,
   VStack,
-  Button
+  Button,
+  ScrollView
 } from "native-base";
 
 const CompoRequests = ({ setIsMounted }) => {
 
   const dispatch = useDispatch();
-  const updateRequest = (idrequests, requestdone, idpeople, token_api,) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, {setIsMounted})) }
-  const getRequests = (idpeople, token_api) => {dispatch(RequestActions.getRequests(idpeople, token_api, {setIsMounted, setRefreshing})) }
+  const updateRequest = (idrequests, requestdone, idpeople, token_api, joblevel) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, joblevel,{setIsMounted})) }
+  const getRequests = (idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(idpeople, joblevel, token_api, {setIsMounted, setRefreshing})) }
   const requests = useSelector(state => state.reducerRequests);
   const user = useSelector(state => state.reducerLogin);
   
@@ -28,8 +31,35 @@ const CompoRequests = ({ setIsMounted }) => {
     setIsMounted(true);
     const token_api = user.payload.tokenapi;
     const idpeople = user.payload.idpeople;
-    getRequests(idpeople,token_api,{setIsMounted, setRefreshing});
+    const joblevel = user.payload.joblevel;
+    getRequests(idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
   }, []);
+
+  useEffect(() => {
+    if(requests.api_status === actionsTypesAPI.STATUS_OK){
+      Toasts.showToast("Request Successfully Saved");
+    }
+  },[requests.api_update_requests])
+
+  const item = [];
+
+  if (requests.payload.requests !== null) {
+    for (var i = 0, ii = requests.payload.requests.length; i < ii; i++) {
+      
+      if (i > 0 ? requests.payload.requests[i].idresquests != requests.payload.requests[i - 1].idresquests : true == true) {
+        
+        item.push({
+          idresquests: requests.payload.requests[i].idresquests,
+          whoresquested: requests.payload.requests[i].whoresquested,
+          dtrequested: requests.payload.requests[i].dtrequested,
+          requestdsc: requests.payload.requests[i].requestdsc,
+          roomnumber: requests.payload.requests[i].roomnumber,
+          dtrequestdone: requests.payload.requests[i].dtrequestdone,
+          priority: requests.payload.requests[i].priority,
+        });
+      }
+    }
+  }
 
   return (
     <Box flex={1} minWidth={"100%"} mb={8}>
@@ -61,14 +91,19 @@ const CompoRequests = ({ setIsMounted }) => {
           DONE {/*DT DONE*/}
         </Text>
       </HStack>
-      <FlatList
+      <ScrollView
+        scrollIndicatorInsets={{ top: 1, bottom: 1 }} 
         refreshControl={<RefreshControl tintColor={'white'} title={'UPDATING...'} titleColor={'white'} refreshing={refreshing} onRefresh={onRefresh} />}
-        data={requests.payload.requests}
-        renderItem={({ item }) => (
-          <VStack {...NativeBaseProps.VSTACK_FLATLIST} >
+      >
+        {item.map((item,index) => {
+          return(
+            <VStack 
+              key={item.idresquests}
+              {...NativeBaseProps.VSTACK_FLATLIST} 
+            >
             <HStack 
+              key={index} 
               {...NativeBaseProps.HSTACK_FLATLIST_ITEM}
-              keyExtractor={(item) => item.idresquests}
             >
               <Text fontSize={12} {...NativeBaseProps.TEXT_BY}>
                 {item.whoresquested}
@@ -92,11 +127,30 @@ const CompoRequests = ({ setIsMounted }) => {
               <Divider {...NativeBaseProps.DIVIDER} />
                 <Switch
                   onChange={() => {
-                    setIsMounted(true);
-                    const token_api = user.payload.tokenapi;
-                    const idpeople = user.payload.idpeople;
-                    const requestdone = item.dtrequestdone==null?!false:null
-                    updateRequest(item.idresquests,requestdone,idpeople,token_api, {setIsMounted});
+                    if(item.dtrequestdone !== null){
+                      Toasts.showToast("Cancel Request");
+                      return;
+                    }
+                    Alert.alert(
+                        'WARNING',
+                        'BE AWAREYOU WILL NOT BE ABLE TO GO BACK! ARE YOU SURE ABOUT TO FINISH THIS REQUEST FOR THE ROOM: '+ item.roomnumber+" ?!",
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () => {},
+                            style: 'cancel',
+                          },
+                          {text: 'Yes', onPress: () => {
+                            setIsMounted(true);
+                            const token_api = user.payload.tokenapi;
+                            const idpeople = user.payload.idpeople;
+                            const joblevel = user.payload.joblevel;
+                            const requestdone = item.dtrequestdone==null?!false:null
+                            updateRequest(item.idresquests,requestdone,idpeople,token_api, joblevel, {setIsMounted});
+                          }},
+                        ],
+                        {cancelable: false},
+                      );
                   }} 
                   isChecked={item.dtrequestdone==null?false:true} 
                   offTrackColor={item.priority=="CRITICAL"?"red.600":"#FFFF00"}  
@@ -110,9 +164,9 @@ const CompoRequests = ({ setIsMounted }) => {
               VIEW DETAILS... 
             </Button>
           </VStack>
-        )}
-        keyExtractor={(item) => item.idresquests}
-      />
+          )
+        })}
+        </ScrollView>
     </Box>
   )
 }

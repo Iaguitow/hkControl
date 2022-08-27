@@ -47,7 +47,7 @@ const CompoCheckList = ({ setIsMounted }) => {
   return (
     <Box flex={1} Width={"100%"}>
       
-        <ScrollView>
+        <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
           <HStack
             {...NativeBaseProps.HSTACK_HEADER}
           >

@@ -12,6 +12,15 @@ class Toasts extends Component {
             duration: 2000000,
         })
       break;
+      case 'Cancel Request':
+        Toast.show({
+            title: "ACTION NOT ALLOWED!",
+            status: "error",
+            description: "You are not allowed to cancel a request that has already been completed. If you had completed this request by mistake please, make sure you will complete this request as soon as possible.",
+            duration: 2000000,
+        })
+      break;
+      
       case 'toobigimg':
         Toast.show({
             title: "Image too big.",

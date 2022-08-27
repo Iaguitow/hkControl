@@ -3,7 +3,8 @@ import
     {
         Center,
         AlertDialog,
-        Button
+        Button,
+        Text
     }
 from "native-base"
 
@@ -16,9 +17,13 @@ const Alerts = ({alertType,isOpenAlert, setIsOpenAlert}) => {
             <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpenAlert} onClose={() =>{setIsOpenAlert(false)}}>
               <AlertDialog.Content bgColor={"red.300"}>
                 <AlertDialog.CloseButton />
-                <AlertDialog.Header>EMPTY FIELDS.</AlertDialog.Header>
+                <AlertDialog.Header>ERROR.</AlertDialog.Header>
                 <AlertDialog.Body>
-                  Please, fill up every single field before try to save it. Or check the room number typed. It should be a real room number.
+                  <Text color={"white"} fontWeight="bold"> 1 - Make sure that you have filled up every single fields.</Text>
+
+                  <Text color={"white"} fontWeight="bold"> 2 - Make sure that the room which you typed exists.</Text>
+
+                  <Text color={"white"} fontWeight="bold"> 3 - Make sure that there is a porter responsible for this floor.</Text>
                 </AlertDialog.Body>
                 <AlertDialog.Footer bgColor={"red.300"}>
                   <Button.Group space={2}>

@@ -32,12 +32,12 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
     const rooms = useSelector(state => state.reducerRooms);
     const requests = useSelector(state => state.reducerRequests);
     const requestsType = useSelector(state => state.reducerRequestType);
-    const insertNewRequest = (requestObj, token_api, idpeople) => {dispatch(RequestActions.insertNewRequest(requestObj, token_api, idpeople,{setIsMounted, startEffect, setShowModal})) }
+    const insertNewRequest = (requestObj, token_api, idpeople, joblevel) => {dispatch(RequestActions.insertNewRequest(requestObj, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal})) }
 
     const [requestType, setRequestType] = useState("");
     const [idTypeRequest, setIdTypeRequest] = useState("");
     const [priorityValue, setPriorityValue] = useState(false);
-    const [disabledTextArea, setDisabledTextArea] = useState(false);
+    const [disabledTextArea, setDisabledTextArea] = useState(user.payload.profession=="RECEPTIONIST"?true:false);
     const [textAreaValue, setTextAreaValue] = useState("");
     const [amountValue, setAmountValue] = useState("");
     const [roomValue, setRoomValue] = useState("");
@@ -54,6 +54,10 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
         setFadeEffect(new Animated.Value(0));
         
         if(requests.api_status === actionsTypesAPI.STATUS_OK){
+            if(typeof requests.payload.requests == "boolean"){
+                setIsOpenAlert(!requests.payload.request);
+                return;
+            }
             Toasts.showToast("Request Successfully Saved");
         }
         
@@ -203,12 +207,14 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 <Text {...NATIVEBASE_PROPS.TEXT}> CANCEL </Text>
                             </Button>
                             <Button onPress={() => {
+
                                 setIsMounted(true);
                                 if(requestType == "" || amountValue == "" || roomValue == "" || (requestsType=="OTHER" && textAreaValue == "") || (!generalUtils.validateRooms(roomValue, rooms, requestType))){
                                     setIsOpenAlert(true);
                                     setIsMounted(false);
                                     return;
-                                } 
+                                }
+                                
                                 var responsible = user.payload.idpeople;
                                 var idrequest = requestType!="OTHER"?idTypeRequest:null;
                                 var who_requested = user.payload.idpeople;
@@ -217,12 +223,12 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 var priority = priorityValue?"C":"N";
                                 var finaldescription = textAreaValue;
                                 var profession = user.payload.profession;
-                                var requestObject = {responsible,idrequest,who_requested,roomnumber,amount,priority,finaldescription,profession}
-
+                                var joblevel = user.payload.joblevel;
+                                var requestObject = {responsible, idrequest, who_requested, roomnumber, amount, priority, finaldescription, profession}
                                 var token_api = user.payload.tokenapi;
                                 var idpeople = user.payload.idpeople;
                                 
-                                insertNewRequest(requestObject, token_api, idpeople, {setIsMounted, startEffect, setShowModal});
+                                insertNewRequest(requestObject, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal});
 
                             }}>
                                 <Text color={"white"} {...NATIVEBASE_PROPS.TEXT}> SAVE </Text>

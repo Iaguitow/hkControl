@@ -112,7 +112,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                     });
                                 }}
                             >
-                                <Icon {...nativeBaseProps.ICON_COLOR} as={<Entypo name={"plus"}/>} />
+                                <Icon size={"25px"} {...nativeBaseProps.ICON_COLOR} as={<Entypo name={"plus"}/>} />
                             </Badge>
                             <Badge {...nativeBaseProps.BG_ICON_BADGE}
                                 onTouchStart={() =>{
@@ -135,7 +135,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                     });
                                 }}
                             >
-                                <Icon {...nativeBaseProps.ICON_COLOR} as={<MaterialIcons name={"add-a-photo"}/>} />
+                                <Icon size={"30px"} {...nativeBaseProps.ICON_COLOR} as={<MaterialIcons name={"add-a-photo"}/>} />
                             </Badge>
                         </Box>
                         <Badge 
@@ -144,7 +144,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                 navigation.navigate("CompoProfile");
                             }}    
                         >
-                            <Icon {...nativeBaseProps.ICON_COLOR} as={<AntDesign name={"edit"}/>} />        
+                            <Icon size={"35px"} {...nativeBaseProps.ICON_COLOR} as={<AntDesign name={"edit"}/>} />        
                         </Badge>
                         <Stack {...nativeBaseProps.STACK_INFO}>
                             <Stack>

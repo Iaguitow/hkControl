@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5, FontAwesome, EvilIcons, Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerContentScrollView, useDrawerStatus } from "@react-navigation/drawer";
+import generalUtils from '../utils/GeneralUtils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from "react-redux";
 import { allDrawerScreens } from "../utils/ConstDrawerScreens";
@@ -12,6 +13,8 @@ import ScreenTasks from "../screens/ScreenTasks";
 import ScreenCheckList from "../screens/ScreenCheckList";
 import FabButoon from "../components/CompoFabButon";
 import { ActionRooms } from "../Actions/ActionRooms.js";
+import { PeopleActions } from "../Actions/ActionPeople";
+import * as Notifications from 'expo-notifications';
 
 import {
   Box,
@@ -22,7 +25,8 @@ import {
   HStack,
   Divider,
   Icon,
-  Image
+  Image,
+  Badge
 } from "native-base";
 
 const Drawer = createDrawerNavigator();
@@ -112,7 +116,22 @@ function MyDrawer({ navigation }) {
           },
           headerRight: () => {
             return (
-              <Icon {...nativeBaseProps.HeaderIconsProps} as={<MaterialIcons name="notifications-active" />}/>
+              <VStack>
+              <Badge
+                colorScheme="danger" 
+                rounded="full" 
+                mb={-8} mr={0} zIndex={1} 
+                variant="solid" 
+                alignSelf="flex-end" 
+                _text={{
+                  fontSize: 12, 
+                  fontWeight:"bold"
+                }}
+              >
+                  2
+              </Badge>
+              <Icon {...nativeBaseProps.HeaderIconsProps} size={10} as={<MaterialIcons name="notifications-active" />}/>
+              </VStack>
             );
           },
           headerLeft: () => {
@@ -151,6 +170,13 @@ function CustomDrawerContent(props) {
 
   const user = useSelector(state => state.reducerLogin);
   const isOpen = useDrawerStatus() === "open";
+  const notificationListener = useRef();
+
+  useEffect(() => {
+    notificationListener.current = Notifications.addNotificationResponseReceivedListener(notification => {
+      props.navigation.navigate("Requests");
+    });
+  })
 
   return (
     <LinearGradient {...nativeBaseProps.DrawerBackgroundColor}>
@@ -237,11 +263,28 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
 
   const dispatch = useDispatch();
   const getRooms = (token_api) => {dispatch(ActionRooms.getRooms(token_api)) }
+  const updatePeople = (idpeople, pushExpoToken, token_api) => {dispatch(PeopleActions.updatePeople(idpeople, pushExpoToken, token_api))} 
   const user = useSelector(state => state.reducerLogin);
 
   useEffect(() => {
+
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+    
     const token_api = user.payload.tokenapi;
+    const idpeople = user.payload.idpeople;
+    
+    generalUtils.registerForPushNotificationsAsync().then(pushExpoToken =>{
+      updatePeople(idpeople,pushExpoToken,token_api);
+    });
+
     getRooms(token_api);
+
   },)
 
   return (

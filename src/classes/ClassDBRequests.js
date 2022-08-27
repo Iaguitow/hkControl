@@ -40,7 +40,7 @@ class Requests{
         });
     }
 
-    getRequests(idpeople, token_api){
+    getRequests(idpeople, joblevel, token_api){
         return new Promise((resolve,reject) => {
             try {  
                 return axios({
@@ -50,7 +50,7 @@ class Requests{
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/requests",
                     withCredentials: true,
-                    params: {idpeople},
+                    params: {idpeople,joblevel},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ class Requests{
         });
     }
 
-    updateRequests(idrequests, requestdone, idpeople, token_api){
+    updateRequests(idrequests, requestdone, idpeople, token_api, joblevel, whoresquested){
         return new Promise((resolve,reject) => {
             try {  
                 return axios({
@@ -88,7 +88,7 @@ class Requests{
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/update/requests",
                     withCredentials: true,
-                    data: {idrequests,requestdone,idpeople},
+                    data: {idrequests,requestdone,idpeople, joblevel, whoresquested},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ class Requests{
         });
     }
 
-    insertNewRequest(requestObj, token_api, idpeople){
+    insertNewRequest(requestObj, token_api, idpeople,joblevel){
         return new Promise((resolve,reject) => {
             try {  
                 return axios({
@@ -126,7 +126,7 @@ class Requests{
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/insert/new_request",
                     withCredentials: true,
-                    data: {requestObj, idpeople},
+                    data: {requestObj, idpeople, joblevel},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
