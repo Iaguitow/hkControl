@@ -105,7 +105,7 @@ const CompoTasks = ({ setIsMounted }) => {
                           </Text>
                           <Divider {...NativeBaseProps.DIVIDER} />
                           <Switch
-                            onChange={() => {
+                            onToggle={() => {
                               setIsMounted(false);
                               const token_api = user.payload.tokenapi;
                               const idpeople = user.payload.idpeople;

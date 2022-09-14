@@ -2,7 +2,8 @@ import { Component } from 'react';
 import { Toast } from 'native-base'
 
 class Toasts extends Component {
-  static showToast(alert, title = "", description = "") {
+  static showToast(alert, title = "", description = "", toasts = null) {
+    
     switch (alert) {
       case 'Error':
         Toast.show({
@@ -16,7 +17,7 @@ class Toasts extends Component {
         Toast.show({
             title: "ACTION NOT ALLOWED!",
             status: "error",
-            description: "You are not allowed to cancel a request that has already been completed. If you had completed this request by mistake please, make sure you will complete this request as soon as possible.",
+            description: "You are not allowed to cancel a request that has already been completed. If you had completed this request by mistake please, complete this request as soon as possible.",
             duration: 2000000,
         })
       break;

@@ -6,7 +6,7 @@ import { actionsTypesAPI } from "../Actions/ConstActionsApi";
 import Toasts from "./CompoToast";
 import {
   Box,
-  FlatList,
+  useToast,
   HStack,
   Switch,
   Text,
@@ -17,6 +17,7 @@ import {
 } from "native-base";
 
 const CompoRequests = ({ setIsMounted }) => {
+  const ttoast = useToast();
 
   const dispatch = useDispatch();
   const updateRequest = (idrequests, requestdone, idpeople, token_api, joblevel) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, joblevel,{setIsMounted})) }
@@ -126,9 +127,9 @@ const CompoRequests = ({ setIsMounted }) => {
               </Text>
               <Divider {...NativeBaseProps.DIVIDER} />
                 <Switch
-                  onChange={() => {
+                  onToggle={() => {
                     if(item.dtrequestdone !== null){
-                      Toasts.showToast("Cancel Request");
+                      Toasts.showToast("Cancel Request","","",ttoast);
                       return;
                     }
                     Alert.alert(

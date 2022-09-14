@@ -69,6 +69,7 @@ function MyDrawer({ navigation }) {
   
   const navigations = useNavigation();
   const [imageDrawerProfile,setImageDrawerProfile] = useState(null);
+  const [countRequests, setCountRequests] = useState(0);
 
   return (
     <Box flex={1} bg={"white"}>
@@ -115,21 +116,29 @@ function MyDrawer({ navigation }) {
             }
           },
           headerRight: () => {
+
             return (
-              <VStack>
-              <Badge
-                colorScheme="danger" 
-                rounded="full" 
-                mb={-8} mr={0} zIndex={1} 
-                variant="solid" 
-                alignSelf="flex-end" 
-                _text={{
-                  fontSize: 12, 
-                  fontWeight:"bold"
+              <VStack
+                onTouchStart={() => {
+                  setCountRequests(0);
                 }}
               >
-                  2
-              </Badge>
+              {
+                countRequests>0 && <Badge
+                  colorScheme="danger" 
+                  rounded="full" 
+                  mb={-8} mr={0} zIndex={1} 
+                  variant="solid" 
+                  alignSelf="flex-end" 
+                  _text={{
+                    fontSize: 12, 
+                    fontWeight:"bold"
+                  }}
+                >
+                  {countRequests}
+                </Badge>
+              }
+              
               <Icon {...nativeBaseProps.HeaderIconsProps} size={10} as={<MaterialIcons name="notifications-active" />}/>
               </VStack>
             );
@@ -146,7 +155,7 @@ function MyDrawer({ navigation }) {
             );
           },
         }}
-        drawerContent={(props) => <CustomDrawerContent {...props} imageDrawerProfile={ imageDrawerProfile } />}
+        drawerContent={(props) => <CustomDrawerContent   {...props} countRequests={ countRequests } setCountRequests={ setCountRequests } imageDrawerProfile={ imageDrawerProfile } />}
       >
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
         <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
@@ -173,6 +182,9 @@ function CustomDrawerContent(props) {
   const notificationListener = useRef();
 
   useEffect(() => {
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      props.setCountRequests(props.countRequests+1);
+    });
     notificationListener.current = Notifications.addNotificationResponseReceivedListener(notification => {
       props.navigation.navigate("Requests");
     });
