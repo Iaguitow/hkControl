@@ -19,11 +19,11 @@ const Alerts = ({alertType,isOpenAlert, setIsOpenAlert}) => {
                 <AlertDialog.CloseButton />
                 <AlertDialog.Header>ERROR.</AlertDialog.Header>
                 <AlertDialog.Body>
-                  <Text color={"white"} fontWeight="bold"> 1 - Make sure that you have filled up every single fields.</Text>
+                  <Text color={"black"} fontWeight="bold"> 1 - Make sure that you have filled up every single fields.</Text>
 
-                  <Text color={"white"} fontWeight="bold"> 2 - Make sure that the room which you typed exists.</Text>
+                  <Text color={"black"} fontWeight="bold"> 2 - Make sure that the room which you typed exists.</Text>
 
-                  <Text color={"white"} fontWeight="bold"> 3 - Make sure that there is a porter responsible for this floor.</Text>
+                  <Text color={"black"} fontWeight="bold"> 3 - Make sure that there is a porter responsible for this floor.</Text>
                 </AlertDialog.Body>
                 <AlertDialog.Footer bgColor={"red.300"}>
                   <Button.Group space={2}>

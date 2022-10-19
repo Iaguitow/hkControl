@@ -12,7 +12,9 @@ import ScreenRequests from "../screens/ScreenRequests";
 import ScreenTasks from "../screens/ScreenTasks";
 import ScreenCheckList from "../screens/ScreenCheckList";
 import FabButoon from "../components/CompoFabButon";
+import CompoNotificationList from "../components/CompoNotificationsList";
 import { ActionRooms } from "../Actions/ActionRooms.js";
+import { ActionRequestLog } from "../Actions/ActionRequestLog.js";
 import { PeopleActions } from "../Actions/ActionPeople";
 import * as Notifications from 'expo-notifications';
 
@@ -26,7 +28,8 @@ import {
   Divider,
   Icon,
   Image,
-  Badge
+  Badge,
+  useDisclose
 } from "native-base";
 
 const Drawer = createDrawerNavigator();
@@ -68,8 +71,27 @@ const getIcon = (screenName) => {
 function MyDrawer({ navigation }) {
   
   const navigations = useNavigation();
+  const dispatch = useDispatch();
+
   const [imageDrawerProfile,setImageDrawerProfile] = useState(null);
   const [countRequests, setCountRequests] = useState(0);
+  
+  const getRequestLog = (idpeople,token_api) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api)) }
+  const requestlogs = useSelector(state => state.reducerRequestLog);
+  const user = useSelector(state => state.reducerLogin);
+
+  const {
+    isOpen,
+    onOpen,
+    onClose
+  } = useDisclose();
+
+  useEffect(() =>{
+    if(requestlogs.payload.logs !== null && typeof requestlogs.payload.logs !== 'undefined' && requestlogs.payload.logs.length !==0){
+      setCountRequests(requestlogs.payload.logs[0].howmanylogsnotseen);
+    }
+    
+  },[requestlogs.payload.logs]);
 
   return (
     <Box flex={1} bg={"white"}>
@@ -116,11 +138,14 @@ function MyDrawer({ navigation }) {
             }
           },
           headerRight: () => {
-
             return (
               <VStack
                 onTouchStart={() => {
+                  const token_api = user.payload.tokenapi;
+                  const idpeople = user.payload.idpeople;
+                  getRequestLog(idpeople,token_api);
                   setCountRequests(0);
+                  onOpen();
                 }}
               >
               {
@@ -138,8 +163,8 @@ function MyDrawer({ navigation }) {
                   {countRequests}
                 </Badge>
               }
-              
               <Icon {...nativeBaseProps.HeaderIconsProps} size={10} as={<MaterialIcons name="notifications-active" />}/>
+              <CompoNotificationList isOpen={isOpen} onClose={onClose} ></CompoNotificationList>
               </VStack>
             );
           },
@@ -275,6 +300,7 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
 
   const dispatch = useDispatch();
   const getRooms = (token_api) => {dispatch(ActionRooms.getRooms(token_api)) }
+  const getRequestLog = (idpeople,token_api) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api)) }
   const updatePeople = (idpeople, pushExpoToken, token_api) => {dispatch(PeopleActions.updatePeople(idpeople, pushExpoToken, token_api))} 
   const user = useSelector(state => state.reducerLogin);
 
@@ -296,8 +322,9 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
     });
 
     getRooms(token_api);
+    getRequestLog(idpeople,token_api);
 
-  },)
+  },);
 
   return (
     <NavigationContainer independent={true}>
