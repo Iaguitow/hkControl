@@ -28,9 +28,15 @@ class GeneralUtils {
         
     }
 
-    date_DBformat(dateToday){
-        var newDateToday = new Date();
-        newDateToday = dateToday.getFullYear() + "-" + ("0" + (dateToday.getMonth() + 1)).slice(-2) + "-" + ("0" + dateToday.getDate()).slice(-2);
+    date_DBformat(dateToday, time = 0){
+
+        let newDateToday = new Date(dateToday);
+        if(time === 0){
+          newDateToday = newDateToday.getFullYear() + "-" + ("0" + (newDateToday.getMonth() + 1)).slice(-2) + "-" + ("0" + newDateToday.getDate()).slice(-2);
+        }
+        else{
+          newDateToday = newDateToday.getFullYear() + "-" + ("0" + (newDateToday.getMonth() + 1)).slice(-2) + "-" + ("0" + newDateToday.getDate()).slice(-2)+"  "+newDateToday.getHours()+":"+newDateToday.getMinutes();
+        }
         return newDateToday;
     };
 

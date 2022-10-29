@@ -36,9 +36,9 @@ const ScreenCheckList = () => {
 const NativeBaseProps = {
     LINEAR_BACK_GROUND_COLOR: {
       colors: ['#00b9f3', '#061b21', '#061b21'],
-      start: [1, 0],
-      end: [0, 3],
-      locations: [0.7, 0.1, 0.2],
+      start:[0.5, 1], 
+      end:[0.5, 0],
+      locations:[0, 0.9, 0.9],
       style: { flex: 1,position:"absolute", width:"100%", height:"100%" }
     }
 }

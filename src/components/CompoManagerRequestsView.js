@@ -307,7 +307,12 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                           color={portersRequests.timeRequestDone != null ? "green.500" : portersRequests.priority == "CRITICAL"? "red.500":"yellow.500"}
                                         />
                                         <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Button size={"30px"}>
+                                        <Button 
+                                          size={"30px"}
+                                          onPress={()=>{
+                                            console.log(portersRequests.idrequests);
+                                          }}
+                                          >
                                           ...
                                         </Button>
                                       </HStack>
@@ -334,6 +339,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
     </Box>
   );
 }
+
 const NativeBaseProps = {
   INPUT_AMOUNT: {
     width: "22%",

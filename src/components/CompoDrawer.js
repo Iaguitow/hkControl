@@ -71,15 +71,12 @@ const getIcon = (screenName) => {
 function MyDrawer({ navigation }) {
   
   const navigations = useNavigation();
-  const dispatch = useDispatch();
-
+  
   const [imageDrawerProfile,setImageDrawerProfile] = useState(null);
   const [countRequests, setCountRequests] = useState(0);
   
-  const getRequestLog = (idpeople,token_api) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api)) }
   const requestlogs = useSelector(state => state.reducerRequestLog);
-  const user = useSelector(state => state.reducerLogin);
-
+  
   const {
     isOpen,
     onOpen,
@@ -141,9 +138,9 @@ function MyDrawer({ navigation }) {
             return (
               <VStack
                 onTouchStart={() => {
-                  const token_api = user.payload.tokenapi;
+                  /*const token_api = user.payload.tokenapi;
                   const idpeople = user.payload.idpeople;
-                  getRequestLog(idpeople,token_api);
+                  getRequestLog(idpeople,token_api);*/
                   setCountRequests(0);
                   onOpen();
                 }}
@@ -342,16 +339,16 @@ const nativeBaseProps = {
   },
   DrawerBackgroundColor:{
     colors:['#00b9f3', '#061b21', '#061b21'],
-    start:[1, 0], 
-    end:[0, 3],
-    locations:[0.7, 0.1, 0.2],
+    start:[0.5, 0], 
+    end:[0.5, 1],
+    locations:[0, 0.4, 1],
     style:{ flex: 1 },
   },
   HeaderBackgroundColor:{
     colors:['#061b21', '#00b9f3', '#00b9f3'],
-    start:[1, 0], 
-    end:[0, 3],
-    locations:[0.7, 0.1, 0.2],
+    start:[0.5, 1], 
+    end:[0.5, 0],
+    locations:[0, 0.9, 0.9],
     style:{ flex: 1 },
   },
   TextName:{

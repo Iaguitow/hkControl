@@ -277,15 +277,17 @@ export default function CompoRegisterPeople(props) {
                         </Animated.View>
 
 {/************************* DATE OF BIRTH BUTTON *************************/}
-                        <View alignItems={"center"}>
+                        <View alignItems={"center"}
+                            onTouchStart={()=>{setDatePickerVisibility(true);}}
+                        >
                         <Stack>
                             <Input
-                                onTouchStart={()=>{setDatePickerVisibility(true);}}
                                 borderWidth={isDatePickerVisible?3:1}
                                 {...styless.DATEOFBIRTH}
                                 InputLeftElement={
                                     <Icon
                                         as={<AntDesign name="calendar" />}
+                                        onPress={()=>{console.log("test");}}
                                         {...styless.ICON}
                                     />
                                 }
@@ -298,6 +300,7 @@ export default function CompoRegisterPeople(props) {
                                 onConfirm={handleConfirm}
                                 onCancel={hideDatePicker}
                                 locale="en_GB"
+                                timePickerModeAndroid='spinner'
                             />
                             </Stack>
                         </View>

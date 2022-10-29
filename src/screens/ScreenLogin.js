@@ -21,7 +21,8 @@ import {
     HStack,
     KeyboardAvoidingView,
     Center,
-    Image
+    Image,
+    View
 } from "native-base";
 
 function Login({ navigation }) {
@@ -35,7 +36,7 @@ function Login({ navigation }) {
 
     /////////////VARIABLE TO HANDLE THE PASSWORD VISUALIZATION /////////////
     const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
+    const handleClick = () => {setShow(!show)}
 
     /////////////VARIABLE TO HANDLE THE ANIMATIONS /////////////
     const [heightInput,] = useState(new Animated.Value(1));
@@ -89,10 +90,11 @@ function Login({ navigation }) {
     }, [user.login_attempts]);
 
     return (
+        
         <LinearGradient style={{ flex: 1 }}
             colors={['#00b9f3', '#061b21', '#061b21']}
-            start={[1, 0]} end={[0, 3]}
-            locations={[0.7, 0.1, 0.2]}
+            start={[0.5, 0]} end={[0.5, 1]}
+            locations={[0, 0.4, 1]}
         >
         
             <KeyboardAvoidingView
@@ -148,6 +150,9 @@ function Login({ navigation }) {
                                         as={<MaterialIcons name="person" />}
                                     />
                                 }
+                                placeholderTextColor={"{'rgb(0,185,243)'}"}
+                                placeholder={"Email"}
+                                keyboardType={"email-address"}
                             />
                         </Animated.View>
 
@@ -296,7 +301,10 @@ function Login({ navigation }) {
             
             <FootTabLogin navigation={navigation} isLogin={isLogin} isSignUping={isSignUping} />
             {isLogin || isSignUping? <CompoApiLoadingView/>: null}
+           
         </LinearGradient>
+        
+        
     )
 }
 
@@ -352,15 +360,11 @@ const styless = {
     INPUTS:{
         borderColor: "{'rgb(0,185,243)'}",
         w:"90%",
-        autoCapitalize:"none",
         selectionColor:'white',
         color:'white',
         borderRadius:10,
-        placeholderTextColor:"{'rgb(0,185,243)'}",
-        placeholder:"Email",
         height:50,
         fontSize:"md",
-        keyboardType:"email-address",
     },
     ICON:{
         color:"{'rgb(0,185,243)'}",

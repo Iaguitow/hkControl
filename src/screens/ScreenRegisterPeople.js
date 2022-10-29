@@ -25,9 +25,8 @@ function RegisterPeople({ navigation }) {
         <LinearGradient style={{ flex: 1 }}
           colors={['#00b9f3', '#061b21', '#061b21']}
           start={[1, 0]} end={[0, 3]}
-          locations={[0.7, 0.1, 0.2]}
+          locations={[0.1, 0.4, 0.6]}
         >
-        
           <VStack safeAreaTop>
             <Image
               alignSelf={"center"}
@@ -36,7 +35,7 @@ function RegisterPeople({ navigation }) {
               borderRadius={100}
               source={require('../../assets/icon.png')}
             />
-            <HStack alignSelf={"flex-end"} space={2} marginRight={5}>
+            <HStack alignSelf={"flex-end"} space={2} marginRight={5} marginTop={8}>
               <Text style={{ fontWeight: "bold", fontSize: 18, color: TextRegisterColor ? "rgb(0,185,243)" : "white" }}>Register</Text>
               <Divider bgColor={"gray.300"} thickness="2" mx="1" orientation="vertical" />
               <Text style={{ fontWeight: "bold", fontSize: 18, color: TextLoginColor ? "rgb(0,185,243)" : "white" }} onPress={() => {

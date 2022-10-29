@@ -241,9 +241,9 @@ const nativeBaseProps = {
   },
   LinearColor: {
     colors: ['#061b21', '#00b9f3', '#00b9f3'],
-    start: [1, 0],
-    end: [0, 3],
-    locations: [0.7, 0.1, 0.2],
+    start:[0.5, 1], 
+    end:[0.5, 0],
+    locations:[0, 0.9, 0.9],
   },
   TEXT_TITLE: {
     ml: "28%",
