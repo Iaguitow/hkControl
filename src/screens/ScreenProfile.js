@@ -95,7 +95,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                     setIsMounted(false);
 
                                     ImagePicker.imagePicker().then(imgCaptured =>{
-                                        if(imgCaptured.cancelled){
+                                        if(imgCaptured.canceled){
                                             setIsMounted(true);
                                             return;
                                         }
@@ -118,7 +118,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                 onTouchStart={() =>{
                                     setIsMounted(false);
                                     ImagePicker.imagePicker(true).then(imgCaptured =>{
-                                        if(imgCaptured.cancelled){
+                                        if(imgCaptured.canceled){
                                             setIsMounted(true);
                                             return;
                                         }

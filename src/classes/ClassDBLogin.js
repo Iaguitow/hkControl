@@ -10,7 +10,7 @@ class Login {
             return axios({
                 method: "post",
                 //HOUSE IP
-                url: "http://192.168.1.144:3000/routes/login/login/register",
+                url: "http://192.168.0.17:3000/routes/login/login/register",
                 //SCHOOL IP
                 //url: "http://172.26.192.211:3000/routes/login/register",
                 withCredentials: true,
@@ -42,7 +42,7 @@ class Login {
               return axios({
                   method: "post",
                   //HOUSE IP
-                  url: "http://192.168.1.144:3000/routes/login/login/",
+                  url: "http://192.168.0.17:3000/routes/login/login/",
                   //SCHOOL IP
                   //url: "http://172.26.192.211:3000/routes/login",
                   withCredentials: true,
@@ -80,7 +80,7 @@ class Login {
             return axios({
               method: 'PUT',
               //HOUSE IP
-              url: "http://192.168.1.144:3000/routes/login/login/recoverycode",
+              url: "http://192.168.0.17:3000/routes/login/login/recoverycode",
               //SCHOOL IP
               //url: "http://172.26.192.140:3000/routes/login/recoverycode",
               withCredentials: true,
@@ -110,7 +110,7 @@ class Login {
             return axios({  
               method: 'POST',
               //HOUSE IP
-              url: "http://192.168.1.144:3000/routes/login/login/resetpassword",
+              url: "http://192.168.0.17:3000/routes/login/login/resetpassword",
               //SCHOOL IP
               //url: "http://172.26.192.211:3000/routes/login/resetpassword",
               withCredentials: true,

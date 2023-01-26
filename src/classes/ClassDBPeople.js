@@ -9,7 +9,7 @@ class People {
         return axios({
           method: 'get',
           //HOUSE IP
-          url: "http://192.168.1.144:3000/routes/people/people",
+          url: "http://192.168.0.17:3000/routes/people/people",
           //SCHOOL IP
           //url: "http://172.26.192.211:3000/routes/people",
           withCredentials: true,
@@ -43,9 +43,9 @@ class People {
             return axios({
                 method: "POST",
                 //HOUSE IP
-                url: "http://192.168.1.144:3000/routes/people/update/people",
+                url: "http://192.168.0.17:3000/routes/people/update/people",
                 //SCHOOL IP
-                //url: "http://192.168.1.144:3000/routes/people/update/people",
+                //url: "http://192.168.0.17:3000/routes/people/update/people",
                 withCredentials: true,
                 data: {idpeople,pushExpoToken},
                 headers:{

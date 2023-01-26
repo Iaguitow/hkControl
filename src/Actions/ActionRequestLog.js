@@ -19,6 +19,26 @@ const ActionRequestLog = {
             }
         });
     },
+
+    insertNewRequest: (requestCancellationObj, token_api, setShowLoading, idpeople, joblevel) => dispatch => {
+        dbRequestLogs.insertNewRequestLog(requestCancellationObj, token_api, idpeople, joblevel).then(response =>{
+            dispatch({
+                type: actionsTypes.INSERT_NEW_REQUEST_LOG,
+                payload: {logs:response.data, error_message: null},
+            });
+        }).catch(error => {
+            dispatch({
+                type: actionsTypes.INSERT_NEW_REQUEST_LOG_ERROR,
+                payload: {logs:null, error_message: error.message},
+            });
+            return;
+        }).finally(endpoint =>{
+            
+            if(typeof setShowLoading === "function"){
+                setShowLoading(false);
+            }
+        });
+    }
 }
 
 export { ActionRequestLog }

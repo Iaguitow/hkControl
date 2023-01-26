@@ -9,7 +9,7 @@ class Tasks{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/tasks/tasks",
+                    url: "http://192.168.0.17:3000/routes/tasks/tasks",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/tasks",
                     withCredentials: true,
@@ -47,7 +47,7 @@ class Tasks{
                 return axios({
                     method: "POST",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/tasks/update/tasks",
+                    url: "http://192.168.0.17:3000/routes/tasks/update/tasks",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/update/tasks",
                     withCredentials: true,

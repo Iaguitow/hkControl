@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react"
+import CompoRequestDetails from "./CompoRequestDetails.js";
 import { RefreshControl, Alert } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
@@ -13,11 +14,20 @@ import {
   Divider,
   VStack,
   Button,
-  ScrollView
+  ScrollView,
+  useDisclose
 } from "native-base";
 
 const CompoRequests = ({ setIsMounted }) => {
+
   const ttoast = useToast();
+  const [requestDetail, setRequestDetails] = useState(null);
+
+  const {
+    isOpen,
+    onOpen,
+    onClose
+  } = useDisclose();
 
   const dispatch = useDispatch();
   const updateRequest = (idrequests, requestdone, idpeople, token_api, joblevel) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, joblevel,{setIsMounted})) }
@@ -51,7 +61,15 @@ const CompoRequests = ({ setIsMounted }) => {
         
         item.push({
           idresquests: requests.payload.requests[i].idresquests,
+          responsiblePhoneNumber: requests.payload.requests[i].responsiblePhoneNumber,
+          responsible: requests.payload.requests[i].responsible,
+          dtcancellation: requests.payload.requests[i].dtcancellation,
+          reason: requests.payload.requests[i].reason,
+          requesttimedealyed: requests.payload.requests[i].requesttimedealyed,
+          fulldtrequest: requests.payload.requests[i].fulldtrequest,
+          fulldtrequestdone: requests.payload.requests[i].fulldtrequestdone, 
           whoresquested: requests.payload.requests[i].whoresquested,
+          fullwhoresquested: requests.payload.requests[i].fullwhoresquested,
           dtrequested: requests.payload.requests[i].dtrequested,
           requestdsc: requests.payload.requests[i].requestdsc,
           roomnumber: requests.payload.requests[i].roomnumber,
@@ -127,6 +145,7 @@ const CompoRequests = ({ setIsMounted }) => {
               </Text>
               <Divider {...NativeBaseProps.DIVIDER} />
                 <Switch
+                  disabled={item.dtcancellation != null? true: false}
                   onToggle={() => {
                     if(item.dtrequestdone !== null){
                       Toasts.showToast("Cancel Request","","",ttoast);
@@ -154,20 +173,32 @@ const CompoRequests = ({ setIsMounted }) => {
                       );
                   }} 
                   isChecked={item.dtrequestdone==null?false:true} 
-                  offTrackColor={item.priority=="CRITICAL"?"red.600":"#FFFF00"}  
+                  offTrackColor={item.dtcancellation !=null?"black":item.priority=="CRITICAL"?"red.600":"#FFFF00"}  
                   {...NativeBaseProps.SWITCH} 
                 />
             </HStack>
             <Button
               {...NativeBaseProps.DETAILS_BUTTON}
               borderBottomColor={item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
+              onPress={() =>{
+                setRequestDetails(item);
+                onOpen();
+              }}
             > 
-              VIEW DETAILS... 
+              SEE DETAILS... 
             </Button>
           </VStack>
           )
         })}
         </ScrollView>
+        {requestDetail !== null && <CompoRequestDetails 
+          id_whocancelled = {user.payload.idpeople} 
+          token_api = {user.payload.tokenapi} 
+          joblevel = {user.payload.joblevel} 
+          requestDetail={requestDetail} 
+          isOpen={isOpen} onClose={onClose}
+          onRefresh={onRefresh}
+        />}
     </Box>
   )
 }

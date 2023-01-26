@@ -1,7 +1,26 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import { Linking, Alert, Platform } from 'react-native';
 
 class GeneralUtils {
+
+  callNumber(phone) {
+    let phoneNumber = phone;
+    if (Platform.OS !== 'android') {
+        phoneNumber = `telprompt:${phone}`;
+    }
+    else {
+        phoneNumber = `tel:${phone}`;
+    }
+    Linking.canOpenURL(phoneNumber)
+        .then(supported => {
+            if (!supported) {
+                Alert.alert('Phone number is not available');
+            } else {
+                return Linking.openURL(phoneNumber);
+            }
+        }).catch(err => alert(err));
+  }
 
     validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;

@@ -33,7 +33,7 @@ const ScreenRequests = () => {
         <Center flex={1}>
             <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}  />
             {
-                joblevel.toString().includes("PS","M","CO")?<CompoManagerRequestsView setIsMounted={ setIsMounted }/>:<CompoResquests setIsMounted={ setIsMounted }/>
+                joblevel.toString().includes("PS","HM","CO")?<CompoManagerRequestsView setIsMounted={ setIsMounted }/>:<CompoResquests setIsMounted={ setIsMounted }/>
 
             }
             {isMounted && <CompoLoadingView />}

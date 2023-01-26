@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5, FontAwesome, EvilIcons, Ionicons } from "@expo/vector-icons";
@@ -76,6 +76,10 @@ function MyDrawer({ navigation }) {
   const [countRequests, setCountRequests] = useState(0);
   
   const requestlogs = useSelector(state => state.reducerRequestLog);
+
+  const countNotifications = useMemo(() =>{
+    return counting(countRequests);
+  },[countRequests])
   
   const {
     isOpen,
@@ -87,8 +91,11 @@ function MyDrawer({ navigation }) {
     if(requestlogs.payload.logs !== null && typeof requestlogs.payload.logs !== 'undefined' && requestlogs.payload.logs.length !==0){
       setCountRequests(requestlogs.payload.logs[0].howmanylogsnotseen);
     }
+    return () =>{
+      return;
+    }
     
-  },[requestlogs.payload.logs]);
+  },[!requestlogs.payload.logs]);
 
   return (
     <Box flex={1} bg={"white"}>
@@ -146,7 +153,7 @@ function MyDrawer({ navigation }) {
                 }}
               >
               {
-                countRequests>0 && <Badge
+                countNotifications>0 && <Badge
                   colorScheme="danger" 
                   rounded="full" 
                   mb={-8} mr={0} zIndex={1} 
@@ -157,11 +164,11 @@ function MyDrawer({ navigation }) {
                     fontWeight:"bold"
                   }}
                 >
-                  {countRequests}
+                  {countNotifications}
                 </Badge>
               }
               <Icon {...nativeBaseProps.HeaderIconsProps} size={10} as={<MaterialIcons name="notifications-active" />}/>
-              <CompoNotificationList isOpen={isOpen} onClose={onClose} ></CompoNotificationList>
+              <CompoNotificationList isOpen={isOpen} onClose={onClose}></CompoNotificationList>
               </VStack>
             );
           },
@@ -182,13 +189,8 @@ function MyDrawer({ navigation }) {
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
         <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
         <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />
-        <Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />
-        {/*
-        <Drawer.Screen name={allDrawerScreens.SKILLS} component={Component} />
-        <Drawer.Screen name={allDrawerScreens.PROJECTS} component={Component} />
-        */}
-        
-        <Drawer.Screen name={allDrawerScreens.COMPETITORS} component={Component} />
+        {/*<Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />   
+        <Drawer.Screen name={allDrawerScreens.COMPETITORS} component={Component} />*/}
         <Drawer.Screen name={allDrawerScreens.CONFIGURATION} component={Component} />
         <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
 
@@ -202,15 +204,25 @@ function CustomDrawerContent(props) {
   const user = useSelector(state => state.reducerLogin);
   const isOpen = useDrawerStatus() === "open";
   const notificationListener = useRef();
+  const responseNotificationListener = useRef();
 
-  useEffect(() => {
+  useEffect(() =>{
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       props.setCountRequests(props.countRequests+1);
     });
-    notificationListener.current = Notifications.addNotificationResponseReceivedListener(notification => {
+  
+    responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(notification => {
       props.navigation.navigate("Requests");
     });
-  })
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseNotificationListener.current);
+    };
+
+  },[notificationListener.current])
+
+
 
   return (
     <LinearGradient {...nativeBaseProps.DrawerBackgroundColor}>
@@ -302,7 +314,6 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
   const user = useSelector(state => state.reducerLogin);
 
   useEffect(() => {
-
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
@@ -321,7 +332,11 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
     getRooms(token_api);
     getRequestLog(idpeople,token_api);
 
-  },);
+    return () =>{
+      return;
+    }
+
+  },[]);
 
   return (
     <NavigationContainer independent={true}>
@@ -329,6 +344,13 @@ export default function CompoDrawer({ navigation, nativeBaseProps}) {
       <FabButoon/>
     </NavigationContainer>
   );
+}
+
+function counting(number=0){
+  if(number === 0){
+    return 0;
+  }
+  return number;
 }
 
 const nativeBaseProps = {

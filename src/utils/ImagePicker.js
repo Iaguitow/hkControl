@@ -24,13 +24,13 @@ class Image{
     resizeImage(image, bg) {
         return new Promise((resolve, reject) =>{
             try {
-                const originalWidth = image.width;
+                const originalWidth = image.assets[0].width;
                 const newWidth = bg?600:200;
                 const prop = (100*newWidth/originalWidth)/100;
-                const newHeight = Math.floor(prop*image.height);
+                const newHeight = Math.floor(prop*image.assets[0].height);
 
                 const manipResult = ImageManipulator.manipulateAsync(
-                    image.localUri || image.uri,
+                    image.localUri || image.assets[0].uri,
                     [{resize:{height:newHeight,width:newWidth}}],
                     //[{crop:{originX:1280,originY:1280,width:200,height:200}}],
                     { compress: 1, base64:true, format: ImageManipulator.SaveFormat.PNG }
@@ -52,7 +52,7 @@ class Image{
                         aspect: bg?[22, 9]:[4, 3],
                         quality: 1,
                       }).then(imgPicked =>{
-                        if (!imgPicked.cancelled) {
+                        if (!imgPicked.canceled) {
                             this.resizeImage(imgPicked, bg).then(imageBase64 => {
                                 resolve(imageBase64);
                             });

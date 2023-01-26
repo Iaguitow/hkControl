@@ -14,6 +14,12 @@ const reducers = (state = INITIAL_STATE, action) => {
         case actionsTypes.GET_REQUEST_LOG_ERROR:
             return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO}
         break;
+        case actionsTypes.INSERT_NEW_REQUEST_LOG:
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK}
+        break;
+        case actionsTypes.INSERT_NEW_REQUEST_LOG_ERROR:
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO}
+        break;
         default:
             return {...state}
     }

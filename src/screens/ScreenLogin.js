@@ -113,7 +113,7 @@ function Login({ navigation }) {
 {/*/////////////////////////////////// LOGO IMAGE  /////////////////////////////////*/}
                     <Stack space={6} w="100%" alignItems="center" marginBottom={10}>
                         <Image {...styless.IMG} source={require('../../assets/icon.png')}/>
-                        <Text color={"#00b9f3"} fontWeight={"bold"} fontSize={16}> Welcome to IOwl </Text>
+                        <Text mb={"100px"} color={"#00b9f3"} fontWeight={"bold"} fontSize={16}> WELCOME TO IOWL </Text>
 
 {/*/////////////////////////////////// EMAIL INPUT /////////////////////////////////*/}
                         <Animated.View style={{ transform: [{ scale: heightInput }] }}>
@@ -204,7 +204,7 @@ function Login({ navigation }) {
                         <HStack space={1}>
 
 {/*/////////////////////////////////// GOOGLE BUTTON /////////////////////////////////*/}
-                            <Button
+                            {/*<Button
                                 isLoading={isSignUping}
                                 {...styless.BUTTON.GOOGLE}
                                 onPress={() => {
@@ -260,7 +260,8 @@ function Login({ navigation }) {
                                         Google Sign Up
                                     </Text>
                                 </HStack>
-                            </Button>
+                            </Button>*/}
+
                         </HStack>
 
                         {/*/////////////////////////////////// BUTTON LOGIN /////////////////////////////////*/}

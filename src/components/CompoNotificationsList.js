@@ -57,7 +57,11 @@ export default function notificationList({ isOpen, onClose }) {
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
         getRequestLog(idpeople,token_api,setShowLoading);
-    },[])
+
+        return () =>{
+            return;
+        }
+    },[isOpen==true?true:null])
 
     const requestlogs = useSelector(state => state.reducerRequestLog);
     const log = [];
@@ -93,6 +97,7 @@ export default function notificationList({ isOpen, onClose }) {
                                     <Actionsheet.Item 
                                         startIcon={<Icon color={getColorIcon(item.logtype.toString())} as={MaterialIcons} size="8" name={getIcon(item.logtype.toString())} />}
                                         onPress={() =>{
+                                            onClose();
                                             navigations.navigate("Requests");
                                         }}
                                         >

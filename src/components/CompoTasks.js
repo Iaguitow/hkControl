@@ -73,7 +73,7 @@ const CompoTasks = ({ setIsMounted }) => {
         {section.map((obj, index) => {
           return (
             <Collapse key={obj.floorname}>
-              <CollapseHeader style={{marginTop:5}} >
+              <CollapseHeader style={{marginTop:10}} >
                 <HStack
                   {...NativeBaseProps.HSTACK_FLATLIST_HEADER_ITEM}
                 >
@@ -89,12 +89,14 @@ const CompoTasks = ({ setIsMounted }) => {
                 </HStack>
               </CollapseHeader>
               <CollapseBody>
+              <VStack space={1} {...NativeBaseProps.VSTACK_FLATLIST} >
                 {
                   obj.data.map((item) => {
                     return (
-                      <VStack key={item.keyItem} {...NativeBaseProps.VSTACK_FLATLIST} >
+                      
                         <HStack
                           {...NativeBaseProps.HSTACK_FLATLIST_ITEM}
+                          key={item.keyItem}
                           
                           //borderBottomColor={item.checked == "N" ? "red.500" : "#00FF00"}
                         >
@@ -117,16 +119,11 @@ const CompoTasks = ({ setIsMounted }) => {
                             {...NativeBaseProps.SWITCH}
                           />
                         </HStack>
-                        <Button
-                          {...NativeBaseProps.PICTURE_BUTTON}
-                          borderBottomColor={item.checked == "N" ? "red.600" : "#00FF00"}
-                        >
-                          TAKE A PICTURE
-                        </Button>
-                      </VStack>
+                      
                     )
                   })
                 }
+                </VStack>
               </CollapseBody>
             </Collapse>
           )

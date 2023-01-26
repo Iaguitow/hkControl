@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { RefreshControl } from "react-native"
+import CompoRequestDetails from "./CompoRequestDetails.js";
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,10 +14,17 @@ import {
   Icon,
   VStack,
   Button,
-  ScrollView
+  ScrollView,
+  useDisclose
 } from "native-base";
 
 const CompoManagerRequestsView = ({ setIsMounted }) => {
+
+  const {
+    isOpen,
+    onOpen,
+    onClose
+  } = useDisclose();
 
   const dispatch = useDispatch();
   const section = [];
@@ -30,6 +38,8 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
   const [chevronWeek, setChevronWeek] = useState(null);
   const [chevronDay, setChevronDay] = useState(null);
   const [chevronPorter, setChevronPorter] = useState(null);
+
+  const [requestDetail, setRequestDetail] = useState(null);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -64,7 +74,15 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
 
                     porterRequests.push({
                       requestdsc: requests[x].requestdsc,
-                      idrequests: requests[x].idresquests,
+                      responsiblePhoneNumber: requests[x].responsiblePhoneNumber,
+                      reason: requests[x].reason,
+                      responsible: requests[x].responsible,
+                      dtcancellation: requests[x].dtcancellation,
+                      requesttimedealyed: requests[x].requesttimedealyed,
+                      fulldtrequest: requests[x].fulldtrequest,
+                      fulldtrequestdone: requests[x].fulldtrequestdone,
+                      fullwhoresquested: requests[x].fullwhoresquested, 
+                      idresquests: requests[x].idresquests,
                       whoresquested: requests[x].whoresquested,
                       timeRequested: requests[x].timeRequested,
                       timeRequestDone: requests[x].timeRequestDone,
@@ -303,14 +321,18 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                         <Icon
                                           size={"35px"}
                                           minWidth={"8%"} maxWidth={"8%"}
-                                          as={<MaterialCommunityIcons name={portersRequests.timeRequestDone == null ? "checkbox-blank-outline" : "checkbox-marked-outline"} />}
-                                          color={portersRequests.timeRequestDone != null ? "green.500" : portersRequests.priority == "CRITICAL"? "red.500":"yellow.500"}
+                                          as={<MaterialCommunityIcons name={portersRequests.dtcancellation != null ? "checkbox-blank-off-outline":
+                                          portersRequests.timeRequestDone == null? "checkbox-blank-outline":"checkbox-marked-outline"} 
+                                            
+                                          />}
+                                          color={portersRequests.dtcancellation != null ? "black":portersRequests.timeRequestDone != null ? "green.500" : portersRequests.priority == "CRITICAL"? "red.500":"yellow.500"}
                                         />
                                         <Divider {...NativeBaseProps.DIVIDER} />
                                         <Button 
                                           size={"30px"}
                                           onPress={()=>{
-                                            console.log(portersRequests.idrequests);
+                                            setRequestDetail(portersRequests);
+                                            onOpen();
                                           }}
                                           >
                                           ...
@@ -336,6 +358,14 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
           }
         </VStack>
       </ScrollView>
+      {requestDetail !== null && <CompoRequestDetails 
+        id_whocancelled = {user.payload.idpeople} 
+        token_api = {user.payload.tokenapi} 
+        joblevel = {user.payload.joblevel} 
+        requestDetail={requestDetail} 
+        isOpen={isOpen} onClose={onClose}
+        onRefresh={onRefresh}  
+      />}
     </Box>
   );
 }

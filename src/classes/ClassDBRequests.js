@@ -9,7 +9,7 @@ class Requests{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/requests/requestType",
+                    url: "http://192.168.0.17:3000/routes/requests/requestType",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/requestType",
                     withCredentials: true,
@@ -46,7 +46,7 @@ class Requests{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/requests/requests",
+                    url: "http://192.168.0.17:3000/routes/requests/requests",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/requests",
                     withCredentials: true,
@@ -84,7 +84,7 @@ class Requests{
                 return axios({
                     method: "POST",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/requests/update/requests",
+                    url: "http://192.168.0.17:3000/routes/requests/update/requests",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/update/requests",
                     withCredentials: true,
@@ -122,7 +122,7 @@ class Requests{
                 return axios({
                     method: "POST",
                     //HOUSE IP
-                    url: "http://192.168.1.144:3000/routes/requests/insert/new_request",
+                    url: "http://192.168.0.17:3000/routes/requests/insert/new_request",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/insert/new_request",
                     withCredentials: true,
