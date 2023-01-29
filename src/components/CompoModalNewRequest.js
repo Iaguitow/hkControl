@@ -58,7 +58,6 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                 setIsOpenAlert(!requests.payload.request);
                 return;
             }
-            Toasts.showToast("Request Successfully Saved");
         }
         
     },[requests.api_inserts_requests]);
@@ -229,6 +228,10 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 var idpeople = user.payload.idpeople;
                                 
                                 insertNewRequest(requestObject, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal});
+                                
+                                if(requests.api_status === actionsTypesAPI.STATUS_OK){
+                                    Toasts.showToast("Request Successfully Saved");
+                                }
 
                             }}>
                                 <Text color={"white"} {...NATIVEBASE_PROPS.TEXT}> SAVE </Text>

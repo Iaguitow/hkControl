@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { ScrollView } from 'react-native';
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { useSelector } from "react-redux";
@@ -207,4 +207,4 @@ const NativeBaseProps = {
   },
 }
 
-export default CompoCheckList;
+export default memo(CompoCheckList);

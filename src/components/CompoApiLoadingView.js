@@ -1,9 +1,9 @@
 import { View, StyleSheet, Text, Animated } from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, memo} from 'react';
 import LottieView from 'lottie-react-native';
 import { BlurView } from "expo-blur";
 
-export default function ApiLoading() {
+function ApiLoading() {
 
   const fadeEffect = useRef(new Animated.Value(0)).current;
 
@@ -57,3 +57,5 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
+
+export default memo(ApiLoading);

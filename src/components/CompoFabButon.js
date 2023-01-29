@@ -16,7 +16,7 @@ const FabButton = () => {
   
     return(
       <Box>
-        <ModalNewRequest isMounted={isMounted} showModal={ showModal } setShowModal={ setShowModal } setIsMounted={ setIsMounted }/>
+        {showModal&&<ModalNewRequest isMounted={isMounted} showModal={ showModal } setShowModal={ setShowModal } setIsMounted={ setIsMounted }/>}
         <Fab
           {...NATIVEBASE_PROPS.FAB} 
           icon={<Icon as={AntDesign} {...NATIVEBASE_PROPS.ICON}/>}

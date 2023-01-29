@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo, useCallback } from 'react';
 import { RefreshControl } from "react-native"
 import CompoRequestDetails from "./CompoRequestDetails.js";
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
@@ -35,9 +35,22 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
   const user = useSelector(state => state.reducerLogin);
   
   const [refreshing, setRefreshing] = useState(false);
+
   const [chevronWeek, setChevronWeek] = useState(null);
+  const setChevron_Week = useCallback((index) =>{
+    setChevronWeek(index);
+  });
+
+
   const [chevronDay, setChevronDay] = useState(null);
+  const setChevron_Day = useCallback((index) =>{
+    setChevronDay(index);
+  });
+
   const [chevronPorter, setChevronPorter] = useState(null);
+  const setChevron_porter = useCallback((index) =>{
+    setChevronPorter(index);
+  });
 
   const [requestDetail, setRequestDetail] = useState(null);
 
@@ -78,6 +91,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                       reason: requests[x].reason,
                       responsible: requests[x].responsible,
                       dtcancellation: requests[x].dtcancellation,
+                      whocancelled: requests[x].whocancelled,
                       requesttimedealyed: requests[x].requesttimedealyed,
                       fulldtrequest: requests[x].fulldtrequest,
                       fulldtrequestdone: requests[x].fulldtrequestdone,
@@ -124,6 +138,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
     }
   }
 
+
   return (
     <Box flex={1} Width={"100%"}>
       <ScrollView
@@ -138,7 +153,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                 disabled={false}
                 isExpanded={chevronWeek == index?true:false}
                 onToggle={(weekStatus) => {
-                  setChevronWeek(weekStatus ? index : null);
+                  setChevron_Week(weekStatus ? index : null);
                 }}
               >
                 <CollapseHeader style={{ marginTop: 5 }} >
@@ -190,7 +205,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                         isExpanded={chevronDay == index?true:false}
                         style={{marginBottom:10,borderTopColor:chevronDay==index?"#00b9f3":"gray",borderTopWidth:4}}
                         onToggle={(dayStatus) => {
-                          setChevronDay(dayStatus ? index : null);
+                          setChevron_Day(dayStatus ? index : null);
                         }}
                       >
                         <CollapseHeader>
@@ -252,7 +267,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                 disabled={false} 
                                 isExpanded={chevronPorter == index?true:false}
                                 onToggle={(porterStatus) => {
-                                  setChevronPorter(porterStatus ? index : null);
+                                  setChevron_porter(porterStatus ? index : null);
                                 }}
                                 >
                                 <CollapseHeader>
@@ -493,4 +508,4 @@ const NativeBaseProps = {
   },
 }
 
-export default CompoManagerRequestsView;
+export default memo(CompoManagerRequestsView);

@@ -1,5 +1,5 @@
 //PACKAGES
-import React from 'react';
+import React, {memo} from 'react';
 import { StatusBar,LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -20,7 +20,7 @@ LogBox.ignoreLogs(["The contrast ratio"]);
 const Stack = createNativeStackNavigator();
 StatusBar.setHidden(false);
 
-export default function App() {
+function App() {
 
   return (
     <NativeBaseProvider>
@@ -41,3 +41,5 @@ export default function App() {
     </NativeBaseProvider>
   )
 }
+
+export default memo(App);

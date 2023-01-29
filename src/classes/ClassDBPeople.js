@@ -3,27 +3,25 @@ import Toast from "../components/CompoToast"
 
 class People {
 
-  getPeople(listPeople = true, page = 1, idPeople = 0) {
+  getPeople(peopleList, idpeople, token_api) {
     return new Promise((resolve, reject) => {
       try {
         return axios({
-          method: 'get',
+          method: 'GET',
           //HOUSE IP
-          url: "http://192.168.0.17:3000/routes/people/people",
+          url: "http://192.168.0.17:3000/routes/people/getPeople",
           //SCHOOL IP
-          //url: "http://172.26.192.211:3000/routes/people",
+          //url: "http://172.26.192.211:3000/routes/getPeople",
           withCredentials: true,
-          params: { listPeople, page, idPeople },
+          params: {peopleList, idpeople},
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': "Bearer "+token_api
           }
-        }).then(function (response) {
-          if(typeof response.data !== "object"){
-            alert(response.data);
-            return;
-          }
-          resolve(response.data);
+        }).then(response => {
+          resolve(response);
+          
         }).catch(function (error) {
           Toast.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
           reject(false);
@@ -37,7 +35,7 @@ class People {
     })
   }
 
-  updatePeople(idpeople, pushExpoToken, token_api){
+  updatePeople(peopleList, idpeople, pushExpoToken, token_api){
     return new Promise((resolve,reject) => {
         try {  
             return axios({
@@ -47,7 +45,7 @@ class People {
                 //SCHOOL IP
                 //url: "http://192.168.0.17:3000/routes/people/update/people",
                 withCredentials: true,
-                data: {idpeople,pushExpoToken},
+                data: {peopleList,idpeople,pushExpoToken},
                 headers:{
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',

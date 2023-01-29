@@ -3,7 +3,7 @@ import Toasts from "../components/CompoToast";
 
 class Tasks{
 
-    getTasks(idpeople, token_api){
+    getTasks(idpeople, token_api, joblevel){
         return new Promise((resolve,reject) => {
             try {
                 return axios({
@@ -13,7 +13,7 @@ class Tasks{
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/tasks",
                     withCredentials: true,
-                    params: {idpeople},
+                    params: {idpeople, joblevel},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',

@@ -1,10 +1,9 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState, memo} from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import generalUtils from '../utils/GeneralUtils';
 import { ActionRequestLog } from "../Actions/ActionRequestLog";
-import CompoApiLoadingView from "../components/CompoApiLoadingView"
 
 import {
     Box,
@@ -17,12 +16,10 @@ import {
     VStack
 } from "native-base";
 
-export default function notificationList({ isOpen, onClose }) {
+function notificationList({ isOpen, onClose }) {
 
     const navigations = useNavigation();
     const dispatch = useDispatch();
-
-    const [showLoading, setShowLoading] = useState(true);
 
     const getIcon = (logType) => {
         switch (logType) {
@@ -51,12 +48,12 @@ export default function notificationList({ isOpen, onClose }) {
     };
 
     const user = useSelector(state => state.reducerLogin);
-    const getRequestLog = (idpeople,token_api, setShowLoading) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api,setShowLoading)) }
+    const getRequestLog = (idpeople,token_api) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api)) }
 
     useEffect(()=>{
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
-        getRequestLog(idpeople,token_api,setShowLoading);
+        getRequestLog(idpeople,token_api);
 
         return () =>{
             return;
@@ -117,10 +114,11 @@ export default function notificationList({ isOpen, onClose }) {
                                 })
                         }
                     </ScrollView>
-                    {showLoading && <CompoApiLoadingView></CompoApiLoadingView>}
                 </Actionsheet.Content>
                 
             </Actionsheet>
         </Center>
     );
 }
+
+export default memo(notificationList);

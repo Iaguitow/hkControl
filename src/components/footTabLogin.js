@@ -42,9 +42,9 @@ export default function FootTabLogin({ navigation, isLogin, isSignUping }) {
                   />
                 }
                 color="rgb(0,185,243)"
-                size="sm"
+                size="xl"
               />
-              <Text color="rgb(0,185,243)" fontSize="12" fontWeight={"bold"}>
+              <Text color="rgb(0,185,243)" fontSize="14" fontWeight={"bold"}>
                 REGISTER
               </Text>
             </Center>
@@ -69,9 +69,9 @@ export default function FootTabLogin({ navigation, isLogin, isSignUping }) {
                 mb="1"
                 as={<MaterialCommunityIcons name="lock-question" />}
                 color="rgb(0,185,243)"
-                size="sm"
+                size="xl"
               />
-              <Text color="rgb(0,185,243)" fontSize="12" fontWeight={"bold"}>
+              <Text color="rgb(0,185,243)" fontSize="14" fontWeight={"bold"}>
                 LOST PASSWORD
               </Text>
             </Center>

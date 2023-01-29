@@ -11,15 +11,16 @@ const ScreenTasks = () => {
     const [isMounted, setIsMounted] = useState(false);
 
     const dispatch = useDispatch();
-    const getTask = (idpeople, token_api) => {dispatch(TasksActions.getTasks(idpeople, token_api, {setIsMounted})) }
+    const getTask = (idpeople, token_api, joblevel) => {dispatch(TasksActions.getTasks(idpeople, token_api, joblevel, {setIsMounted})) }
     const user = useSelector(state => state.reducerLogin);
     
     useFocusEffect(
         React.useCallback(() => {
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
+        const joblevel = user.payload.joblevel;
         
-        getTask(idpeople,token_api,{setIsMounted});
+        getTask(idpeople, token_api, joblevel, {setIsMounted});
         return () => setIsMounted(false);
         }, [])
     );

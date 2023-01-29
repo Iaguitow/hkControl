@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, memo} from "react"
 import CompoRequestDetails from "./CompoRequestDetails.js";
 import { RefreshControl, Alert } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
@@ -46,12 +46,6 @@ const CompoRequests = ({ setIsMounted }) => {
     getRequests(idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
   }, []);
 
-  useEffect(() => {
-    if(requests.api_status === actionsTypesAPI.STATUS_OK){
-      Toasts.showToast("Request Successfully Saved");
-    }
-  },[requests.api_update_requests])
-
   const item = [];
 
   if (requests.payload.requests !== null) {
@@ -64,6 +58,7 @@ const CompoRequests = ({ setIsMounted }) => {
           responsiblePhoneNumber: requests.payload.requests[i].responsiblePhoneNumber,
           responsible: requests.payload.requests[i].responsible,
           dtcancellation: requests.payload.requests[i].dtcancellation,
+          whocancelled: requests.payload.requests[i].whocancelled,
           reason: requests.payload.requests[i].reason,
           requesttimedealyed: requests.payload.requests[i].requesttimedealyed,
           fulldtrequest: requests.payload.requests[i].fulldtrequest,
@@ -167,6 +162,10 @@ const CompoRequests = ({ setIsMounted }) => {
                             const joblevel = user.payload.joblevel;
                             const requestdone = item.dtrequestdone==null?!false:null
                             updateRequest(item.idresquests,requestdone,idpeople,token_api, joblevel, {setIsMounted});
+                            if(requests.api_status === actionsTypesAPI.STATUS_OK){
+                                console.log(requests.activeToastUpdate);
+                                Toasts.showToast("Request Successfully Saved");
+                            }
                           }},
                         ],
                         {cancelable: false},
@@ -303,4 +302,4 @@ const NativeBaseProps = {
   }
 }
 
-export default CompoRequests;
+export default memo(CompoRequests);

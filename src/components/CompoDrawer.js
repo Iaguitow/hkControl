@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
 import { StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5, FontAwesome, EvilIcons, Ionicons } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ import ScreenProfile from "../screens/ScreenProfile";
 import ScreenRequests from "../screens/ScreenRequests";
 import ScreenTasks from "../screens/ScreenTasks";
 import ScreenCheckList from "../screens/ScreenCheckList";
+import ScreenListPeople from "../screens/ScreenListPeople";
 import FabButoon from "../components/CompoFabButon";
 import CompoNotificationList from "../components/CompoNotificationsList";
 import { ActionRooms } from "../Actions/ActionRooms.js";
@@ -60,7 +61,7 @@ const getIcon = (screenName) => {
       return "gear";
     case allDrawerScreens.LOGOUT:
       return "logout"
-    case allDrawerScreens.COMPETITORS:
+    case allDrawerScreens.PEOPLE:
       return "account-search-outline"
     default:
       return undefined;
@@ -71,9 +72,14 @@ const getIcon = (screenName) => {
 function MyDrawer({ navigation }) {
   
   const navigations = useNavigation();
+  const user = useSelector(state => state.reducerLogin);
   
   const [imageDrawerProfile,setImageDrawerProfile] = useState(null);
+
   const [countRequests, setCountRequests] = useState(0);
+  const setCount_Requests = useCallback((amount) =>{
+    setCountRequests(amount);
+  });
   
   const requestlogs = useSelector(state => state.reducerRequestLog);
 
@@ -89,7 +95,7 @@ function MyDrawer({ navigation }) {
 
   useEffect(() =>{
     if(requestlogs.payload.logs !== null && typeof requestlogs.payload.logs !== 'undefined' && requestlogs.payload.logs.length !==0){
-      setCountRequests(requestlogs.payload.logs[0].howmanylogsnotseen);
+      setCount_Requests(requestlogs.payload.logs[0].howmanylogsnotseen);
     }
     return () =>{
       return;
@@ -101,6 +107,7 @@ function MyDrawer({ navigation }) {
     <Box flex={1} bg={"white"}>
       <Drawer.Navigator
         screenOptions={{
+          unmountOnBlur: true,
           headerTransparent: false,
           headerBackground: () =>{
             return(
@@ -126,18 +133,11 @@ function MyDrawer({ navigation }) {
                   {allDrawerScreens.TASKS.toUpperCase()}
                 </Text>
               );
-            }else if(title.children === allDrawerScreens.COMPETITORS){
+            }else if(title.children === allDrawerScreens.PEOPLE){
               return (
-                //WHEN SHOW COMPETITOR IT IS NECESSARY SHOW ALSO THE SERCH BAR, CHANGE THE ICON BY SEARCH BAR 
-                <Icon
-                  onPress={() => {
-                    navigations.dispatch(DrawerActions.openDrawer());
-                  }}
-                  color={"rgb(255,255,255)"}
-                  as={<MaterialIcons name="menu" />}
-                  size={9}
-                  mb={2}
-                />
+                <Text color={"white"} fontWeight="bold" fontSize={16}>
+                  USERS
+                </Text>
               );
             }
           },
@@ -145,10 +145,7 @@ function MyDrawer({ navigation }) {
             return (
               <VStack
                 onTouchStart={() => {
-                  /*const token_api = user.payload.tokenapi;
-                  const idpeople = user.payload.idpeople;
-                  getRequestLog(idpeople,token_api);*/
-                  setCountRequests(0);
+                  setCount_Requests(0);
                   onOpen();
                 }}
               >
@@ -168,7 +165,7 @@ function MyDrawer({ navigation }) {
                 </Badge>
               }
               <Icon {...nativeBaseProps.HeaderIconsProps} size={10} as={<MaterialIcons name="notifications-active" />}/>
-              <CompoNotificationList isOpen={isOpen} onClose={onClose}></CompoNotificationList>
+              {isOpen && <CompoNotificationList isOpen={isOpen} onClose={onClose}></CompoNotificationList>}
               </VStack>
             );
           },
@@ -184,13 +181,13 @@ function MyDrawer({ navigation }) {
             );
           },
         }}
-        drawerContent={(props) => <CustomDrawerContent   {...props} countRequests={ countRequests } setCountRequests={ setCountRequests } imageDrawerProfile={ imageDrawerProfile } />}
+        drawerContent={(props) => <CustomDrawerContent {...props} countRequests={ countRequests } setCountRequests={ setCount_Requests } imageDrawerProfile={ imageDrawerProfile } />}
       >
         <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
         <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
-        <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />
-        {/*<Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />   
-        <Drawer.Screen name={allDrawerScreens.COMPETITORS} component={Component} />*/}
+        {user.payload.departmentlevel.includes("HK","MN") && <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />}
+        {/*<Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />*/}   
+        <Drawer.Screen name={allDrawerScreens.PEOPLE} component={ScreenListPeople} />
         <Drawer.Screen name={allDrawerScreens.CONFIGURATION} component={Component} />
         <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
 
@@ -221,8 +218,6 @@ function CustomDrawerContent(props) {
     };
 
   },[notificationListener.current])
-
-
 
   return (
     <LinearGradient {...nativeBaseProps.DrawerBackgroundColor}>
@@ -305,7 +300,7 @@ function CustomDrawerContent(props) {
   );
 }
 
-export default function CompoDrawer({ navigation, nativeBaseProps}) {
+function CompoDrawer({ navigation, nativeBaseProps}) {
 
   const dispatch = useDispatch();
   const getRooms = (token_api) => {dispatch(ActionRooms.getRooms(token_api)) }
@@ -420,3 +415,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   }
 });
+
+export default memo(CompoDrawer);

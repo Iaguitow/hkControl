@@ -2,8 +2,8 @@ import { actionsTypes } from "./ConstActions";
 import dbTasks from "../classes/ClassDBTasks";
 
 const TasksActions = {
-    getTasks: (idpeople, token_api, {setIsMounted}) => dispatch => {
-        dbTasks.getTasks(idpeople,token_api).then(response =>{
+    getTasks: (idpeople, token_api, joblevel, {setIsMounted}) => dispatch => {
+        dbTasks.getTasks(idpeople,token_api,joblevel).then(response =>{
             dispatch({
                 type: actionsTypes.GET_TASKS,
                 payload: {tasks:response.data, error_message: null},

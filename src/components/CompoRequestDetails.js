@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,memo} from 'react';
 import DialogInput from 'react-native-dialog-input';
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ import {
     Switch
 } from "native-base";
 
-export default function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onRefresh }) {
+function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onRefresh }) {
 
     const dispatch = useDispatch();
 
@@ -189,6 +189,15 @@ export default function requestDetails({id_whocancelled, token_api, joblevel, re
                                 </HStack>
 
                                 <VStack>
+                                        <Text {...NativeBaseProps.SUB_TEXT}>
+                                            CANCELED BY:
+                                        </Text>
+                                        <Text>
+                                            {requestDetail.whocancelled}
+                                        </Text>
+                                </VStack>
+
+                                <VStack>
                                     <Text {...NativeBaseProps.SUB_TEXT}>
                                         CANCELLATION REASON:
                                     </Text>
@@ -216,3 +225,5 @@ const NativeBaseProps = {
         
     }
 }
+
+export default memo(requestDetails)

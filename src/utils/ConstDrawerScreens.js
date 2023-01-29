@@ -6,7 +6,7 @@ const allDrawerScreens = {
     PROJECTS: "Projects",
     CONFIGURATION: "Configuration",
     LOGOUT: "Logout",
-    COMPETITORS: "Competitors",
+    PEOPLE: "People",
 };
 
 export { allDrawerScreens }

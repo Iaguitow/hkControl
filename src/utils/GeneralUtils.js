@@ -4,6 +4,44 @@ import { Linking, Alert, Platform } from 'react-native';
 
 class GeneralUtils {
 
+  sendWhatsApp = (phoneWithCountryCode) => {
+    let mobile = phoneWithCountryCode;
+      console.log(mobile);
+    if (mobile) {
+      let url = "whatsapp://send?text="+"Hello There!"+"&phone="+"+44"+mobile;
+      Linking.openURL(url)
+        .then(data => {
+          console.log("WhatsApp Opened");
+        })
+        .catch(() => {
+          alert("Make sure WhatsApp installed on your device");
+        });
+    } else {
+      alert("Mobile number not supported.");
+    }
+  }
+
+  sendEmail(to, subject, body, options = {}) {
+    const { cc, bcc } = options;
+    let url = `mailto:${to}`;
+    // Create email link query
+    const query = {
+        subject: subject,
+        body: body,
+        cc: cc,
+        bcc: bcc
+    };
+    if (query.length) {
+        url += `?${query}`;
+    }
+    // check if we can use this link
+    const canOpen = Linking.canOpenURL(url);
+    if (!canOpen) {
+        throw new Error('Provided URL can not be handled');
+    }
+    return Linking.openURL(url);
+  }
+
   callNumber(phone) {
     let phoneNumber = phone;
     if (Platform.OS !== 'android') {
