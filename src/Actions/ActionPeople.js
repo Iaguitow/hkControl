@@ -2,7 +2,7 @@ import { actionsTypes } from "./ConstActions";
 import dbPeople from "../classes/ClassDBPeople";
 
 const PeopleActions = {
-    getPeople:(peopleList = false, idpeople, token_api) => dispatch =>{
+    getPeople:(peopleList = false, idpeople, token_api, setIsMounted ="") => dispatch =>{
         dbPeople.getPeople(peopleList, idpeople, token_api).then(response =>{
             dispatch({
                 type: actionsTypes.GET_PEOPLE,
@@ -14,6 +14,9 @@ const PeopleActions = {
                 payload: {people:null, error_message: error},
             });
         }).finally(endPoint => {
+            if (typeof setIsMounted == "function"){
+                setIsMounted(false);
+            }
             
         });
     },

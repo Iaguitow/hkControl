@@ -4,9 +4,30 @@ import { Linking, Alert, Platform } from 'react-native';
 
 class GeneralUtils {
 
+  searchFilterFunction = (text, masterDataSource, setFilteredDataSource, setSearch) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource and update FilteredDataSource
+      const newData = masterDataSource.filter(
+        function (item) {
+          return Object.keys(item).some(key =>{
+            return item[key] != null? item[key].toString().toUpperCase().includes(text.toUpperCase()): null;
+          })
+        }
+      );
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
   sendWhatsApp = (phoneWithCountryCode) => {
     let mobile = phoneWithCountryCode;
-      console.log(mobile);
     if (mobile) {
       let url = "whatsapp://send?text="+"Hello There!"+"&phone="+"+44"+mobile;
       Linking.openURL(url)

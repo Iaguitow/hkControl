@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, memo} from "react"
 import { SafeAreaView } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
+import { useFocusEffect } from '@react-navigation/native';
 import generalUtils from "../utils/GeneralUtils";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -19,26 +20,26 @@ const ListPeople = () => {
 
   const peopleList = useSelector(state => state.reducerPeople);
 
-  const people = [];
-  if (peopleList.payload.people !== null) {
-    for (var i = 0, ii = peopleList.payload.people.length; i < ii; i++) {
-      people.push({
-          name: peopleList.payload.people[i].name,
-          email: peopleList.payload.people[i].email,
-          profession: peopleList.payload.people[i].profession,
-          id: peopleList.payload.people[i].id,
-          phonenumber: peopleList.payload.people[i].phonenumber,
-          profileImg: peopleList.payload.people[i].profileImg
-        });
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
+  useEffect(() =>{
+    if (peopleList.payload.people !== null) {
+        setMasterDataSource(peopleList.payload.people);
+        setFilteredDataSource(peopleList.payload.people);
       }
-    }
-  
+  },[peopleList.payload.people]);
 
   return (
     <Box width={"100%"} flex={1}>
       <SafeAreaView>
         <Box borderColor={"gray.200"} borderBottomWidth={2}>
         <Input
+          onChangeText={(text) =>{
+            generalUtils.searchFilterFunction(text, masterDataSource, setFilteredDataSource, setSearch);
+          }}
+          value={search}
           alignSelf={"center"}
           marginTop={2}
           marginBottom={1}
@@ -62,7 +63,7 @@ const ListPeople = () => {
         </Box>
       </SafeAreaView>
       <FlatList
-        data={people}
+        data={filteredDataSource}
         scrollEnabled={true}
         renderItem={({ item, index }) => (
           <Box
@@ -155,4 +156,4 @@ const ListPeople = () => {
   )
 }
 
-export default ListPeople;
+export default memo(ListPeople);
