@@ -179,11 +179,6 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                     </Text>
                                 </HStack>
                             <HStack>
-                                <HStack>
-                                    <Text {...nativeBaseProps.EDIT_DATE_TEXT}>
-                                        LAST UPDATE: 15/10/1991
-                                    </Text>
-                                </HStack>
                             </HStack>
                         </Stack>
                     </Box>

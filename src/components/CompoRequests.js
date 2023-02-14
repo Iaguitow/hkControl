@@ -1,9 +1,10 @@
-import React, {useState, memo} from "react"
+import React, {useState, memo, useEffect} from "react"
 import CompoRequestDetails from "./CompoRequestDetails.js";
 import { RefreshControl, Alert } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
 import { actionsTypesAPI } from "../Actions/ConstActionsApi";
+import { useRoute } from "@react-navigation/native";
 import Toasts from "./CompoToast";
 import {
   Box,
@@ -74,6 +75,17 @@ const CompoRequests = ({ setIsMounted }) => {
       }
     }
   }
+
+  const route = useRoute();
+
+  useEffect(()=>{
+    if(route.params){
+      setRequestDetails(route.params.item);
+      onOpen();
+    }else{
+      return;
+    }
+  },[route.params]);
 
   return (
     <Box flex={1} minWidth={"100%"} mb={8}>
@@ -194,7 +206,7 @@ const CompoRequests = ({ setIsMounted }) => {
           id_whocancelled = {user.payload.idpeople} 
           token_api = {user.payload.tokenapi} 
           joblevel = {user.payload.joblevel} 
-          requestDetail={requestDetail} 
+          requestDetail = {requestDetail} 
           isOpen={isOpen} onClose={onClose}
           onRefresh={onRefresh}
         />}

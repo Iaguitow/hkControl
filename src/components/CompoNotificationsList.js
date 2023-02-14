@@ -2,7 +2,6 @@ import React,{useEffect, useState, memo} from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import generalUtils from '../utils/GeneralUtils';
 import { ActionRequestLog } from "../Actions/ActionRequestLog";
 
 import {
@@ -13,7 +12,8 @@ import {
     Actionsheet,
     ScrollView,
     Divider,
-    VStack
+    VStack,
+    HStack
 } from "native-base";
 
 function notificationList({ isOpen, onClose }) {
@@ -62,21 +62,34 @@ function notificationList({ isOpen, onClose }) {
 
     const requestlogs = useSelector(state => state.reducerRequestLog);
     const log = [];
-    let logDateTimeString = null;
 
     if (requestlogs.payload.logs !== null) {
         for (var i = 0, ii = requestlogs.payload.logs.length; i < ii; i++) {
-            logDateTimeString = generalUtils.date_DBformat(requestlogs.payload.logs[i].dtlog,1);
+            
             log.push({
-                dtlog: logDateTimeString,
+                dtlog: requestlogs.payload.logs[i].dtlog,
                 finaldescription: requestlogs.payload.logs[i].finaldescription,
                 howmanylogsnotseen: requestlogs.payload.logs[i].howmanylogsnotseen,
                 logtype: requestlogs.payload.logs[i].logtype,
-                seen: requestlogs.payload.logs[i].seen
+                seen: requestlogs.payload.logs[i].seen,
+                fk_requests: requestlogs.payload.logs[i].fk_requests,
+                dtcancellation: requestlogs.payload.logs[i].dtcancellation,
+                reason: requestlogs.payload.logs[i].reason,
+                requesttimedealyed: requestlogs.payload.logs[i].requesttimedealyed,
+                fulldtrequest: requestlogs.payload.logs[i].fulldtrequest,
+                fulldtrequestdone: requestlogs.payload.logs[i].fulldtrequestdone,
+                fullwhoresquested: requestlogs.payload.logs[i].fullwhoresquested,
+                requestdsc: requestlogs.payload.logs[i].requestdsc,
+                roomnumber: requestlogs.payload.logs[i].roomnumber,
+                priority: requestlogs.payload.logs[i].priority,
+                responsiblePhoneNumber: requestlogs.payload.logs[i].responsiblePhoneNumber,
+                responsible: requestlogs.payload.logs[i].responsible,
+                whocancelled: requestlogs.payload.logs[i].whocancelled
+
             });
         }
     }
-
+    
     return (
         <Center>
             <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
@@ -95,7 +108,10 @@ function notificationList({ isOpen, onClose }) {
                                         startIcon={<Icon color={getColorIcon(item.logtype.toString())} as={MaterialIcons} size="8" name={getIcon(item.logtype.toString())} />}
                                         onPress={() =>{
                                             onClose();
-                                            navigations.navigate("Requests");
+                                            navigations.navigate("Requests",{
+                                                item
+                                            });
+                                            //setOpenDetails(true);
                                         }}
                                         >
                                         <VStack>
@@ -105,6 +121,34 @@ function notificationList({ isOpen, onClose }) {
                                             <Text py={1.5} fontSize="14" color="gray.600" fontWeight={"bold"}>
                                                 { item.dtlog.toString() }
                                             </Text>
+
+                                            <HStack>
+                                            <Text py={1.5} fontSize="14" color="gray.600" fontWeight={"bold"}>
+                                                { "PRIORITY: " }
+                                            </Text>
+                                            <Text 
+                                                py={1.5} 
+                                                fontSize="14" 
+                                                color = {item.priority == "CRITICAL"?"red.600":"yellow.600"}
+                                                fontWeight={"bold"}
+                                            >
+                                                { item.priority }
+                                            </Text>
+                                            </HStack>
+
+                                            <HStack>
+                                            <Text py={1.5} fontSize="14" color="gray.600" fontWeight={"bold"}>
+                                                { "STATUS: " }
+                                            </Text>
+                                            <Text 
+                                                py={1.5} 
+                                                fontSize="14" 
+                                                color = {item.dtcancellation?"red.600":"green.600"}
+                                                fontWeight={"bold"}
+                                            >
+                                                { item.dtcancellation?"CANCELED":item.fulldtrequestdone?"DONE":"NEW REQUEST!" }
+                                            </Text>
+                                            </HStack>
                                         </VStack>
                                         
                                     </Actionsheet.Item>

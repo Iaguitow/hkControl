@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import generalUtils from '../utils/GeneralUtils';
 import { ActionRequestLog } from "../Actions/ActionRequestLog";
 import CompoApiLoadingView from "../components/CompoApiLoadingView"
+//import { Stopwatch } from 'react-native-stopwatch-timer';
 
 import {
     Box,
@@ -19,7 +20,7 @@ import {
     Switch
 } from "native-base";
 
-function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onRefresh }) {
+function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onRefresh}) {
 
     const dispatch = useDispatch();
 
@@ -34,11 +35,11 @@ function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, is
             <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
                 <Actionsheet.Content>
                     <DialogInput 
-                    isDialogVisible={visibleCancelDialog}
-                    title={"CANCELLATION REASON"}
-                    message={"Message for Feedback"}
-                    hintInput ={"Enter Text"}
-                    submitInput={ (inputText) => {
+                        isDialogVisible={visibleCancelDialog}
+                        title={"CANCELLATION REASON"}
+                        message={"Message for Feedback"}
+                        hintInput ={"Enter Text"}
+                        submitInput={ (inputText) => {
 
                         var requestCancellationObj = {
                             reason: inputText,

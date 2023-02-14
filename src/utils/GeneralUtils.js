@@ -5,10 +5,7 @@ import { Linking, Alert, Platform } from 'react-native';
 class GeneralUtils {
 
   searchFilterFunction = (text, masterDataSource, setFilteredDataSource, setSearch) => {
-    // Check if searched text is not blank
     if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
       const newData = masterDataSource.filter(
         function (item) {
           return Object.keys(item).some(key =>{
@@ -19,8 +16,6 @@ class GeneralUtils {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }

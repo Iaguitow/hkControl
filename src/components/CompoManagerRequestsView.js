@@ -3,6 +3,7 @@ import { RefreshControl } from "react-native"
 import CompoRequestDetails from "./CompoRequestDetails.js";
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { useRoute } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RequestActions } from "../Actions/ActionRequests";
 import {
@@ -137,6 +138,17 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
       }
     }
   }
+
+  const route = useRoute();
+
+  useEffect(()=>{
+    if(route.params){
+      setRequestDetail(route.params.item);
+      onOpen();
+    }else{
+      return;
+    }
+  },[route.params]);
 
 
   return (
