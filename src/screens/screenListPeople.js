@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { PeopleActions } from "../Actions/ActionPeople.js";
 import { useSelector, useDispatch } from "react-redux";
 
-const ScreenListPeople = () => {
+const ScreenListPeople = ({navigation}) => {
 
     const [isMounted, setIsMounted] = useState(false);
  
@@ -29,7 +29,7 @@ const ScreenListPeople = () => {
 
     return (
         <Center flex={1}>
-            <CompoListPeople />
+            <CompoListPeople navigation={navigation} />
             {isMounted && <CompoApiLoadingView></CompoApiLoadingView>}
         </Center>
     );

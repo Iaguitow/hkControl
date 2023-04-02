@@ -5,12 +5,13 @@ import { reducers as reducerPeople } from "./reducerPeople";
 import { reducers as reducerGdriver } from "./reducerGdriver";
 import { reducers as reducerRequests } from "./reducerRequests";
 import { reducers as reducerProfile } from "./reducerProfile";
-import { reducers as reducerCities } from "./reducerCities";
+import { reducers as reducerJobCategory } from "./reducerJobCategory";
 import { reducers as reducerTasks } from "./reducerTasks";
 import { reducers as reducerCheckList } from "./reducerCheckList";
 import { reducers as reducerRequestType } from "./reducerRequestType";
 import { reducers as reducerRooms } from "./reducerRooms";
 import {reducers as reducerRequestLog } from "./reducerRequestLogs";
+import {reducers as reducerCharts } from "./reducerCharts";
 
 const reducers = combineReducers({
     reducerLogin,
@@ -18,12 +19,13 @@ const reducers = combineReducers({
     reducerGdriver,
     reducerRequests,
     reducerProfile,
-    reducerCities,
+    reducerJobCategory,
     reducerTasks,
     reducerCheckList,
     reducerRequestType,
     reducerRooms,
-    reducerRequestLog
+    reducerRequestLog,
+    reducerCharts
 });
 
 export { reducers }

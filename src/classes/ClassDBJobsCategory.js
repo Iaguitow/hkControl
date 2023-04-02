@@ -1,17 +1,17 @@
 import axios from "axios";
 import Toasts from "../components/CompoToast";
 
-class City {
+class JobCategory {
 
-    getCities(token_api){
+    getJobCategories(token_api){
         return new Promise((resolve,reject)=>{
             try {
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/cities",
+                    url: "http://192.168.0.17:3000/routes/jobs/get/jobcategories",
                     //SCHOOL IP
-                    //url: "http://172.26.192.211:3000/routes/cities",
+                    //url: "http://172.26.192.211:3000/routes/jobs/get/jobcategories",
                     withCredentials: true,
                     headers:{
                         'Accept': 'application/json',
@@ -39,5 +39,5 @@ class City {
     
 }
 
-var Cities = new City();
-export default Cities;
+var JobCategories = new JobCategory();
+export default JobCategories;

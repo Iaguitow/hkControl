@@ -1,11 +1,10 @@
-import React,{useEffect, useState,memo} from 'react';
+import React,{useEffect, useState, memo, useCallback } from 'react';
 import DialogInput from 'react-native-dialog-input';
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import generalUtils from '../utils/GeneralUtils';
 import { ActionRequestLog } from "../Actions/ActionRequestLog";
 import CompoApiLoadingView from "../components/CompoApiLoadingView"
-//import { Stopwatch } from 'react-native-stopwatch-timer';
 
 import {
     Box,
@@ -20,7 +19,7 @@ import {
     Switch
 } from "native-base";
 
-function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onRefresh}) {
+function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onOpen, onRefresh, timeStamp}) {
 
     const dispatch = useDispatch();
 
@@ -30,9 +29,80 @@ function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, is
 
     const insertNewRquest_Log = (requestCancellationObj, token_api,setShowLoading) => {dispatch(ActionRequestLog.insertNewRequest(requestCancellationObj, token_api,setShowLoading)) }
 
+    const [numberSecs, setNumberSecs] = useState(0);
+    const [numberMin, setNumberMin] = useState(0);
+    const [numberHour, setNumberHour] = useState(0);
+
+    const [timerId, setTimerId] = useState(0);
+    
+    let timer = null;
+    const increment = (hoursDifference, minutesDifference, secondsDifference) => {
+          let counterSecs = secondsDifference;
+          let counterMin = minutesDifference;
+          timer = setInterval(()=>{
+
+            hoursDifference>0?setNumberHour(hoursDifference):null;
+            minutesDifference>0?setNumberMin(minutesDifference):null;
+
+            counterSecs<60?setNumberSecs((previousTime) => previousTime+1+secondsDifference):setNumberSecs(60);
+
+            secondsDifference = 0;
+            minutesDifference = 0;
+            hoursDifference = 0;
+            counterSecs += 1;
+
+            if(counterSecs>=60){
+                counterSecs=0
+                setNumberSecs(0);
+
+                counterMin<60?setNumberMin((previousTime) => previousTime+1):setNumberMin(60);
+                counterMin +=1;
+
+                if(counterMin>=60){
+                    counterMin=0;
+                    setNumberMin(0);
+                    setNumberHour((previousTime) => previousTime+1);
+                };
+            }
+        },1000);
+        setTimerId(timer);
+        return(()=>{
+            clearInterval(timerId);
+        })
+    }
+
+    useEffect(()=>{
+        const dateStampRequest = new Date(requestDetail.timeStampRequested.toString());
+        const dateNow = new Date();
+        var difference = dateNow.getTime() - dateStampRequest.getTime();
+
+        /*var daysDifference = Math.floor(difference/1000/60/60/24);
+        difference -= daysDifference*1000*60*60*24*/
+
+        var hoursDifference = Math.floor(difference/1000/60/60);
+        difference -= hoursDifference*1000*60*60;
+    
+        var minutesDifference = Math.floor(difference/1000/60);
+        difference -= minutesDifference*1000*60;
+    
+        var secondsDifference = Math.floor(difference/1000);
+
+
+        increment(hoursDifference, minutesDifference, secondsDifference);
+    },[timeStamp]);
+    
     return (
         <Center>
-            <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
+            <Actionsheet isOpen={isOpen}
+                onClose={()=>{
+                    onClose();
+                    clearInterval(timerId);
+                    setNumberHour(0);
+                    setNumberMin(0);
+                    setNumberSecs(0);
+                }} 
+                size="full"
+            >
                 <Actionsheet.Content>
                     <DialogInput 
                         isDialogVisible={visibleCancelDialog}
@@ -65,9 +135,13 @@ function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, is
                                     Room - {requestDetail.roomnumber}
                                 </Text>
 
-                                <Text fontSize="18" color={requestDetail.requesttimedealyed == null?"green.600":"red.600"} fontWeight={"bold"}>
+                                {/*<Text fontSize="18" color={requestDetail.requesttimedealyed == null?"green.600":"red.600"} fontWeight={"bold"}>
                                     {requestDetail.requesttimedealyed == null?"DONE!":"Delayed: "} {requestDetail.requesttimedealyed}
-                                </Text>
+                                </Text>*/}
+                                {<Text fontSize="18" color={requestDetail.requesttimedealyed == null?"green.600":"red.600"} fontWeight={"bold"}>
+                                    {requestDetail.requesttimedealyed == null?"DONE!":numberHour.toString().padStart(2,"0")+":"+numberMin.toString().padStart(2,"0")+":"+numberSecs.toString().padStart(2,"0")}
+                                </Text>}
+                                
                             </HStack>
                         </Box>
 

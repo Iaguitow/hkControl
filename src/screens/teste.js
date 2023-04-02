@@ -1,62 +1,45 @@
-import React from "react";
-import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar } from "react-native";
-
-const DATA = [
-  {
-    title: "Main dishes",
-    data: ["Pizza", "Burger", "Risotto"]
+Object {
+  "reducerCharts": Object {
+    "api_request": 1,
+    "api_requests": 0,
+    "api_status": "OK",
+    "payload_TR": Array [
+      Object {
+        "daysofweek": "Thursday",
+        "dtRequests": "2023-02-23T00:00:00.000Z",
+        "totalRequests": 10,
+      },
+      Object {
+        "daysofweek": "Friday",
+        "dtRequests": "2023-02-24T00:00:00.000Z",
+        "totalRequests": 5,
+      },
+      Object {
+        "daysofweek": "Saturday",
+        "dtRequests": "2023-02-25T00:00:00.000Z",
+        "totalRequests": 12,
+      },
+      Object {
+        "daysofweek": "Sunday",
+        "dtRequests": "2023-03-12T00:00:00.000Z",
+        "totalRequests": 2,
+      },
+      Object {
+        "daysofweek": "Sunday",
+        "dtRequests": "2023-03-26T00:00:00.000Z",
+        "totalRequests": 18,
+      },
+      Object {
+        "daysofweek": "Thursday",
+        "dtRequests": "2023-03-29T23:00:00.000Z",
+        "totalRequests": 3,
+      },
+    ],
   },
-  {
-    title: "Sides",
-    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
+  "reducerCheckList": Object {
+    "api_requests": 0,
+    "api_status": "IDLE",
+    "payload": Object {
+      "checklist": null,
+    },
   },
-  {
-    title: "Drinks",
-    data: ["Water", "Coke", "Beer"]
-  },
-  {
-    title: "Desserts",
-    data: ["Cheese Cake", "Ice Cream"]
-  }
-];
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
-
-const App = () => (
-  <SafeAreaView style={styles.container}>
-    <SectionList
-      sections={DATA}
-      keyExtractor={(item, index) => item + index}
-      renderItem={({ item }) => <Item title={item} />}
-      renderSectionHeader={({ section: { title } }) => (
-        <Text style={styles.header}>{title}</Text>
-      )}
-    />
-  </SafeAreaView>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 16
-  },
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8
-  },
-  header: {
-    fontSize: 32,
-    backgroundColor: "#fff"
-  },
-  title: {
-    fontSize: 24
-  }
-});
-
-export default App;

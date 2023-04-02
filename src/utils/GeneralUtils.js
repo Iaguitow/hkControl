@@ -85,7 +85,7 @@ class GeneralUtils {
         return false;
     };
 
-    validateRooms(roomNumber, rooms, requestType){
+    validateRooms(roomNumber, rooms){
 
         const onlyRooms = [];
 
@@ -93,7 +93,7 @@ class GeneralUtils {
             onlyRooms.push(rooms.payload.rooms[i].roomnumber.toString());
         }
 
-        if(onlyRooms.includes(roomNumber.toString()) || (requestType == "OTHER" && roomNumber == 0)){
+        if(onlyRooms.includes(roomNumber.toString()) /*|| ( roomNumber == 0)*/){
             return(true);
         }else{
             return(false);

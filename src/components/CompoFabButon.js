@@ -3,6 +3,7 @@ import { Fab,Box, Icon } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import ModalNewRequest from "./CompoModalNewRequest";
 import { RequestTypeActions } from "../Actions/ActionRequestType";
+import { ActionRooms } from "../Actions/ActionRooms.js";
 import { useSelector, useDispatch } from "react-redux";
 
 const FabButton = () => {
@@ -12,6 +13,7 @@ const FabButton = () => {
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.reducerLogin);
+  const getRooms = (token_api) => {dispatch(ActionRooms.getRooms(token_api)) }
   const getRequestType = (token_api) => {dispatch(RequestTypeActions.getRequestType(token_api,{setIsMounted})) }
   
     return(
@@ -21,10 +23,11 @@ const FabButton = () => {
           {...NATIVEBASE_PROPS.FAB} 
           icon={<Icon as={AntDesign} {...NATIVEBASE_PROPS.ICON}/>}
           onPress={() =>{
-            setIsMounted(true);
-            const token_api = user.payload.tokenapi;
-            getRequestType(token_api);
-            setShowModal(true)
+              setIsMounted(true);
+              const token_api = user.payload.tokenapi;
+              getRequestType(token_api);
+              getRooms(token_api);
+              setShowModal(true)
             }}
           _spinner={
             {

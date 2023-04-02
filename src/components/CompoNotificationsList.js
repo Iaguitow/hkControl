@@ -84,8 +84,8 @@ function notificationList({ isOpen, onClose }) {
                 priority: requestlogs.payload.logs[i].priority,
                 responsiblePhoneNumber: requestlogs.payload.logs[i].responsiblePhoneNumber,
                 responsible: requestlogs.payload.logs[i].responsible,
-                whocancelled: requestlogs.payload.logs[i].whocancelled
-
+                whocancelled: requestlogs.payload.logs[i].whocancelled,
+                timeStampRequested: requestlogs.payload.logs[i].timeStampRequested
             });
         }
     }

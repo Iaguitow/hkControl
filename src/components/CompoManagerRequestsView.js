@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, memo, useCallback } from 'react';
-import { RefreshControl } from "react-native"
+import { RefreshControl, AppState } from "react-native"
 import CompoRequestDetails from "./CompoRequestDetails.js";
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -55,6 +55,9 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
 
   const [requestDetail, setRequestDetail] = useState(null);
 
+  const [timeStamp, setTimeStamp] = useState(null);
+  const dateNow = new Date();
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setIsMounted(true);
@@ -105,6 +108,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                       roomnumber: requests[x].roomnumber,
                       howmanyitem: requests[x].howmanyitem,
                       requestPreviewDsc: requests[x].requestPreviewDsc,
+                      timeStampRequested: requests[x].timeStampRequested,
                     });
                   }
                 }
@@ -142,12 +146,18 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
   const route = useRoute();
 
   useEffect(()=>{
+    const appStateSubscription = AppState.addEventListener('change', nextAppState =>{
+      if (nextAppState === 'active'){
+        onRefresh();
+      }
+    })
     if(route.params){
       setRequestDetail(route.params.item);
       onOpen();
     }else{
-      return;
+      return () => appStateSubscription.remove();
     }
+    return () => appStateSubscription.remove();
   },[route.params]);
 
 
@@ -358,6 +368,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                         <Button 
                                           size={"30px"}
                                           onPress={()=>{
+                                            setTimeStamp(dateNow.getTime());
                                             setRequestDetail(portersRequests);
                                             onOpen();
                                           }}
@@ -391,7 +402,8 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
         joblevel = {user.payload.joblevel} 
         requestDetail={requestDetail} 
         isOpen={isOpen} onClose={onClose}
-        onRefresh={onRefresh}  
+        onRefresh={onRefresh}
+        timeStamp={timeStamp}  
       />}
     </Box>
   );

@@ -1,6 +1,6 @@
 import React, {useState, memo, useEffect} from "react"
 import CompoRequestDetails from "./CompoRequestDetails.js";
-import { RefreshControl, Alert } from "react-native"
+import { RefreshControl, Alert, AppState } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
 import { actionsTypesAPI } from "../Actions/ConstActionsApi";
@@ -23,6 +23,9 @@ const CompoRequests = ({ setIsMounted }) => {
 
   const ttoast = useToast();
   const [requestDetail, setRequestDetails] = useState(null);
+  
+  const [timeStamp, setTimeStamp] = useState(null);
+  const dateNow = new Date();
 
   const {
     isOpen,
@@ -71,6 +74,7 @@ const CompoRequests = ({ setIsMounted }) => {
           roomnumber: requests.payload.requests[i].roomnumber,
           dtrequestdone: requests.payload.requests[i].dtrequestdone,
           priority: requests.payload.requests[i].priority,
+          timeStampRequested: requests.payload.requests[i].timeStampRequested,
         });
       }
     }
@@ -79,12 +83,21 @@ const CompoRequests = ({ setIsMounted }) => {
   const route = useRoute();
 
   useEffect(()=>{
+    
+    const stateSubscription = AppState.addEventListener('change', nextAppState =>{
+      if(nextAppState === 'active'){
+        onRefresh();
+      }
+    });
+
     if(route.params){
       setRequestDetails(route.params.item);
       onOpen();
     }else{
-      return;
+      return () => stateSubscription.remove();
     }
+
+    return () => stateSubscription.remove();
   },[route.params]);
 
   return (
@@ -175,7 +188,6 @@ const CompoRequests = ({ setIsMounted }) => {
                             const requestdone = item.dtrequestdone==null?!false:null
                             updateRequest(item.idresquests,requestdone,idpeople,token_api, joblevel, {setIsMounted});
                             if(requests.api_status === actionsTypesAPI.STATUS_OK){
-                                console.log(requests.activeToastUpdate);
                                 Toasts.showToast("Request Successfully Saved");
                             }
                           }},
@@ -192,6 +204,7 @@ const CompoRequests = ({ setIsMounted }) => {
               {...NativeBaseProps.DETAILS_BUTTON}
               borderBottomColor={item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
               onPress={() =>{
+                setTimeStamp(dateNow.getTime());
                 setRequestDetails(item);
                 onOpen();
               }}
@@ -208,7 +221,9 @@ const CompoRequests = ({ setIsMounted }) => {
           joblevel = {user.payload.joblevel} 
           requestDetail = {requestDetail} 
           isOpen={isOpen} onClose={onClose}
+          onOpen={onOpen}
           onRefresh={onRefresh}
+          timeStamp={timeStamp}
         />}
     </Box>
   )

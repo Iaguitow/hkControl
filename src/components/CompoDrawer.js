@@ -12,6 +12,8 @@ import ScreenRequests from "../screens/ScreenRequests";
 import ScreenTasks from "../screens/ScreenTasks";
 import ScreenCheckList from "../screens/ScreenCheckList";
 import ScreenListPeople from "../screens/ScreenListPeople";
+import ScreenConfig from "../screens/ScreenConfig";
+import ScreenAnalyticalCharts from "../screens/ScreenAnalyticalCharts";
 import FabButoon from "../components/CompoFabButon";
 import CompoNotificationList from "../components/CompoNotificationsList";
 import { ActionRooms } from "../Actions/ActionRooms.js";
@@ -63,6 +65,8 @@ const getIcon = (screenName) => {
       return "logout"
     case allDrawerScreens.PEOPLE:
       return "account-search-outline"
+    case allDrawerScreens.CHARTS:
+      return "chart-bar-stacked"
     default:
       return undefined;
   }
@@ -115,31 +119,11 @@ function MyDrawer({ navigation }) {
             );
           },
           headerTitle: (title) => {
-            if (title.children === allDrawerScreens.PROFILE) {
               return (
                 <Text color={"white"} fontWeight="bold" fontSize={16}>
-                  PROFILE
+                  {title.children.toUpperCase()}
                 </Text>
               );
-            }else if (title.children === allDrawerScreens.REQUESTS){
-              return (
-                <Text color={"white"} fontWeight="bold" fontSize={16}>
-                  {allDrawerScreens.REQUESTS.toUpperCase()}
-                </Text>
-              );
-            }else if (title.children === allDrawerScreens.TASKS){
-              return (
-                <Text color={"white"} fontWeight="bold" fontSize={16}>
-                  {allDrawerScreens.TASKS.toUpperCase()}
-                </Text>
-              );
-            }else if(title.children === allDrawerScreens.PEOPLE){
-              return (
-                <Text color={"white"} fontWeight="bold" fontSize={16}>
-                  USERS
-                </Text>
-              );
-            }
           },
           headerRight: () => {
             return (
@@ -187,8 +171,9 @@ function MyDrawer({ navigation }) {
         <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
         {user.payload.departmentlevel.includes("HK","MN") && <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />}
         {/*<Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />*/}   
-        <Drawer.Screen name={allDrawerScreens.PEOPLE} component={ScreenListPeople} />
-        <Drawer.Screen name={allDrawerScreens.CONFIGURATION} component={Component} />
+        <Drawer.Screen name={allDrawerScreens.PEOPLE} children={() => { return <ScreenListPeople navigation={ navigation } />}} />
+        <Drawer.Screen name={allDrawerScreens.CHARTS} children={() => { return <ScreenAnalyticalCharts navigation={ navigation } />}} />
+        <Drawer.Screen name={allDrawerScreens.CONFIGURATION} children={() => { return <ScreenConfig navigation={ navigation } />}} />
         <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
 
       </Drawer.Navigator>

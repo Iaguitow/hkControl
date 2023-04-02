@@ -16,7 +16,7 @@ import {
   Button
 } from "native-base";
 
-const ListPeople = () => {
+const ListPeople = ({navigation}) => {
 
   const peopleList = useSelector(state => state.reducerPeople);
 
@@ -69,8 +69,8 @@ const ListPeople = () => {
           <Box
             borderLeftWidth={8}
             borderRightWidth={8}
-            borderLeftColor={"green.500"}
-            borderRightColor={"green.500"}
+            borderLeftColor={item.active == "S"?"green.500":"red.600"}
+            borderRightColor={item.active == "S"?"green.500":"red.600"}
             borderTopWidth={4}
             borderBottomWidth={4}
             borderColor="coolGray.300"
@@ -105,6 +105,19 @@ const ListPeople = () => {
                   {item.profession}
                 </Text>
                 <Button
+                  onPress={() =>{
+                    const payload = {
+                      name: item.name,
+                      email: item.email,
+                      phonenumber: item.phonenumber,
+                      active: item.active,
+                      dtactive: item.dtactive,
+                      dtdeactive: item.dtdeactive,
+                      idpeople: item.id,
+                      joblevel: item.joblevel
+                    }
+                    navigation.navigate("CompoProfile",{imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople"});
+                  }}
                   endIcon={<Icon size={6} as={MaterialCommunityIcons} name="account-edit-outline"/>}
                 >
                   <Text fontSize={16} fontWeight={"bold"} color={"white"}>

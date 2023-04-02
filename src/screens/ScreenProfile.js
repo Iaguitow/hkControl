@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
+import { AppState, Alert } from 'react-native';
+import { MaterialIcons, Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import ImagePicker from "../utils/ImagePicker";
+import { useFocusEffect } from '@react-navigation/native';
 import gdriverService from "../classes/ClassGDrive";
-import { ProfileActions } from "../Actions/ActionProfile"
+import { ProfileActions } from "../Actions/ActionProfile";
 import { useSelector, useDispatch } from "react-redux";
 import { allFilesTypeNames } from "../utils/ConstFilesTypeNames";
 import  PerformanceLineChart  from "../components/CompoLineChart"
@@ -10,7 +12,7 @@ import CompoLoadingView from "../components/CompoApiLoadingView";
 import {
     Stack,
     Text,
-    HStack,
+    Button,
     Image,
     Box,
     AspectRatio,
@@ -30,43 +32,133 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
 
     const dispatch = useDispatch();
     const getProfile = (idpeople, token_api) => {dispatch(ProfileActions.getProfile(idpeople, token_api ,{ setIsMounted })) }
+    const updateProfile = (token_api, breaktime, idpeople) => {dispatch(ProfileActions.updateProfile(token_api, breaktime, idpeople, null, { setIsMounted })) }
 
     const [imgProfile, setImgProfile] = useState(null);
     const [imgBackProfile, setImgBackProfile] = useState(null);
 
+    const [breakButtonText, SetBreakButtonText] = useState("START BREAK...");
+    const [numberSecs, setNumberSecs] = useState(0);
+    const [numberMin, setNumberMin] = useState(0);
+    const [stateApp, setStateApp] = useState(AppState.currentState);
+
+    const token_api = user.payload.tokenapi;
+    const idpeople = user.payload.idpeople;
+    const breaktime = profile.payload.breaktime;
+    const dateTimeInBreak = profile.payload.datetimeBreakIn;
+    const joblevel = user.payload.joblevel;
+
+
+    const increment = (minutesDifference = 0, secondsDifference = 0) => {
+
+          let counterSecs = secondsDifference;
+          let counterMin = minutesDifference;
+
+          window.TimerId = setInterval(()=>{
+
+            if(counterMin>=2){
+                counterSecs=0;
+                counterMin=0;
+                setNumberSecs(0);
+                setNumberMin(0);
+                clearInterval(window.TimerId);
+                updateProfile(token_api,'N',idpeople, null, { setIsMounted });
+                SetBreakButtonText("START BREAK...");
+                alert("Your break have been finished. Please be ready to receive requests.");
+            }
+
+            minutesDifference>0?setNumberMin(minutesDifference):null
+
+            counterSecs<60?setNumberSecs((previousTime) => previousTime+1+secondsDifference):setNumberSecs(60);
+
+            secondsDifference = 0;
+            minutesDifference = 0;
+            counterSecs += 1;
+            
+            if(counterSecs>=60){
+                counterSecs=0
+                setNumberSecs(0);
+
+                counterMin<60?setNumberMin((previousTime) => previousTime+1):setNumberMin(60);
+                counterMin +=1;
+            }
+            setIsMounted(true);
+        },1000);
+    }
+
+    const handle_initial_timer = () => {
+        const dateStampRequest = new Date(profile.payload.datetimeBreakIn.toString());
+        const dateNow = new Date();
+
+        var difference = dateStampRequest<dateNow?dateNow.getTime() - dateStampRequest.getTime():dateStampRequest.getTime() - dateNow.getTime();
+        var minutesDifference = Math.floor(difference/1000/60);
+
+        difference -= minutesDifference*1000*60;
+        var secondsDifference = Math.floor(difference/1000);
+
+        SetBreakButtonText("COUNTING...");
+        increment(minutesDifference, secondsDifference);
+    }
+
     useEffect(() => {
+
         setIsMounted(false);
-        
-        const imgprofID = user.payload.fileidimgprofile;
-        const imgbackprofID = user.payload.fileidimgbackprofile;
-        const imgIDArray = [imgprofID,imgbackprofID];
-        const token_api = user.payload.tokenapi;
-        const idpeople = user.payload.idpeople;
+        breaktime === "Y"?SetBreakButtonText("COUNTING..."):SetBreakButtonText("START BREAK...");
+        getProfile(idpeople,token_api, {setIsMounted});
 
-        gdriverService.getFile(imgIDArray,token_api).then(allFilesData => {
+        if(!!dateTimeInBreak && breaktime === "Y"){
+            setIsMounted(false);
+            setNumberSecs(0);
+            setNumberMin(0);
+            clearInterval(window.TimerId);
+            handle_initial_timer();
+        }
 
-            if(!allFilesData.data.toString().includes("File not found")){
-                for(let i = 0; i<allFilesData.data.length;i++){
-                
-                    if(allFilesData.data[i].fileName.replace(/[0-9]/g, '') === allFilesTypeNames.IMGPROF){
-                        setImgProfile(allFilesData.data[i].fileLink.replace("s220","s1000"));
-                        setImageDrawerProfile(allFilesData.data[i].fileLink.replace("s220","s1000"));
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if(nextAppState === "active"){
+                setStateApp(nextAppState);
+            } else if(nextAppState === "background"){
+                setStateApp(nextAppState);
+            }
+        });
+
+        return () => {
+            window.clearInterval(window.TimerId);
+            subscription.remove();
+          }
+    },[stateApp]);
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setIsMounted(false);
+            const imgprofID = user.payload.fileidimgprofile;
+            const imgbackprofID = user.payload.fileidimgbackprofile;
+            const imgIDArray = [imgprofID,imgbackprofID];
     
-                    }else if(allFilesData.data[i].fileName.replace(/[0-9]/g, '') === allFilesTypeNames.IMGBACKPROF){
-                        setImgBackProfile(allFilesData.data[i].fileLink.replace("s220","s1000"));
+            gdriverService.getFile(imgIDArray,token_api).then(allFilesData => {
+                if(!allFilesData.data.toString().includes("File not found")){
+                    for(let i = 0; i<allFilesData.data.length;i++){
+                    
+                        if(allFilesData.data[i].fileName.replace(/[0-9]/g, '') === allFilesTypeNames.IMGPROF){
+                            setImgProfile(allFilesData.data[i].fileLink.replace("s220","s1000"));
+                            setImageDrawerProfile(allFilesData.data[i].fileLink.replace("s220","s1000"));
+        
+                        }else if(allFilesData.data[i].fileName.replace(/[0-9]/g, '') === allFilesTypeNames.IMGBACKPROF){
+                            setImgBackProfile(allFilesData.data[i].fileLink.replace("s220","s1000"));
+                        }
                     }
                 }
-            }
-        }).catch(error => { 
-            console.log(error);
-            
-        }).finally(endPoint =>{
-            //setIsMounted(true);
-            getProfile(idpeople,token_api, {setIsMounted});
-            //getTags(idpeople,token_api);
-            
-        });
-    },[]);
+            }).catch(error => { 
+                console.log(error);
+                
+            }).finally(endPoint =>{
+                setIsMounted(true);
+                /*getProfile(idpeople,token_api, {setIsMounted});*/
+                
+            });
+        }, [])
+    );
 
     return (
         <ScrollView>
@@ -78,7 +170,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                 {...nativeBaseProps.ASPECT_RATIO}>
                                 <Image 
                                     source={imgBackProfile === null?require('../../assets/defaultImgBackProfile.jpg'):{uri: imgBackProfile}}
-                                    maxH={175}
+                                    maxH={190}
                                     key={imgBackProfile} 
                                     alt="Background"    
                                 />
@@ -141,7 +233,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                         <Badge 
                             {...nativeBaseProps.EDIT_PROFILE_BADGE_ICON}
                             onTouchStart={() =>{
-                                navigation.navigate("CompoProfile");
+                                navigation.navigate("CompoProfile",{imgProfile:imgProfile, profile:profile, from:"profile"});
                             }}    
                         >
                             <Icon size={"35px"} {...nativeBaseProps.ICON_COLOR} as={<AntDesign name={"edit"}/>} />        
@@ -157,29 +249,56 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                             </Stack>
                             <Stack space={1}>
                                 <Text {...nativeBaseProps.ADDRESS_CONTACT}>
-                                        {"London - England"}
-                                </Text>
-                                <Text {...nativeBaseProps.ADDRESS_CONTACT}>
                                         {profile.payload.email}
                                 </Text>
                                 <Text {...nativeBaseProps.ADDRESS_CONTACT}>
                                         {profile.payload.phonenumber}
                                 </Text>
+                                {joblevel.toString().includes("HS","PA") && <Button
+                                    isDisabled={breaktime==="Y"?true:false}
+                                    _text={
+                                        {
+                                            fontWeight:"bold",
+                                            fontSize:16
+                                        }
+                                    }
+                                    rightIcon={
+                                        <Icon size={6} as={<MaterialCommunityIcons name='food'> </MaterialCommunityIcons>}/>
+                                    }
+                                    onPress={()=>{
+                                        Alert.alert(
+                                            'WARNING!!!',
+                                            'BEFORE PROCEEDING MAKE SURE YOU ARE IN THE KITCHEN AND READY FOR YOUR BREAK.',
+                                            [
+                                            {
+                                                text: 'Cancel',
+                                                onPress: () => {},
+                                                style: 'cancel',
+                                            },
+                                            {text: 'Yes', onPress: () => {
+                                                setIsMounted(false);
+                                                SetBreakButtonText("COUNTING...");
+                                                updateProfile(token_api,'Y',idpeople,{ setIsMounted });
+                                                increment();
+                                            }},
+                                            ],
+                                            {cancelable: false},
+                                        );
+                                    }}
+                                > 
+                                    {breakButtonText.toString().includes("COUNTING...")?breakButtonText.toString()
+                                    +" "+numberMin.toString().padStart(2,"0")+":"+numberSecs.toString().padStart(2,"0"):breakButtonText.toString()
+                                    }
+                                </Button>}
                             </Stack>
                             <Divider {...nativeBaseProps.DIVIDERS} />
                             <VStack>
-                                <Text {...nativeBaseProps.TITLE_TEXT}>
-                                        PERFORMANCE ON LAST SIX MONTHS:
-                                </Text>
-                                <PerformanceLineChart />
+
+                                <PerformanceLineChart setIsMounted={setIsMounted} />
                             </VStack>
-                                <HStack>
-                                    <Text {...nativeBaseProps.INFO_TEXT}>
-                                        This chart is calculated based of the average time to finish a request and if you have done all tasks as expected. It shows your percentagem performance.
-                                    </Text>
-                                </HStack>
-                            <HStack>
-                            </HStack>
+
+
+
                         </Stack>
                     </Box>
                 </Box>

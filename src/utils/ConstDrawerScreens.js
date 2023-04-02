@@ -7,6 +7,7 @@ const allDrawerScreens = {
     CONFIGURATION: "Configuration",
     LOGOUT: "Logout",
     PEOPLE: "People",
+    CHARTS: "Charts",
 };
 
 export { allDrawerScreens }

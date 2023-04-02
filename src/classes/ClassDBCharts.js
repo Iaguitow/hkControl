@@ -1,18 +1,18 @@
 import axios from "axios";
 import Toasts from "../components/CompoToast";
 
-class Profile {
-    getProfile(idpeople, token_api){
+class Charts {
+    getChartTotalRequestPerday(token_api){
         return new Promise((resolve,reject) => {
             try {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/profiles/get/profiles/",
+                    url: "http://192.168.0.17:3000/routes/charts/get/chart/totalRequests/",
                     //SCHOOL IP
-                    //url: "http://172.26.192.211:3000/routes/get/profiles/",
+                    //url: "http://172.26.192.211:3000/routes/get/charts/totalRequests/",
                     withCredentials: true,
-                    params: {idpeople},
+                    params: {},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
@@ -28,63 +28,24 @@ class Profile {
                 Toasts.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
                 reject(error);
             }
-
         });
     }
 
-    updateProfile(token_api, breakType = null, idpeople, profileObjec = null){
-        return new Promise((resolve,reject) => {
-            try {  
-                return axios({
-                    method: "POST",
-                    //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/profiles/update/profiles/",
-                    //SCHOOL IP
-                    //url: "http://172.26.192.211:3000/routes/update/profiles/",
-                    withCredentials: true,
-                    data: {breakType,idpeople,profileObjec},
-                    headers:{
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': "Bearer "+token_api
-                    }
-
-                }).then(response => {
-                    resolve(response);
-
-                }).catch(error =>{
-                    Toasts.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
-                    reject(error);
-
-                });
-
-            } catch (error) {
-                Toasts.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
-                reject(error);
-
-            }
-
-        }).catch(err =>{
-            reject(err);
-
-        });
-    }
-
-    getProfileChart(userObject){
+    getChartReqToBeDone(token_api){
         return new Promise((resolve,reject) => {
             try {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/profiles/get/profiles/chart/",
+                    url: "http://192.168.0.17:3000/routes/charts/get/chart/longerRequestToBeDone/",
                     //SCHOOL IP
-                    //url: "http://172.26.192.211:3000/routes/get/profiles/chart/",
+                    //url: "http://172.26.192.211:3000/routes/get/charts/longerRequestToBeDone/",
                     withCredentials: true,
-                    params: {idpeople:userObject.idpeople,joblevel:userObject.joblevel},
+                    params: {},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': "Bearer "+userObject.token_api
+                        'Authorization': "Bearer "+token_api
                     }
                 }).then(response =>{
                     resolve(response);
@@ -96,12 +57,38 @@ class Profile {
                 Toasts.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
                 reject(error);
             }
-
         });
     }
 
-
+    getChartPerfPorter(token_api){
+        return new Promise((resolve,reject) => {
+            try {
+                axios({
+                    method: "GET",
+                    //HOUSE IP
+                    url: "http://192.168.0.17:3000/routes/charts/get/chart/perfPorter/",
+                    //SCHOOL IP
+                    //url: "http://172.26.192.211:3000/routes/get/charts/perfPorter/",
+                    withCredentials: true,
+                    params: {},
+                    headers:{
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Bearer "+token_api
+                    }
+                }).then(response =>{
+                    resolve(response);
+                }).catch(error =>{
+                    Toasts.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
+                    reject(error);
+                });
+            } catch (error) {
+                Toasts.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
+                reject(error);
+            }
+        });
+    }
 } 
 
-var Profiles = new Profile();
-export default Profiles;
+var ChartsData = new Charts();
+export default ChartsData;
