@@ -13,9 +13,10 @@ const ScreenTasks = () => {
     const dispatch = useDispatch();
     const getTask = (idpeople, token_api, joblevel) => {dispatch(TasksActions.getTasks(idpeople, token_api, joblevel, {setIsMounted})) }
     const user = useSelector(state => state.reducerLogin);
-    
+
     useFocusEffect(
         React.useCallback(() => {
+    
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
         const joblevel = user.payload.joblevel;

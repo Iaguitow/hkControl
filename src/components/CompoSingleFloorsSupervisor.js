@@ -2,28 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { CheckIcon, Icon, Select} from "native-base";
 import { Entypo } from "@expo/vector-icons";
 
-export default function SingleSelectJobCategory({categories,EDIT_USER_JOB, jobSelected, setJobSelected}) {
+export default function SingleSelectFloorSupervisor({supervisors, supervsiorSelected, setFloorMaped, floorMaped, idfloors}) {
 
-    const [listJobs, setListJobs] = useState([]);
+    const [listofResponsible, setResponsible] = useState([]);
+    const [supervisorSelected, setSupervisorSelected] = useState(supervsiorSelected);
 
     useEffect(()=>{
-        setListJobs(categories);
-    },[]);
+        setResponsible(supervisors);
+    },[supervisors]);
 
     return (
         <Select
-            isDisabled={EDIT_USER_JOB==="N"?true:false}
-            selectedValue={jobSelected}
-            onValueChange={itemValue => {
-                setJobSelected(itemValue);
-
+            selectedValue={supervisorSelected}
+            onValueChange={idSupervisor => {
+                    setSupervisorSelected(idSupervisor);
+                    for(var i = 0; i<floorMaped.length; i++){
+                        if(floorMaped[i].idfloors === idfloors){
+                            floorMaped[i].fk_supervisor_floor = idSupervisor;
+                        }
+                    }
+                    setFloorMaped(floorMaped);
                 }
             }
             textAlign={"center"}
             {...NATIVEBASE_PROPS.SELECT}
         >
             {
-                listJobs.map((item, index) => {
+                listofResponsible.map((item, index) => {
                     return (
                         <Select.Item
                             _text={
@@ -32,7 +37,7 @@ export default function SingleSelectJobCategory({categories,EDIT_USER_JOB, jobSe
                                 }
                             }
                             {...NATIVEBASE_PROPS.SELECT_ITEM} key={index}
-                            label={item.categoryname} value={item.categorylevel}
+                            label={item.name} value={item.id}
                         />
                     );
                 })

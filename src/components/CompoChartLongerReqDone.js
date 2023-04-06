@@ -24,7 +24,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ChartActions } from '../Actions/ActionChartsScreen';
 
-export default function CompoChartLongerReqToBeDone({ setIsMounted }) {
+export default function CompoChartLongerReqToBeDone({ isMounted, setIsMounted }) {
 
     const user = useSelector(state => state.reducerLogin);
 
@@ -54,7 +54,7 @@ export default function CompoChartLongerReqToBeDone({ setIsMounted }) {
 
     return (
         <View>
-            <Stack p={0}>
+            { isMounted && <Stack p={0}>
                 <Center>
                     <Text fontWeight={"bold"}>
                         5 LONGER REQUESTS TO BE DONE:
@@ -134,7 +134,7 @@ export default function CompoChartLongerReqToBeDone({ setIsMounted }) {
                 </View>
 
                 <Divider {...nativeBaseProps.DIVIDERS}></Divider>
-            </Stack>
+            </Stack>}
         </View>
     );
 };

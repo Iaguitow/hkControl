@@ -11,12 +11,19 @@ import { View, ScrollView } from "native-base";
 const ScreenAnalyticalCharts = () => {
     const [isMounted, setIsMounted] = useState(false);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setIsMounted(false);
+            return () => {false};
+        }, [])
+    );
+
     return (
         <ScrollView>
             <View flex={1} alignItems={"center"}>
-                <CompoChartTotalRequests setIsMounted={setIsMounted}></CompoChartTotalRequests>
-                <CompoChartLongerReqToBeDone setIsMounted={setIsMounted}></CompoChartLongerReqToBeDone>
-                <CompoChartPerfPorters setIsMounted={setIsMounted}></CompoChartPerfPorters>
+                <CompoChartTotalRequests isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartTotalRequests>
+                <CompoChartLongerReqToBeDone isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartLongerReqToBeDone>
+                <CompoChartPerfPorters isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartPerfPorters>
                 {!isMounted && <CompoLoadingView />}
             </View>
         </ScrollView>

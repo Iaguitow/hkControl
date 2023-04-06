@@ -12,9 +12,12 @@ const ScreenRequests = () => {
     const [isMounted, setIsMounted] = useState(false);
 
     const dispatch = useDispatch();
-    const getRequests = (idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(idpeople, joblevel, token_api, {setIsMounted})) }
+    const getRequests = (userAccess, idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(userAccess,idpeople, joblevel, token_api, {setIsMounted})) }
     const user = useSelector(state => state.reducerLogin);
     const joblevel = user.payload.joblevel;
+    const screenAccess = user.payload.screenAccess;
+    const screenFunctionsAccess = user.payload.screenFunctionAccess
+    const userAccess = {screenAccess,screenFunctionsAccess}
 
     useFocusEffect(
         React.useCallback(() => {
@@ -24,7 +27,7 @@ const ScreenRequests = () => {
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
         
-        getRequests(idpeople, joblevel, token_api,{setIsMounted});
+        getRequests(userAccess, idpeople, joblevel, token_api,{setIsMounted});
         return () => setIsMounted(true);
         }, [])
     );
@@ -33,7 +36,7 @@ const ScreenRequests = () => {
         <Center flex={1}>
             <LinearGradient {...NativeBaseProps.LINEAR_BACK_GROUND_COLOR}  />
             {
-                joblevel.toString().includes("PS","HM","CO","RM","GM")?<CompoManagerRequestsView setIsMounted={ setIsMounted }/>:<CompoResquests setIsMounted={ setIsMounted }/>
+                user.payload.screenFunctionAccess.REQUESTS_AS_MANAGER === "Y" ?<CompoManagerRequestsView setIsMounted={ setIsMounted }/>:<CompoResquests setIsMounted={ setIsMounted }/>
 
             }
             {isMounted && <CompoLoadingView />}

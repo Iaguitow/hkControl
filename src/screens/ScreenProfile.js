@@ -47,6 +47,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
     const breaktime = profile.payload.breaktime;
     const dateTimeInBreak = profile.payload.datetimeBreakIn;
     const joblevel = user.payload.joblevel;
+    const funcetionScreenAccess = user.payload.screenFunctionAccess;
 
 
     const increment = (minutesDifference = 0, secondsDifference = 0) => {
@@ -57,6 +58,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
           window.TimerId = setInterval(()=>{
 
             if(counterMin>=2){
+                setIsMounted(false);
                 counterSecs=0;
                 counterMin=0;
                 setNumberSecs(0);
@@ -127,7 +129,6 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
             subscription.remove();
           }
     },[stateApp]);
-
 
     useFocusEffect(
         React.useCallback(() => {
@@ -254,7 +255,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                 <Text {...nativeBaseProps.ADDRESS_CONTACT}>
                                         {profile.payload.phonenumber}
                                 </Text>
-                                {joblevel.toString().includes("HS","PA") && <Button
+                                {funcetionScreenAccess.BREAK_TIME==="y" && <Button
                                     isDisabled={breaktime==="Y"?true:false}
                                     _text={
                                         {

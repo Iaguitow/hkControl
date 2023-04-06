@@ -34,10 +34,13 @@ const CompoRequests = ({ setIsMounted }) => {
   } = useDisclose();
 
   const dispatch = useDispatch();
-  const updateRequest = (idrequests, requestdone, idpeople, token_api, joblevel) => {dispatch(RequestActions.updateRquests(idrequests, requestdone, idpeople, token_api, joblevel,{setIsMounted})) }
-  const getRequests = (idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(idpeople, joblevel, token_api, {setIsMounted, setRefreshing})) }
+  const updateRequest = (userAccess,idrequests, requestdone, idpeople, token_api, joblevel) => {dispatch(RequestActions.updateRquests(userAccess,idrequests, requestdone, idpeople, token_api, joblevel,{setIsMounted})) }
+  const getRequests = (userAccess,idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(userAccess,idpeople, joblevel, token_api, {setIsMounted, setRefreshing})) }
   const requests = useSelector(state => state.reducerRequests);
   const user = useSelector(state => state.reducerLogin);
+  const screenAccess = user.payload.screenAccess;
+  const screenFunctionsAccess = user.payload.screenFunctionAccess
+  const userAccess = {screenAccess,screenFunctionsAccess}
   
   const [refreshing, setRefreshing] = useState(false);
 
@@ -47,7 +50,7 @@ const CompoRequests = ({ setIsMounted }) => {
     const token_api = user.payload.tokenapi;
     const idpeople = user.payload.idpeople;
     const joblevel = user.payload.joblevel;
-    getRequests(idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
+    getRequests(userAccess,idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
   }, []);
 
   const item = [];
@@ -186,7 +189,7 @@ const CompoRequests = ({ setIsMounted }) => {
                             const idpeople = user.payload.idpeople;
                             const joblevel = user.payload.joblevel;
                             const requestdone = item.dtrequestdone==null?!false:null
-                            updateRequest(item.idresquests,requestdone,idpeople,token_api, joblevel, {setIsMounted});
+                            updateRequest(userAccess, item.idresquests,requestdone,idpeople,token_api, joblevel, {setIsMounted});
                             if(requests.api_status === actionsTypesAPI.STATUS_OK){
                                 Toasts.showToast("Request Successfully Saved");
                             }
@@ -224,6 +227,7 @@ const CompoRequests = ({ setIsMounted }) => {
           onOpen={onOpen}
           onRefresh={onRefresh}
           timeStamp={timeStamp}
+          userAccess={userAccess}
         />}
     </Box>
   )

@@ -167,13 +167,13 @@ function MyDrawer({ navigation }) {
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} countRequests={ countRequests } setCountRequests={ setCount_Requests } imageDrawerProfile={ imageDrawerProfile } />}
       >
-        <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />
-        <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />
-        {user.payload.departmentlevel.includes("HK","MN") && <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />}
+        {user.payload.screenAccess.PROFILE === "Y" && <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />}
+        {user.payload.screenAccess.REQUESTS === "Y" && <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />}
+        {user.payload.screenAccess.TASKS === "Y" && <Drawer.Screen name={allDrawerScreens.TASKS} children={() => { return (<ScreenTasks></ScreenTasks>)}} />}
         {/*<Drawer.Screen name={allDrawerScreens.CHECK_LIST} children={() => { return (<ScreenCheckList></ScreenCheckList>)}} />*/}   
-        <Drawer.Screen name={allDrawerScreens.PEOPLE} children={() => { return <ScreenListPeople navigation={ navigation } />}} />
-        <Drawer.Screen name={allDrawerScreens.CHARTS} children={() => { return <ScreenAnalyticalCharts navigation={ navigation } />}} />
-        <Drawer.Screen name={allDrawerScreens.CONFIGURATION} children={() => { return <ScreenConfig navigation={ navigation } />}} />
+        {user.payload.screenAccess.PEOPLE === "Y" && <Drawer.Screen name={allDrawerScreens.PEOPLE} children={() => { return <ScreenListPeople navigation={ navigation } />}} />}
+        {user.payload.screenAccess.CHARTS === "Y" && <Drawer.Screen name={allDrawerScreens.CHARTS} children={() => { return <ScreenAnalyticalCharts navigation={ navigation } />}} />}
+        {user.payload.screenAccess.CONFIG === "Y" && <Drawer.Screen name={allDrawerScreens.CONFIGURATION} children={() => { return <ScreenConfig navigation={ navigation } />}} />}
         <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
 
       </Drawer.Navigator>

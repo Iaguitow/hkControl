@@ -22,7 +22,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { useSelector, useDispatch } from "react-redux";
 import { ChartActions } from '../Actions/ActionChartsScreen';
 
-export default function CompoChartTotalRequests({ setIsMounted }) {
+export default function CompoChartTotalRequests({isMounted, setIsMounted }) {
 
     const user = useSelector(state => state.reducerLogin);
 
@@ -52,7 +52,7 @@ export default function CompoChartTotalRequests({ setIsMounted }) {
 
     return (
         <View>
-            <Stack p={5}>
+            {isMounted && <Stack p={5}>
                 <Center>
                     <Text fontWeight={"bold"}>
                         TOTAL OF REQUESTS ORDERED LAST 5 DAYS:
@@ -117,9 +117,7 @@ export default function CompoChartTotalRequests({ setIsMounted }) {
                     }}
                 />
                 <Divider {...nativeBaseProps.DIVIDERS}></Divider>
-            </Stack>
-            
-            {/* *********************** STACK 02 ***************** */}
+            </Stack>}
         </View>
     );
 };

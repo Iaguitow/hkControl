@@ -2,7 +2,7 @@ import { actionsTypes } from "./ConstActions";
 import dbJobCategories from "../classes/ClassDBJobsCategory";
 
 const jobCategoriesActions = {
-    getJobCategories: (token_api) => dispatch => {
+    getJobCategories: (token_api, { setIsMounted }) => dispatch => {
         dbJobCategories.getJobCategories(token_api).then(response =>{
             dispatch({
                 type: actionsTypes.GET_JOB_CATEGORIES ,
@@ -14,7 +14,7 @@ const jobCategoriesActions = {
                 payload: {jobcategories:null, error_message: error.message},
             });
         }).finally(endpoint =>{
-
+            setIsMounted(true);
         });
     },
     updateJobCategories: (token_api) => dispatch => {

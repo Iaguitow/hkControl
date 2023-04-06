@@ -5,6 +5,16 @@ class Toasts extends Component {
   static showToast(alert, title = "", description = "", toasts = null) {
     
     switch (alert) {
+
+      case 'Save':
+        Toast.show({
+            title: "SUCCESSFULLY SAVED!",
+            status: "success",
+            description: "INFORMATION SUCCESSFULLY  SAVED!",
+            duration: 8000,
+        })
+      break;
+
       case 'Error':
         Toast.show({
             title: title,
@@ -13,6 +23,7 @@ class Toasts extends Component {
             duration: 8000,
         })
       break;
+
       case 'Cancel Request':
         Toast.show({
             title: "ACTION NOT ALLOWED!",

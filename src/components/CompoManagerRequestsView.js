@@ -30,10 +30,13 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
   const dispatch = useDispatch();
   const section = [];
 
-  const getRequests = (idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(idpeople, joblevel, token_api, {setIsMounted, setRefreshing})) }
+  const getRequests = (userAccess,idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(userAccess,idpeople, joblevel, token_api, {setIsMounted, setRefreshing})) }
 
   const requests = useSelector(state => state.reducerRequests.payload.requests);
   const user = useSelector(state => state.reducerLogin);
+  const screenAccess = user.payload.screenAccess;
+  const screenFunctionsAccess = user.payload.screenFunctionAccess
+  const userAccess = {screenAccess,screenFunctionsAccess}
   
   const [refreshing, setRefreshing] = useState(false);
 
@@ -64,7 +67,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
     const token_api = user.payload.tokenapi;
     const idpeople = user.payload.idpeople;
     const joblevel = user.payload.joblevel;
-    getRequests(idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
+    getRequests(userAccess,idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
   }, []);
 
   if (requests !== null) {
@@ -403,7 +406,8 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
         requestDetail={requestDetail} 
         isOpen={isOpen} onClose={onClose}
         onRefresh={onRefresh}
-        timeStamp={timeStamp}  
+        timeStamp={timeStamp}
+        userAccess={userAccess}  
       />}
     </Box>
   );

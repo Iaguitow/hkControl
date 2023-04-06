@@ -19,7 +19,7 @@ import {
     Switch
 } from "native-base";
 
-function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onOpen, onRefresh, timeStamp}) {
+function requestDetails({userAccess,id_whocancelled, token_api, joblevel, requestDetail, isOpen, onClose, onOpen, onRefresh, timeStamp}) {
 
     const dispatch = useDispatch();
 
@@ -239,7 +239,7 @@ function requestDetails({id_whocancelled, token_api, joblevel, requestDetail, is
                                         </Text>
                                         <Switch
                                             disabled={
-                                                joblevel == "PA" || joblevel == "HS" || requestDetail.fulldtrequestdone !== null 
+                                                userAccess.screenFunctionsAccess.CANCEL_REQUEST==="N" || requestDetail.fulldtrequestdone !== null 
                                                 || requestDetail.dtcancellation !== null ?true:false
                                             }
                                             isChecked={requestDetail.dtcancellation !== null ?true:false}

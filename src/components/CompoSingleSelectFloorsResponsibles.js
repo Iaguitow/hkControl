@@ -2,28 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { CheckIcon, Icon, Select} from "native-base";
 import { Entypo } from "@expo/vector-icons";
 
-export default function SingleSelectJobCategory({categories,EDIT_USER_JOB, jobSelected, setJobSelected}) {
+export default function SingleSelectFloorResponsible({responsible, responsibleSelected, setFloorMaped, floorMaped, idfloors}) {
 
-    const [listJobs, setListJobs] = useState([]);
+    const [listofResponsible, setResponsible] = useState([]);
+    const [porterSelected, setPorterSelected] = useState(responsibleSelected);
 
     useEffect(()=>{
-        setListJobs(categories);
-    },[]);
-
+        setResponsible(responsible);
+    },[responsible]);
+    
     return (
         <Select
-            isDisabled={EDIT_USER_JOB==="N"?true:false}
-            selectedValue={jobSelected}
-            onValueChange={itemValue => {
-                setJobSelected(itemValue);
-
+            selectedValue={porterSelected}
+            onValueChange={idPorter => {
+                    setPorterSelected(idPorter);
+                    for(var i = 0; i<floorMaped.length; i++){
+                        if(floorMaped[i].idfloors === idfloors){
+                            floorMaped[i].fk_porter_floor = idPorter;
+                        }
+                    }
+                    setFloorMaped(floorMaped);
                 }
             }
             textAlign={"center"}
             {...NATIVEBASE_PROPS.SELECT}
         >
             {
-                listJobs.map((item, index) => {
+                listofResponsible.map((item, index) => {
                     return (
                         <Select.Item
                             _text={
@@ -32,7 +37,7 @@ export default function SingleSelectJobCategory({categories,EDIT_USER_JOB, jobSe
                                 }
                             }
                             {...NATIVEBASE_PROPS.SELECT_ITEM} key={index}
-                            label={item.categoryname} value={item.categorylevel}
+                            label={item.name} value={item.id}
                         />
                     );
                 })
@@ -55,7 +60,7 @@ const NATIVEBASE_PROPS = {
         borderWidth: 2,
         borderColor: "#00b9f3",
         accessibilityLabel: "Choose the Category",
-        placeholder: "Choose the Category",
+        placeholder: "Choose Responsible",
         borderRadius: 10,
         _selectedItem: {
             bg: "#00b9f3",

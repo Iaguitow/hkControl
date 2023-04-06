@@ -33,7 +33,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
     const rooms = useSelector(state => state.reducerRooms);
     const requests = useSelector(state => state.reducerRequests);
     const requestsType = useSelector(state => state.reducerRequestType);
-    const insertNewRequest = (requestObj, token_api, idpeople, joblevel) => {dispatch(RequestActions.insertNewRequest(requestObj, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal})) }
+    const insertNewRequest = (userAccess, requestObj, token_api, idpeople, joblevel) => {dispatch(RequestActions.insertNewRequest(userAccess,requestObj, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal})) }
 
     const [priorityValue, setPriorityValue] = useState(false);
     const [selectIsDisabled, setSelectIsDisabled] = useState(true);
@@ -45,6 +45,10 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
     const [fadeEffect,setFadeEffect] = useState(new Animated.Value(0));
 
     const [multRequests, setMultRequests] = useState([]);
+
+    const screenAccess = user.payload.screenAccess;
+    const screenFunctionsAccess = user.payload.screenFunctionAccess
+    const userAccess = {screenAccess,screenFunctionsAccess}
 
     useEffect(() => {
         setAmountValue(1);
@@ -245,7 +249,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 var token_api = user.payload.tokenapi;
                                 var idpeople = user.payload.idpeople;
                                 
-                                insertNewRequest(multRequests, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal});
+                                insertNewRequest(userAccess, multRequests, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal});
                                 
                                 if(requests.api_status === actionsTypesAPI.STATUS_OK){
                                     Toasts.showToast("Request Successfully Saved");

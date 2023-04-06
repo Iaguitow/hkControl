@@ -17,6 +17,40 @@ const ActionRooms = {
 
         });
     },
+
+    getFloors: (token_api, {setIsMounted}) => dispatch => {
+        dbRooms.getFloors(token_api).then(response =>{
+            dispatch({
+                type: actionsTypes.GET_FLOORS,
+                payload_F: {floors:response.data, error_message: null},
+            });
+        }).catch(error => {
+            dispatch({
+                type: actionsTypes.GET_FLOORS_ERROR,
+                payload_F: {floors:null, error_message: error.message},
+            });
+        }).finally(endpoint =>{
+            //setIsMounted(true);
+        });
+    },
+
+
+    updateFloors: (floorObj,token_api, {setIsMounted}) => dispatch => {
+        dbRooms.updateFloor(floorObj, token_api).then(response =>{
+            dispatch({
+                type: actionsTypes.UPDATE_FLOORS,
+                payload_F: {floors:response.data, error_message: null},
+            });
+        }).catch(error => {
+            dispatch({
+                type: actionsTypes.UPDATE_FLOORS_ERROR,
+                payload_F: {floors:null, error_message: error.message},
+            });
+        }).finally(endpoint =>{
+            setIsMounted(true);
+            handleToastSavation();
+        });
+    },
 }
 
 export { ActionRooms }

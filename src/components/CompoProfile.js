@@ -29,7 +29,7 @@ import {
 const CompoProfileContext = ({ navigation }) => {
 
   const dispatch = useDispatch();
-  const getJobCategories = (token_api) => { dispatch(jobCategoriesActions.getJobCategories(token_api)) }
+  const getJobCategories = (token_api) => { dispatch(jobCategoriesActions.getJobCategories(token_api, { setIsMounted })) }
   const updateProfile = (token_api, breaktime, idpeople, profileObjec) => {dispatch(ProfileActions.updateProfile(token_api, breaktime, idpeople, profileObjec, { setIsMounted })) }
 
   const user = useSelector(state => state.reducerLogin);
@@ -58,7 +58,7 @@ const CompoProfileContext = ({ navigation }) => {
   const [borderEmailWidth, setBorderEmailWidth] = useState(1);
   const [borderPhoneWidth, setBorderPhoneWidth] = useState(1);
 
-  const [isMounted, setIsMounted] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [userActiveStatus, setUserActiveStatus] = useState(true);
   const [imgProfile, setImgProfile] = useState(null);
   const [profileInfo, setProfileInfo] = useState({active:"N", dtactive:null, dtdeactive:null, phone:null, name:null, email:null});
@@ -71,12 +71,10 @@ const CompoProfileContext = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      const token_api = user.payload.tokenapi;
-      getJobCategories(token_api);
+      setIsMounted(false);
       if (route.params) {
         if(route.params.from === "listpeople"){
           setJobSelected(route.params.profile.payload.joblevel);
-          console.log(route.params.profile.payload.idpeople);
           setIdpeople(route.params.profile.payload.idpeople);
         }
         setImgProfile(route.params.imgProfile);
@@ -86,6 +84,8 @@ const CompoProfileContext = ({ navigation }) => {
         Setphone(route.params.profile.payload.phonenumber);
         setUserActiveStatus(route.params.profile.payload.active == "S"?true:false); 
       }
+      const token_api = user.payload.tokenapi;
+      getJobCategories(token_api, setIsMounted);
     }, [])
   );
 
@@ -95,9 +95,10 @@ const CompoProfileContext = ({ navigation }) => {
         <Box mt={10}>
           <HStack>
             <Icon
+              paddingLeft={3}
               {...nativeBaseProps.ICON_GOBACK}
-              onPress={() => { navigation.goBack(); }}
               as={<MaterialIcons name="arrow-back-ios" />}
+              onPress={() => { navigation.goBack(); }}
             />
             <Box {...nativeBaseProps.BOX_TITLE}>
               <Text {...nativeBaseProps.TEXT_TITLE}> Profile Edition </Text>
@@ -117,7 +118,7 @@ const CompoProfileContext = ({ navigation }) => {
           <Stack {...nativeBaseProps.STACK_BODY}>
             {!!jobCategories.payload.jobcategories && <SelectJobCategory
               categories={jobCategories.payload.jobcategories}
-              userJobLevel={userJobLevel}
+              EDIT_USER_JOB={user.payload.screenFunctionAccess.EDIT_USER_JOB}
               setJobSelected={setJobSelected}
               jobSelected={jobSelected}
             />}
@@ -263,7 +264,7 @@ const CompoProfileContext = ({ navigation }) => {
               >
                 <Switch
                   trackColor={userActiveStatus?"green.700":"red.600"}
-                  disabled={userJobLevel.toString().includes("HS","PA")?true:false}
+                  disabled={user.payload.screenFunctionAccess.EDIT_ACTIVE_USER==="N"?true:false}
                   onToggle={(valueStatus) => {
                     setUserActiveStatus(valueStatus);
                   }}
