@@ -9,7 +9,7 @@ class JobCategory {
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/jobs/get/jobcategories",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/jobs/get/jobcategories",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/jobs/get/jobcategories",
                     withCredentials: true,

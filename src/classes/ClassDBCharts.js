@@ -8,7 +8,7 @@ class Charts {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/charts/get/chart/totalRequests/",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/charts/get/chart/totalRequests/",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/get/charts/totalRequests/",
                     withCredentials: true,
@@ -37,7 +37,7 @@ class Charts {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/charts/get/chart/longerRequestToBeDone/",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/charts/get/chart/longerRequestToBeDone/",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/get/charts/longerRequestToBeDone/",
                     withCredentials: true,
@@ -66,7 +66,7 @@ class Charts {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/charts/get/chart/perfPorter/",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/charts/get/chart/perfPorter/",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/get/charts/perfPorter/",
                     withCredentials: true,

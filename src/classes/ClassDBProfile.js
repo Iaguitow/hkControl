@@ -8,7 +8,7 @@ class Profile {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/profiles/get/profiles/",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/profiles/get/profiles/",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/get/profiles/",
                     withCredentials: true,
@@ -38,7 +38,7 @@ class Profile {
                 return axios({
                     method: "POST",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/profiles/update/profiles/",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/profiles/update/profiles/",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/update/profiles/",
                     withCredentials: true,
@@ -76,7 +76,7 @@ class Profile {
                 axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/profiles/get/profiles/chart/",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/profiles/get/profiles/chart/",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/get/profiles/chart/",
                     withCredentials: true,

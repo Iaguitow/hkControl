@@ -10,7 +10,7 @@ class Login {
             return axios({
                 method: "post",
                 //HOUSE IP
-                url: "http://192.168.0.17:3000/routes/login/login/register",
+                url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/login/login/register",
                 //SCHOOL IP
                 //url: "http://172.26.192.211:3000/routes/login/register",
                 withCredentials: true,
@@ -42,7 +42,7 @@ class Login {
               return axios({
                   method: "post",
                   //HOUSE IP
-                  url: "http://192.168.0.17:3000/routes/login/login/",
+                  url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/login/login/",
                   //SCHOOL IP
                   //url: "http://172.26.192.211:3000/routes/login",
                   withCredentials: true,
@@ -53,6 +53,7 @@ class Login {
                   }
               }).then(function (response){
                   if(typeof response.data === "string"){
+                    console.log(response);
                       Toast.showToast(response.data);
                       resolve(response.data);
                   }
@@ -61,6 +62,7 @@ class Login {
                       resolve(user);
                   }).catch((error) => {reject(error)});
               }).catch(function (error){
+                  console.log(error);
                   Toast.showToast("Error","Connection Error",error.message+", If this error continue happening, please verify your connectionn or try again later. ");
                   reject(false);
               }).finally(function (){
@@ -80,7 +82,7 @@ class Login {
             return axios({
               method: 'PUT',
               //HOUSE IP
-              url: "http://192.168.0.17:3000/routes/login/login/recoverycode",
+              url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/login/login/recoverycode",
               //SCHOOL IP
               //url: "http://172.26.192.140:3000/routes/login/recoverycode",
               withCredentials: true,
@@ -110,7 +112,7 @@ class Login {
             return axios({  
               method: 'POST',
               //HOUSE IP
-              url: "http://192.168.0.17:3000/routes/login/login/resetpassword",
+              url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/login/login/resetpassword",
               //SCHOOL IP
               //url: "http://172.26.192.211:3000/routes/login/resetpassword",
               withCredentials: true,

@@ -9,7 +9,7 @@ class Room{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/rooms/rooms",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/rooms/rooms",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/rooms/rooms",
                     withCredentials: true,
@@ -46,7 +46,7 @@ class Room{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/rooms/floors",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/rooms/floors",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/rooms/floors",
                     withCredentials: true,
@@ -83,7 +83,7 @@ class Room{
                 return axios({
                     method: "POST",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/rooms/floors/update/floor",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/rooms/floors/update/floor",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/update/floor",
                     withCredentials: true,

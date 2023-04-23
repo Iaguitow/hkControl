@@ -9,7 +9,7 @@ class People {
         return axios({
           method: 'GET',
           //HOUSE IP
-          url: "http://192.168.0.17:3000/routes/people/getPeople",
+          url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/people/getPeople",
           //SCHOOL IP
           //url: "http://172.26.192.211:3000/routes/getPeople",
           withCredentials: true,
@@ -41,9 +41,9 @@ class People {
             return axios({
                 method: "POST",
                 //HOUSE IP
-                url: "http://192.168.0.17:3000/routes/people/update/people",
+                url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/people/update/people",
                 //SCHOOL IP
-                //url: "http://192.168.0.17:3000/routes/people/update/people",
+                //url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/people/update/people",
                 withCredentials: true,
                 data: {peopleList,idpeople,pushExpoToken},
                 headers:{

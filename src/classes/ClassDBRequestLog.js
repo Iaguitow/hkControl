@@ -9,7 +9,7 @@ class Requests{
                 return axios({
                     method: "GET",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/requestLog/requestLog",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/requestLog/requestLog",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/requestLog",
                     withCredentials: true,
@@ -45,7 +45,7 @@ class Requests{
                 return axios({
                     method: "POST",
                     //HOUSE IP
-                    url: "http://192.168.0.17:3000/routes/requestLog/insert/new_requestLog",
+                    url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/requestLog/insert/new_requestLog",
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/insert/new_request",
                     withCredentials: true,
