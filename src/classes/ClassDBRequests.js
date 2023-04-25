@@ -48,7 +48,7 @@ class Requests{
                     //HOUSE IP
                     url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/requests/requests",
                     //SCHOOL IP
-                    //url: "http://172.26.192.211:3000/routes/requests",
+                    //url: "http://192.168.0.17:3000/routes/requests/requests",
                     withCredentials: true,
                     params: {userAccess,idpeople,joblevel},
                     headers:{
@@ -78,9 +78,10 @@ class Requests{
         });
     }
 
-    updateRequests(userAccess, idrequests, requestdone, idpeople, token_api, joblevel, whoresquested){
+    updateRequests(useAccess, idrequests, requestdone, idpeople, token_api, joblevel, whoresquested){
         return new Promise((resolve,reject) => {
-            try {  
+            try {
+                var userAccess = JSON.stringify(useAccess);  
                 return axios({
                     method: "POST",
                     //HOUSE IP
@@ -116,9 +117,10 @@ class Requests{
         });
     }
 
-    insertNewRequest(userAccess, requestObj, token_api, idpeople,joblevel){
+    insertNewRequest(useAccess, requestObj, token_api, idpeople,joblevel){
         return new Promise((resolve,reject) => {
             try {  
+                var userAccess = JSON.stringify(useAccess);
                 return axios({
                     method: "POST",
                     //HOUSE IP

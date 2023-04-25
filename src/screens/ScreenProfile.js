@@ -40,7 +40,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
     const [breakButtonText, SetBreakButtonText] = useState("START BREAK...");
     const [numberSecs, setNumberSecs] = useState(0);
     const [numberMin, setNumberMin] = useState(0);
-    const [stateApp, setStateApp] = useState(AppState.currentState);
+    const [stateApp, setStateApp] = useState(null);
 
     const token_api = user.payload.tokenapi;
     const idpeople = user.payload.idpeople;
@@ -84,7 +84,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                 counterMin<60?setNumberMin((previousTime) => previousTime+1):setNumberMin(60);
                 counterMin +=1;
             }
-            setIsMounted(true);
+            //setIsMounted(true);
         },1000);
     }
 
@@ -154,7 +154,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                 console.log(error);
                 
             }).finally(endPoint =>{
-                setIsMounted(true);
+                //setIsMounted(true);
                 /*getProfile(idpeople,token_api, {setIsMounted});*/
                 
             });
@@ -255,7 +255,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                                 <Text {...nativeBaseProps.ADDRESS_CONTACT}>
                                         {profile.payload.phonenumber}
                                 </Text>
-                                {funcetionScreenAccess.BREAK_TIME==="y" && <Button
+                                {funcetionScreenAccess.BREAK_TIME==="Y" && <Button
                                     isDisabled={breaktime==="Y"?true:false}
                                     _text={
                                         {

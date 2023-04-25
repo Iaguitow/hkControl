@@ -52,7 +52,7 @@ const ProfileActions = {
             });
         }).finally(endPoint => {
             if(typeof setIsMounted === "function"){
-                setIsMounted(true);
+                //setIsMounted(true);
             }
             
         });

@@ -346,7 +346,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                           {portersRequests.timeRequested}
                                         </Text>
                                         <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"20%"} maxWidth={"20%"} noOfLines={1}>
+                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"15%"} maxWidth={"15%"} noOfLines={1}>
                                           {portersRequests.requestPreviewDsc}
                                         </Text>
                                         <Divider {...NativeBaseProps.DIVIDER} />

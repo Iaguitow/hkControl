@@ -3,8 +3,6 @@ import { Animated } from "react-native";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import FootTabLogin from "../components/FootTabLogin";
-import dbLogin from "../classes/ClassDBLogin";
-import SocialMedia from "../classes/ClassSocialMedia";
 import Toast from "../components/CompoToast";
 import GeneralUtils from "../utils/GeneralUtils";
 import { actionsTypesAPI } from "../Actions/ConstActionsApi";
@@ -22,7 +20,8 @@ import {
     KeyboardAvoidingView,
     Center,
     Image,
-    View
+    View,
+    ScrollView
 } from "native-base";
 
 function Login({ navigation }) {
@@ -96,12 +95,13 @@ function Login({ navigation }) {
             start={[0.5, 0]} end={[0.5, 1]}
             locations={[0, 0.4, 1]}
         >
-        
+            
             <KeyboardAvoidingView
                 bgColor={"transparent"}
                 flex={1}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
+            <ScrollView>
             
 {/*/////////////////////////////////// ANIMATION TO BOUNCE THE SCREEN WHEN IT LOADS /////////////////////////////////*/}
                 <Animated.View flex={1} style={{
@@ -298,6 +298,7 @@ function Login({ navigation }) {
                         </Button>
                     </Stack>
                 </Animated.View>
+                </ScrollView>
             </KeyboardAvoidingView>
             
             <FootTabLogin navigation={navigation} isLogin={isLogin} isSignUping={isSignUping} />

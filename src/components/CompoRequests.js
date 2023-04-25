@@ -205,7 +205,7 @@ const CompoRequests = ({ setIsMounted }) => {
             </HStack>
             <Button
               {...NativeBaseProps.DETAILS_BUTTON}
-              borderBottomColor={item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
+              borderBottomColor={item.dtcancellation !=null?"gray.500":item.dtrequestdone==null?item.priority=="CRITICAL"?"red.600":"#FFFF00":"#00FF00"}
               onPress={() =>{
                 setTimeStamp(dateNow.getTime());
                 setRequestDetails(item);

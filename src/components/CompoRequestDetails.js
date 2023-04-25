@@ -72,6 +72,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
     }
 
     useEffect(()=>{
+        console.log(userAccess.screenFunctionsAccess.CANCEL_REQUEST);
         const dateStampRequest = new Date(requestDetail.timeStampRequested.toString());
         const dateNow = new Date();
         var difference = dateNow.getTime() - dateStampRequest.getTime();

@@ -63,6 +63,7 @@ export default function CompoChartLongerReqToBeDone({ isMounted, setIsMounted })
                         NUMBER MEANS MINUTES THAT IT TAKES TO BE DONE:
                     </Text>
                 <BarChart
+                    yAxisSuffix='Min'
                     data={{
                         labels: chartDataLabel,
                         datasets: [
