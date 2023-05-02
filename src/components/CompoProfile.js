@@ -92,7 +92,7 @@ const CompoProfileContext = ({ navigation }) => {
   return (
     <View flex={1}>
       <LinearGradient {...nativeBaseProps.LinearColor}>
-        <Box mt={10}>
+        <Box safeArea={true}>
           <HStack>
             <Icon
               paddingLeft={3}
@@ -380,14 +380,15 @@ const nativeBaseProps = {
     height: 100
   },
   TEXT_TITLE: {
-    ml: "28%",
     color: "white",
     bold: true,
     fontSize: 16,
+    mr:"10"
   },
   BOX_TITLE: {
     justifyContent: "center",
-    w: "100%"
+    w: "100%",
+    alignItems:"center"
   },
   STACK_BODY: {
     space: 6,

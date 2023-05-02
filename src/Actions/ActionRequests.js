@@ -16,7 +16,7 @@ const RequestActions = {
         }).finally(endpoint =>{
             setIsMounted(false);
             if(typeof setRefreshing === "function"){
-                setRefreshing(false);
+                setRefreshing(true);
             }
         });
     },
@@ -32,7 +32,7 @@ const RequestActions = {
                 payload: {requests:null, error_message: error.message},
             });
         }).finally(endpoint =>{
-            setIsMounted(false);
+            setIsMounted(true);
         });
     },
 
@@ -50,7 +50,7 @@ const RequestActions = {
             });
             return;
         }).finally(endpoint =>{
-            setIsMounted(false);
+            setIsMounted(true);
             setShowModal(false);
         });
     }

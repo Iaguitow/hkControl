@@ -34,9 +34,9 @@ const ActionRooms = {
         });
     },
 
-
-    updateFloors: (floorObj,token_api, {setIsMounted}) => dispatch => {
+    updateFloors: (floorObj,token_api, {setIsMounted, handleToastSavetion, setLoadingButton_floor}) => dispatch => {
         dbRooms.updateFloor(floorObj, token_api).then(response =>{
+            handleToastSavetion();
             dispatch({
                 type: actionsTypes.UPDATE_FLOORS,
                 payload_F: {floors:response.data, error_message: null},
@@ -47,8 +47,8 @@ const ActionRooms = {
                 payload_F: {floors:null, error_message: error.message},
             });
         }).finally(endpoint =>{
+            setLoadingButton_floor(null);
             setIsMounted(true);
-            handleToastSavation();
         });
     },
 }

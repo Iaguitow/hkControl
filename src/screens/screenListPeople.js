@@ -17,7 +17,7 @@ const ScreenListPeople = ({navigation}) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            setIsMounted(true);
+            setIsMounted(false);
             const token_api = user.payload.tokenapi;
             const idpeople = user.payload.idpeople;
             const peopleList = true;
@@ -30,7 +30,7 @@ const ScreenListPeople = ({navigation}) => {
     return (
         <Center flex={1}>
             <CompoListPeople navigation={navigation} />
-            {isMounted && <CompoApiLoadingView></CompoApiLoadingView>}
+            {!isMounted && <CompoApiLoadingView></CompoApiLoadingView>}
         </Center>
     );
 };

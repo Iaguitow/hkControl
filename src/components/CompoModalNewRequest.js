@@ -89,12 +89,14 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
 
     if (requestsType.payload.requestType != null) {
         for (var i = 0, ii = requestsType.payload.requestType.length; i < ii; i++) {
-            requestTypeArray[0].children.push({
-                id: requestsType.payload.requestType[i].idrequests,
-                name: requestsType.payload.requestType[i].resquestdescription,
-                amount: 1,
-                type:"IN"
-            });
+            if(requestsType.payload.requestType[i].active=="Y"){
+                requestTypeArray[0].children.push({
+                    id: requestsType.payload.requestType[i].idrequests,
+                    name: requestsType.payload.requestType[i].resquestdescription,
+                    amount: 1,
+                    type:"IN"
+                });
+            }
         }
     }
 
@@ -263,7 +265,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                             </Animated.View>
                         </Button.Group>
                     </Modal.Footer>
-                    {isMounted && <CompoLoadingView />}
+                    {!isMounted && <CompoLoadingView />}
                 </Modal.Content>
             </Modal>
             <Alerts alertType={alertType} isOpenAlert={isOpenAlert} setIsOpenAlert={setIsOpenAlert}/>

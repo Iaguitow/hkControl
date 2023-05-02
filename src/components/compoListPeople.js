@@ -19,6 +19,7 @@ import {
 const ListPeople = ({navigation}) => {
 
   const peopleList = useSelector(state => state.reducerPeople);
+  const user = useSelector(state => state.reducerLogin);
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -119,6 +120,8 @@ const ListPeople = ({navigation}) => {
                     navigation.navigate("CompoProfile",{imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople"});
                   }}
                   endIcon={<Icon size={6} as={MaterialCommunityIcons} name="account-edit-outline"/>}
+                  backgroundColor={user.payload.screenFunctionAccess.EDIT_USER === "N"?"rgba(0,185,243,0.2)":"rgba(0,185,243,1)"}
+                  disabled={user.payload.screenFunctionAccess.EDIT_USER === "N"?true:false}
                 >
                   <Text fontSize={16} fontWeight={"bold"} color={"white"}>
                     Click to edit

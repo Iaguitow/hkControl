@@ -30,10 +30,4 @@ const ScreenAnalyticalCharts = () => {
     );
 };
 
-const NativeBaseProps = {
-
-}
-
-
-
 export default ScreenAnalyticalCharts;

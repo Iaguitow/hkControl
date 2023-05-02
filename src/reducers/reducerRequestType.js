@@ -15,10 +15,25 @@ const reducers = (state = INITIAL_STATE, action) => {
         case actionsTypes.GET_REQUEST_TYPE_ERROR:
             return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_request: state.api_requests+1}
         break;
+
         case actionsTypes.UPDATE_REQUEST_TYPE:
             return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK, api_request: state.api_requests+1}
         break;
         case actionsTypes.UPDATE_REQUEST_TYPE_ERROR:
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_request: state.api_requests+1}
+        break;
+
+        case actionsTypes.INSERT_REQUEST_TYPE:
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK, api_request: state.api_requests+1}
+        break;
+        case actionsTypes.INSERT_REQUEST_TYPE_ERROR:
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_request: state.api_requests+1}
+        break;
+
+        case actionsTypes.DELETE_REQUEST_TYPE:
+            return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_OK, api_request: state.api_requests+1}
+        break;
+        case actionsTypes.DELETE_REQUEST_TYPE_ERROR:
             return {...state, payload: action.payload, api_status: actionsTypesAPI.STATUS_ERRO, api_request: state.api_requests+1}
         break;
         default:

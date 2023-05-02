@@ -14,6 +14,8 @@ import RegisterPeople from "./src/screens/ScreenRegisterPeople";
 import ScreenLoginRecovery from "./src/screens/ScreenLoginRecovery";
 import Drawer from "./src/components/CompoDrawer"
 import CompoProfile from "./src/components/CompoProfile";
+import CompoFloorConfig from './src/components/CompoFloorConfig';
+import CompoRequestConfig from './src/components/CompoRequestConfig';
 
 LogBox.ignoreLogs(["The contrast ratio"]);
 
@@ -34,6 +36,8 @@ function App() {
               <Stack.Screen name='Drawer' component={Drawer}/>
               <Stack.Screen name='ScreenLoginRecovery' component={ScreenLoginRecovery} />
               <Stack.Screen name='CompoProfile' component={CompoProfile}/>
+              <Stack.Screen name='CompoFloorConfig' component={CompoFloorConfig} />
+              <Stack.Screen name="CompoRequestConfig" component={CompoRequestConfig} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>

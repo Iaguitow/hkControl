@@ -15,7 +15,7 @@ const PeopleActions = {
             });
         }).finally(endPoint => {
             if (typeof setIsMounted == "function"){
-                setIsMounted(false);
+                setIsMounted(true);
             }
             
         });
