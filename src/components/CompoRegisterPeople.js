@@ -340,8 +340,11 @@ export default function CompoRegisterPeople(props) {
                                             props.sendIsRegisteringStateToParent(false);
                                             return;
                                         }
-                                        const userDt = {email: email.toLowerCase(), password: password1, googleAcessToken: ""}
-                                        handleLogin(userDt);
+                                        Toast.showToast("Sucessfully Registered");
+                                        setisRegistering(false);
+                                        props.navigation.goBack();
+                                        /*const userDt = {email: email.toLowerCase(), password: password1, googleAcessToken: ""}
+                                        handleLogin(userDt);*/
                                     }).catch(erro =>{
                                         setisRegistering(false);
                                         props.sendIsRegisteringStateToParent(false);

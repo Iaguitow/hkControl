@@ -85,7 +85,7 @@ class Toasts extends Component {
         Toast.show({
             title: "Successfully Registered",
             status: "success",
-            description: "Successfully Registered, please finish your profile, then others will be able to see you.",
+            description: "Successfully Registered, please finish your profile with HK department, then others will be able to see you.",
             duration: 8000,
         })
       break;
