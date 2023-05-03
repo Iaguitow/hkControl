@@ -46,7 +46,6 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
     const idpeople = user.payload.idpeople;
     const breaktime = profile.payload.breaktime;
     const dateTimeInBreak = profile.payload.datetimeBreakIn;
-    const joblevel = user.payload.joblevel;
     const funcetionScreenAccess = user.payload.screenFunctionAccess;
 
 
@@ -57,7 +56,7 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
 
           window.TimerId = setInterval(()=>{
 
-            if(counterMin>=2){
+            if(counterMin>=35){
                 setIsMounted(false);
                 counterSecs=0;
                 counterMin=0;

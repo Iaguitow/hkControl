@@ -123,8 +123,8 @@ class Requests{
                     method: "POST",
                     //HOUSE IP
                     url: "https://nodejsserver-hkcontroller.azurewebsites.net/routes/requests/delete/RequestType",
-                    //SCHOOL IP
-                    //url: "http://172.26.192.211:3000/routes/insert/new_request",
+                    //HOUSE IP
+                    //url: "http://192.168.0.17:3000/routes/requests/delete/RequestType",
                     withCredentials: true,
                     data: {idrequest},
                     headers:{

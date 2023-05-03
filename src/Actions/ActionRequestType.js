@@ -1,5 +1,6 @@
 import { actionsTypes } from "./ConstActions";
 import dbRequests from "../classes/ClassDBRequests";
+import Toasts from "../components/CompoToast";
 
 const RequestTypeActions = {
     getRequestType: (token_api,{setIsMounted}) => dispatch => {
@@ -54,6 +55,11 @@ const RequestTypeActions = {
 
     deleteRequestType: (idrequest, token_api, {setIsMounted, handleToastSavetion}) => dispatch => {
         dbRequests.deleteRequestType(idrequest, token_api).then(response =>{
+            
+            if(!!response.data.sqlMessage){
+                Toasts.showToast("Error","Connection Error",response.data.sqlMessage+",  IMPOSSIBLE DELETE THIS REQUEST BECAUSE IT HAS DEPENDENCIES. ");
+                return;
+            }
             handleToastSavetion();
             dispatch({
                 type: actionsTypes.DELETE_REQUEST_TYPE,
