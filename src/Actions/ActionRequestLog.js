@@ -18,7 +18,7 @@ const ActionRequestLog = {
         });
     },
 
-    insertNewRequest: (requestCancellationObj, token_api, setShowLoading, idpeople, joblevel) => dispatch => {
+    insertNewRequest: (requestCancellationObj, token_api, setShowLoading, onRefresh, idpeople, joblevel) => dispatch => {
         dbRequestLogs.insertNewRequestLog(requestCancellationObj, token_api, idpeople, joblevel).then(response =>{
             dispatch({
                 type: actionsTypes.INSERT_NEW_REQUEST_LOG,
@@ -34,6 +34,10 @@ const ActionRequestLog = {
             
             if(typeof setShowLoading === "function"){
                 setShowLoading(false);
+            }
+
+            if(typeof onRefresh === "function"){
+                onRefresh();
             }
         });
     }

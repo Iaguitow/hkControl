@@ -2,7 +2,7 @@ import { actionsTypes } from "./ConstActions";
 import dbTasks from "../classes/ClassDBTasks";
 
 const TasksActions = {
-    getTasks: (idpeople, token_api, joblevel, {setIsMounted}) => dispatch => {
+    getTasks: (idpeople, token_api, joblevel, {setIsMounted, setRefreshing}) => dispatch => {
         dbTasks.getTasks(idpeople,token_api,joblevel).then(response =>{
             dispatch({
                 type: actionsTypes.GET_TASKS,
@@ -15,6 +15,7 @@ const TasksActions = {
             });
         }).finally(endpoint =>{
             setIsMounted(true);
+            setRefreshing(false);
         });
     },
     updateTask: (idTask, taskdone, token_api, idpeople, {setIsMounted}) => dispatch => {

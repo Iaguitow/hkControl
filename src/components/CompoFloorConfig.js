@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Platform } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { Text, Box, Heading, Stack, View, Button, ScrollView, HStack, Icon } from "native-base";
 import SingleSelectFloorResponsible from './CompoSingleSelectFloorsResponsibles';
@@ -59,7 +60,7 @@ const CompoFloorConfig = ({ navigation }) => {
                             onPress={() => { navigation.goBack(); }}
                         />
                         <Box {...nativeBaseProps.BOX_TITLE}>
-                            <Text {...nativeBaseProps.TEXT_TITLE}> Floor Configuration </Text>
+                            <Text {...nativeBaseProps.TEXT_TITLE}> FLOOR CONFIGURATION </Text>
                         </Box>
                     </HStack>
                 </Box>

@@ -1,7 +1,7 @@
 import React,{useEffect, useState, memo, useCallback } from 'react';
 import DialogInput from 'react-native-dialog-input';
 import { MaterialIcons } from "@expo/vector-icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import generalUtils from '../utils/GeneralUtils';
 import { ActionRequestLog } from "../Actions/ActionRequestLog";
 import CompoApiLoadingView from "../components/CompoApiLoadingView"
@@ -27,7 +27,12 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
 
     const [visibleCancelDialog, setVisibleCancelDialog] = useState(false);
 
-    const insertNewRquest_Log = (requestCancellationObj, token_api,setShowLoading) => {dispatch(ActionRequestLog.insertNewRequest(requestCancellationObj, token_api,setShowLoading)) }
+    const handleDialogCancellaion = () => {
+        setVisibleCancelDialog(false);
+        setShowLoading(false);
+    }
+
+    const insertNewRquest_Log = (requestCancellationObj, token_api,setShowLoading) => {dispatch(ActionRequestLog.insertNewRequest(requestCancellationObj, token_api,setShowLoading, onRefresh)) }
 
     const [numberSecs, setNumberSecs] = useState(0);
     const [numberMin, setNumberMin] = useState(0);
@@ -44,7 +49,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
             hoursDifference>0?setNumberHour(hoursDifference):null;
             minutesDifference>0?setNumberMin(minutesDifference):null;
 
-            counterSecs<60?setNumberSecs((previousTime) => previousTime+1+secondsDifference):setNumberSecs(60);
+            counterSecs<60?setNumberSecs((previousTime) => {return previousTime+1+secondsDifference>60?60:previousTime+1+secondsDifference}):setNumberSecs(60);
 
             secondsDifference = 0;
             minutesDifference = 0;
@@ -72,7 +77,6 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
     }
 
     useEffect(()=>{
-        console.log(userAccess.screenFunctionsAccess.CANCEL_REQUEST);
         const dateStampRequest = new Date(requestDetail.timeStampRequested.toString());
         const dateNow = new Date();
         var difference = dateNow.getTime() - dateStampRequest.getTime();
@@ -104,7 +108,9 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                 }} 
                 size="full"
             >
-                <Actionsheet.Content>
+                <Actionsheet.Content
+                    backgroundColor={"coolGray.200"}
+                >
                     <DialogInput 
                         isDialogVisible={visibleCancelDialog}
                         title={"CANCELLATION REASON"}
@@ -112,21 +118,25 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                         hintInput ={"Enter Text"}
                         submitInput={ (inputText) => {
 
+                        if(inputText == "" || inputText == undefined){
+                            alert("Please Enter Text");
+                            return;
+                        }
+
                         var requestCancellationObj = {
                             reason: inputText,
                             fk_request: requestDetail.idresquests,
                             fk_whocancelled: id_whocancelled,
                         }
-                        setVisibleCancelDialog(false);
-                        insertNewRquest_Log(requestCancellationObj,token_api,setShowLoading);
-                        onClose();
-                        onRefresh();
 
+                        clearInterval(timerId);
+                        setVisibleCancelDialog(false);
+                        insertNewRquest_Log(requestCancellationObj,token_api,setShowLoading, onRefresh);
+                        onClose();
                     }}
                     closeDialog={() => {
-                            setVisibleCancelDialog(false);
-                            setShowLoading(false);
-                        }}>
+                        handleDialogCancellaion();
+                    }}>
                 </DialogInput>
 
                     <ScrollView w="100%">
@@ -139,16 +149,15 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                 {/*<Text fontSize="18" color={requestDetail.requesttimedealyed == null?"green.600":"red.600"} fontWeight={"bold"}>
                                     {requestDetail.requesttimedealyed == null?"DONE!":"Delayed: "} {requestDetail.requesttimedealyed}
                                 </Text>*/}
-                                {<Text fontSize="18" color={requestDetail.requesttimedealyed == null?"green.600":"red.600"} fontWeight={"bold"}>
-                                    {requestDetail.requesttimedealyed == null?"DONE!":numberHour.toString().padStart(2,"0")+":"+numberMin.toString().padStart(2,"0")+":"+numberSecs.toString().padStart(2,"0")}
+                                {<Text fontSize="18" color={requestDetail.requesttimedealyed == null?requestDetail.dtcancellation !== null?"red.600":"green.600":"red.600"} fontWeight={"bold"}>
+                                    {requestDetail.dtcancellation !== null?"CANCELED":requestDetail.requesttimedealyed == null?"DONE!":numberHour.toString().padStart(2,"0")+":"+numberMin.toString().padStart(2,"0")+":"+numberSecs.toString().padStart(2,"0")}
                                 </Text>}
-                                
                             </HStack>
                         </Box>
 
                         <Divider thickness={4} bgColor={"rgb(0,185,243)"} borderRadius={10} ></Divider>
 
-                        <Actionsheet.Item>
+                        <Actionsheet.Item backgroundColor={"coolGray.200"}>
                             <VStack space={4}>
                                 <VStack>
                                     <Text {...NativeBaseProps.SUB_TEXT}>
@@ -250,8 +259,10 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
 
                                             }} 
                                             //isChecked={item.cancelled==null?false:true}
-                                            onTrackColor={"red.700"}
-                                            offTrackColor={requestDetail.dtcancellation !== null?"red.700":"white"} 
+                                            onTrackColor={"red.900"}
+                                            onThumbColor={"red.400"}
+                                            offTrackColor={requestDetail.dtcancellation !== null?"red.700":"coolGray.400"}
+                                            offThumbColor={"coolGray.600"} 
                                         />
                                     </VStack>
                                     <VStack>

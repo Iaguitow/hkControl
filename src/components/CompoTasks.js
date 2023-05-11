@@ -12,9 +12,7 @@ import {
   Divider,
   Center,
   Icon,
-  Button,
-  VStack,
-  ScrollView
+  VStack
 } from "native-base";
 
 const CompoTasks = ({ setIsMounted }) => {
@@ -64,9 +62,6 @@ const CompoTasks = ({ setIsMounted }) => {
 
   return (
     <Box flex={1} Width={"100%"}>
-      <ScrollView
-        scrollIndicatorInsets={{ top: 1, bottom: 1 }}
-      >
         <HStack
           {...NativeBaseProps.HSTACK_HEADER}
         >
@@ -164,7 +159,6 @@ const CompoTasks = ({ setIsMounted }) => {
           )
         })
         }
-      </ScrollView>
     </Box>
   );
 }

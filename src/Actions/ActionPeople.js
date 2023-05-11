@@ -2,7 +2,7 @@ import { actionsTypes } from "./ConstActions";
 import dbPeople from "../classes/ClassDBPeople";
 
 const PeopleActions = {
-    getPeople:(peopleList = false, idpeople, token_api, setIsMounted ="") => dispatch =>{
+    getPeople:(peopleList = false, idpeople, token_api, setIsMounted ="", setRefreshing="") => dispatch =>{
         dbPeople.getPeople(peopleList, idpeople, token_api).then(response =>{
             dispatch({
                 type: actionsTypes.GET_PEOPLE,
@@ -16,6 +16,9 @@ const PeopleActions = {
         }).finally(endPoint => {
             if (typeof setIsMounted == "function"){
                 setIsMounted(true);
+            }
+            if (typeof setRefreshing == "function"){
+                setRefreshing(false);
             }
             
         });

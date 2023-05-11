@@ -4,7 +4,7 @@ import CompoRequestDetails from "./CompoRequestDetails.js";
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useRoute } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { RequestActions } from "../Actions/ActionRequests";
 import {
   Box,
@@ -16,7 +16,8 @@ import {
   VStack,
   Button,
   ScrollView,
-  useDisclose
+  useDisclose,
+  Heading
 } from "native-base";
 
 const CompoManagerRequestsView = ({ setIsMounted }) => {
@@ -30,29 +31,29 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
   const dispatch = useDispatch();
   const section = [];
 
-  const getRequests = (userAccess,idpeople, joblevel, token_api) => {dispatch(RequestActions.getRequests(userAccess,idpeople, joblevel, token_api, {setIsMounted, setRefreshing})) }
+  const getRequests = (userAccess, idpeople, joblevel, token_api) => { dispatch(RequestActions.getRequests(userAccess, idpeople, joblevel, token_api, { setIsMounted, setRefreshing })) }
 
   const requests = useSelector(state => state.reducerRequests.payload.requests);
   const user = useSelector(state => state.reducerLogin);
   const screenAccess = user.payload.screenAccess;
   const screenFunctionsAccess = user.payload.screenFunctionAccess
-  const userAccess = {screenAccess,screenFunctionsAccess}
-  
+  const userAccess = { screenAccess, screenFunctionsAccess }
+
   const [refreshing, setRefreshing] = useState(false);
 
   const [chevronWeek, setChevronWeek] = useState(null);
-  const setChevron_Week = useCallback((index) =>{
+  const setChevron_Week = useCallback((index) => {
     setChevronWeek(index);
   });
 
 
   const [chevronDay, setChevronDay] = useState(null);
-  const setChevron_Day = useCallback((index) =>{
+  const setChevron_Day = useCallback((index) => {
     setChevronDay(index);
   });
 
   const [chevronPorter, setChevronPorter] = useState(null);
-  const setChevron_porter = useCallback((index) =>{
+  const setChevron_porter = useCallback((index) => {
     setChevronPorter(index);
   });
 
@@ -67,7 +68,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
     const token_api = user.payload.tokenapi;
     const idpeople = user.payload.idpeople;
     const joblevel = user.payload.joblevel;
-    getRequests(userAccess,idpeople,joblevel,token_api,{setIsMounted, setRefreshing});
+    getRequests(userAccess, idpeople, joblevel, token_api, { setIsMounted, setRefreshing });
   }, []);
 
   if (requests !== null) {
@@ -75,9 +76,9 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
     for (var i = 0, ii = requests.length; i < ii; i++) {
 
       const days = [];
-      
+
       if (i > 0 ? requests[i].requestWeek != requests[i - 1].requestWeek : true == true) {
-        
+
         for (var c = 0, cc = requests.length; c < cc; c++) {
 
           const porters = [];
@@ -102,7 +103,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                       requesttimedealyed: requests[x].requesttimedealyed,
                       fulldtrequest: requests[x].fulldtrequest,
                       fulldtrequestdone: requests[x].fulldtrequestdone,
-                      fullwhoresquested: requests[x].fullwhoresquested, 
+                      fullwhoresquested: requests[x].fullwhoresquested,
                       idresquests: requests[x].idresquests,
                       whoresquested: requests[x].whoresquested,
                       timeRequested: requests[x].timeRequested,
@@ -121,9 +122,9 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                   requestsPerDayPorterOpens: requests[b].requestsPerDayPorterOpens,
                   responsible: requests[b].responsible,
                   porterRequests: porterRequests,
-                  
+
                 });
-                
+
               }
             }
 
@@ -148,26 +149,26 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
 
   const route = useRoute();
 
-  useEffect(()=>{
-    const appStateSubscription = AppState.addEventListener('change', nextAppState =>{
-      if (nextAppState === 'active'){
+  useEffect(() => {
+    const appStateSubscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
         onRefresh();
       }
     })
-    if(route.params){
+    if (route.params) {
       setRequestDetail(route.params.item);
       onOpen();
-    }else{
+    } else {
       return () => appStateSubscription.remove();
     }
     return () => appStateSubscription.remove();
-  },[route.params]);
+  }, [route.params]);
 
 
   return (
-    <Box flex={1} Width={"100%"}>
+    <Box flex={1} Width={"100%"} mb={10}>
       <ScrollView
-        scrollIndicatorInsets={{ top: 1, bottom: 1 }} 
+        scrollIndicatorInsets={{ top: 1, bottom: 1 }}
         refreshControl={<RefreshControl tintColor={'white'} title={'UPDATING...'} titleColor={'white'} refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <VStack>
@@ -176,7 +177,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
               <Collapse
                 key={index}
                 disabled={false}
-                isExpanded={chevronWeek == index?true:false}
+                isExpanded={chevronWeek == index ? true : false}
                 onToggle={(weekStatus) => {
                   setChevron_Week(weekStatus ? index : null);
                 }}
@@ -216,7 +217,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                     </Center>
                     <Icon
                       size={"35px"}
-                      as={<MaterialCommunityIcons  name={chevronWeek == index ? "chevron-up" : "chevron-down"} />}
+                      as={<MaterialCommunityIcons name={chevronWeek == index ? "chevron-up" : "chevron-down"} />}
                       color={chevronWeek == index ? "white" : "black"}
                     />
                   </HStack>
@@ -227,8 +228,8 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                       <Collapse
                         key={index}
                         disabled={false}
-                        isExpanded={chevronDay == index?true:false}
-                        style={{marginBottom:10,borderTopColor:chevronDay==index?"#00b9f3":"gray",borderTopWidth:4}}
+                        isExpanded={chevronDay == index ? true : false}
+                        style={{ marginBottom: 10, borderTopColor: chevronDay == index ? "#00b9f3" : "gray", borderTopWidth: 4 }}
                         onToggle={(dayStatus) => {
                           setChevron_Day(dayStatus ? index : null);
                         }}
@@ -238,7 +239,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                             {...NativeBaseProps.HSTACK_LIST_DAY_PORTER}
                             paddingTop={4}
                             paddingBottom={4}
-                            borderBottomColor= {chevronDay==index?"#00b9f3":"gray.500"}
+                            borderBottomColor={chevronDay == index ? "#00b9f3" : "gray.500"}
                             justifyContent="flex-end"
                           >
                             <Center {...NativeBaseProps.CENTER} >
@@ -287,39 +288,39 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                         <CollapseBody>
                           {day.porters.map((porter, index) => {
                             return (
-                              <Collapse 
-                                key={index} 
-                                disabled={false} 
-                                isExpanded={chevronPorter == index?true:false}
+                              <Collapse
+                                key={index}
+                                disabled={false}
+                                isExpanded={chevronPorter == index ? true : false}
                                 onToggle={(porterStatus) => {
                                   setChevron_porter(porterStatus ? index : null);
                                 }}
-                                >
+                              >
                                 <CollapseHeader>
                                   <HStack
                                     {...NativeBaseProps.HSTACK_LIST_DAY_PORTER}
-                                    borderBottomColor={chevronPorter==index?"#00b9f3":"gray.500"}
+                                    borderBottomColor={chevronPorter == index ? "#00b9f3" : "gray.500"}
                                     justifyContent="flex-end"
                                   >
-                                      <VStack width={"83%"} alignItems={"flex-start"}>
-                                        <Text {...NativeBaseProps.TEXT_DESCRIPTION_HEADER_LIST}>
-                                          {porter.responsible}
+                                    <VStack width={"83%"} alignItems={"flex-start"}>
+                                      <Text {...NativeBaseProps.TEXT_DESCRIPTION_HEADER_LIST}>
+                                        {porter.responsible}
+                                      </Text>
+                                      <HStack>
+                                        <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION}>
+                                          {"OPEN: "}
                                         </Text>
-                                        <HStack>
-                                          <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION}>
-                                            {"OPEN: "}
-                                          </Text>
-                                          <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION_INFO} color={"red.500"} fontWeight="bold">
-                                            {porter.requestsPerDayPorterOpens}
-                                          </Text>
-                                          <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION} marginLeft={5}>
-                                            {"COMPLETED: "}
-                                          </Text>
-                                          <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION_INFO} color={"green.500"} fontWeight="bold">
-                                            {porter.requestsPerDayPorterConcluded}
-                                          </Text>
-                                        </HStack>
-                                      </VStack>
+                                        <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION_INFO} color={"red.500"} fontWeight="bold">
+                                          {porter.requestsPerDayPorterOpens}
+                                        </Text>
+                                        <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION} marginLeft={5}>
+                                          {"COMPLETED: "}
+                                        </Text>
+                                        <Text {...NativeBaseProps.TEXT_DESCRIPTION_DAY_SECTION_INFO} color={"green.500"} fontWeight="bold">
+                                          {porter.requestsPerDayPorterConcluded}
+                                        </Text>
+                                      </HStack>
+                                    </VStack>
                                     <Icon
                                       size={"35px"}
                                       as={<MaterialCommunityIcons name={chevronPorter == index ? "chevron-up" : "chevron-down"} />}
@@ -327,58 +328,110 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                     />
                                   </HStack>
                                 </CollapseHeader>
-                                <CollapseBody style={{marginBottom:20}}>
-                                  {porter.porterRequests.map((portersRequests,index) =>{
-                                    return(
-                                      <HStack 
-                                        key={index} 
-                                        space={2} 
+                                <CollapseBody style={{ marginBottom: 20 }}>
+                                  {porter.porterRequests.map((portersRequests, index) => {
+                                    return (
+                                      <VStack
+                                        key={index}
+                                        space={1}
                                         mt={2}
-                                        bgColor={"rgba(255,255,255,0.1)"}
-                                        alignItems={"center"}
-                                        height={"50px"}
+                                        bgColor={"trueGray.700"}
+                                        w={"98%"}
+                                        h={"170px"}
+                                        alignSelf={"center"}
+                                        pl={5}
+                                        pb={5}
+                                        pt={2}
+                                        pr={3}
+                                        borderWidth={3}
+                                        borderRadius={10}
+                                        borderColor={"#06d9ff"}
                                       >
-                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"10%"} maxWidth={"10%"}>
-                                          {portersRequests.whoresquested}
-                                        </Text>
-                                        <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"10%"} maxWidth={"10%"}>
-                                          {portersRequests.timeRequested}
-                                        </Text>
-                                        <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"15%"} maxWidth={"15%"} noOfLines={1}>
-                                          {portersRequests.requestPreviewDsc}
-                                        </Text>
-                                        <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"8%"} maxWidth={"8%"}>
-                                          {portersRequests.roomnumber}
-                                        </Text>
-                                        <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} minWidth={"10%"} maxWidth={"10%"}>
-                                          {portersRequests.timeRequestDone}
-                                        </Text>
-                                        <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Icon
-                                          size={"35px"}
-                                          minWidth={"8%"} maxWidth={"8%"}
-                                          as={<MaterialCommunityIcons name={portersRequests.dtcancellation != null ? "checkbox-blank-off-outline":
-                                          portersRequests.timeRequestDone == null? "checkbox-blank-outline":"checkbox-marked-outline"} 
-                                            
-                                          />}
-                                          color={portersRequests.dtcancellation != null ? "black":portersRequests.timeRequestDone != null ? "green.500" : portersRequests.priority == "CRITICAL"? "red.500":"yellow.500"}
-                                        />
-                                        <Divider {...NativeBaseProps.DIVIDER} />
-                                        <Button 
-                                          size={"30px"}
-                                          onPress={()=>{
-                                            setTimeStamp(dateNow.getTime());
-                                            setRequestDetail(portersRequests);
-                                            onOpen();
-                                          }}
+
+                                        <HStack space={1} alignItems={"center"}>
+                                          <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                                            ROOM:
+                                          </Text>
+                                          <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} fontWeight={"bold"} fontSize={18} >
+                                            {portersRequests.roomnumber}
+                                          </Text>
+                                        </HStack>
+
+                                        <HStack space={2}>
+                                          <HStack space={1}>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                                               BY:
+                                            </Text>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                                               {portersRequests.whoresquested}
+                                            </Text>
+                                          </HStack>
+
+                                          <Divider {...NativeBaseProps.DIVIDER} />
+                                          
+                                          <HStack space={1}>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                                               TIME REQ.:
+                                            </Text>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                                              {portersRequests.timeRequested}
+                                            </Text>
+                                          </HStack>
+
+                                          <Divider {...NativeBaseProps.DIVIDER} />
+
+                                          <HStack space={1}>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                                              TIME DONE:
+                                            </Text>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                                              {portersRequests.timeRequestDone}
+                                            </Text>
+                                          </HStack>
+
+                                        </HStack>
+
+                                        <HStack space={1}>
+                                          <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                                             DSC:
+                                          </Text>
+                                          <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} noOfLines={2}>
+                                             {portersRequests.requestdsc}
+                                          </Text>
+                                        </HStack>
+                                        
+                                        <HStack space={2} alignItems={"center"} justifyContent={"space-between"}>
+                                          <Button
+                                            shadow={9}
+                                            _text={
+                                              {
+                                                fontWeight: "bold",
+                                                fontSize: "16",
+                                              }
+                                            }
+                                            h={"40px"}
+                                            w={"200px"}
+                                            onPress={() => {
+                                              setTimeStamp(dateNow.getTime());
+                                              setRequestDetail(portersRequests);
+                                              onOpen();
+                                            }}
+                                            endIcon={<Icon size={9} as={MaterialIcons} name="read-more" />}
                                           >
-                                          ...
-                                        </Button>
-                                      </HStack>
+                                          <Text justifyContent={"center"} {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                                             DETAILS
+                                          </Text>
+                                          </Button>
+                                          <Icon
+                                            size={"45px"}
+                                            as={<MaterialCommunityIcons name={portersRequests.dtcancellation != null ? "checkbox-blank-off-outline" :
+                                              portersRequests.timeRequestDone == null ? "checkbox-blank-outline" : "checkbox-marked-outline"}
+
+                                            />}
+                                            color={portersRequests.dtcancellation != null ? "black" : portersRequests.timeRequestDone != null ? "green.500" : portersRequests.priority == "CRITICAL" ? "red.500" : "yellow.500"}
+                                          />
+                                        </HStack>
+                                      </VStack>
                                     )
                                   })
                                   }
@@ -399,15 +452,15 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
           }
         </VStack>
       </ScrollView>
-      {requestDetail !== null && <CompoRequestDetails 
-        id_whocancelled = {user.payload.idpeople} 
-        token_api = {user.payload.tokenapi} 
-        joblevel = {user.payload.joblevel} 
-        requestDetail={requestDetail} 
+      {requestDetail !== null && <CompoRequestDetails
+        id_whocancelled={user.payload.idpeople}
+        token_api={user.payload.tokenapi}
+        joblevel={user.payload.joblevel}
+        requestDetail={requestDetail}
         isOpen={isOpen} onClose={onClose}
         onRefresh={onRefresh}
         timeStamp={timeStamp}
-        userAccess={userAccess}  
+        userAccess={userAccess}
       />}
     </Box>
   );
@@ -495,8 +548,12 @@ const NativeBaseProps = {
     color: "white",
   },
   TEXT_DESCRIPTION_REQUESTS: {
+    fontSize: 14,
+    color: "#06d9ff",
+  },
+  TEXT_DESCRIPTION_REQUESTS_TITLE: {
     fontWeight: "bold",
-    fontSize: 13,
+    fontSize: 14,
     color: "white",
   },
   TEXT_DESCRIPTION_WEEK_SECTION: {

@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
-import { Animated } from 'react-native';
+import { Animated, Platform } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { jobCategoriesActions } from "../Actions/ActionJobCategory";
@@ -98,10 +98,16 @@ const CompoProfileContext = ({ navigation }) => {
               paddingLeft={3}
               {...nativeBaseProps.ICON_GOBACK}
               as={<MaterialIcons name="arrow-back-ios" />}
-              onPress={() => { navigation.goBack(); }}
+              onPress={() => {
+                if(route.params.from === "listpeople"){
+                  route.params.onRefresh();
+                }
+                  navigation.goBack(); 
+                }
+              }
             />
             <Box {...nativeBaseProps.BOX_TITLE}>
-              <Text {...nativeBaseProps.TEXT_TITLE}> Profile Edition </Text>
+              <Text {...nativeBaseProps.TEXT_TITLE}> PROFILE EDITION </Text>
             </Box>
           </HStack>
         </Box>
@@ -239,6 +245,7 @@ const CompoProfileContext = ({ navigation }) => {
 
           <Center
             mt={5}
+            mb={5}
           >
             <Text
               fontSize={18}
@@ -377,7 +384,7 @@ const nativeBaseProps = {
     start: [0.5, 1],
     end: [0.5, 0],
     locations: [0, 0.9, 0.9],
-    height: 100
+    height: Platform.OS === 'ios' ? 100 : 60 
   },
   TEXT_TITLE: {
     color: "white",

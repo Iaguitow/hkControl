@@ -11,30 +11,33 @@ import {
     Checkbox,
     Divider,
     View
-} from "native-base";
-
-import React, { useState, useEffect, useRef } from "react"
-import { Animated } from 'react-native';
-import { useSelector, useDispatch } from "react-redux";
-import { Entypo,AntDesign } from "@expo/vector-icons";
-import CompoLoadingView from "../components/CompoApiLoadingView";
-import ModalSelect from "./CompoModalMultSelect";
-import ModalSingleSelect from "./CompoSingleSelectInOut";
-import { actionsTypesAPI } from "../Actions/ConstActionsApi";
-import generalUtils from "../utils/GeneralUtils";
-import Alerts from "./CompoAlerts";
-import Toasts from "./CompoToast";
-import { RequestActions } from "../Actions/ActionRequests";
-
-const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) => {
-
+ } from "native-base";
+ 
+ import React, { useState, useEffect, useRef } from "react"
+ import { Animated } from 'react-native';
+ import { useSelector, useDispatch } from "react-redux";
+ import { Entypo,AntDesign } from "@expo/vector-icons";
+ import CompoLoadingView from "../components/CompoApiLoadingView";
+ import ModalSelect from "./CompoModalMultSelect";
+ import ModalSingleSelect from "./CompoSingleSelectInOut";
+ import { actionsTypesAPI } from "../Actions/ConstActionsApi";
+ import generalUtils from "../utils/GeneralUtils";
+ import Alerts from "./CompoAlerts";
+ import Toasts from "./CompoToast";
+ import { RequestActions } from "../Actions/ActionRequests";
+ 
+ 
+ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) => {
+ 
+ 
     const dispatch = useDispatch();
     const user = useSelector(state => state.reducerLogin);
     const rooms = useSelector(state => state.reducerRooms);
     const requests = useSelector(state => state.reducerRequests);
     const requestsType = useSelector(state => state.reducerRequestType);
     const insertNewRequest = (userAccess, requestObj, token_api, idpeople, joblevel) => {dispatch(RequestActions.insertNewRequest(userAccess,requestObj, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal})) }
-
+ 
+ 
     const [priorityValue, setPriorityValue] = useState(false);
     const [selectIsDisabled, setSelectIsDisabled] = useState(true);
     const [saveButtonIsDisabled, setSaveButtonIsDisabled] = useState(true);
@@ -43,13 +46,16 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
     const [isOpenAlert, setIsOpenAlert] = React.useState(false);
     const [alertType, setIsAlertType] = React.useState("Error");
     const [fadeEffect,setFadeEffect] = useState(new Animated.Value(0));
-
+ 
+ 
     const [multRequests, setMultRequests] = useState([]);
-
+ 
+ 
     const screenAccess = user.payload.screenAccess;
     const screenFunctionsAccess = user.payload.screenFunctionAccess
     const userAccess = {screenAccess,screenFunctionsAccess}
-
+ 
+ 
     useEffect(() => {
         setAmountValue(1);
         setRoomValue("");
@@ -59,16 +65,17 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
         setSelectIsDisabled(true);
         setSaveButtonIsDisabled(true);
         setFadeEffect(new Animated.Value(0));
-        
+       
         if(requests.api_status === actionsTypesAPI.STATUS_OK){
             if(typeof requests.payload.requests == "boolean"){
                 setIsOpenAlert(!requests.payload.request);
                 return;
             }
         }
-        
+       
     },[requests.api_inserts_requests]);
-
+ 
+ 
     const startEffect = () =>{
         Animated.timing(fadeEffect,{
             toValue: 1,
@@ -76,7 +83,8 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
             useNativeDriver: true
           }).start(() =>{returnEffect();});
     }
-
+ 
+ 
     const returnEffect = () =>{
         Animated.timing(fadeEffect,{
             toValue: 0,
@@ -84,9 +92,11 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
             useNativeDriver: true
           }).start();
     }
-
+ 
+ 
     const requestTypeArray = [{name:"REQUESTS: ",id:0,children:[]}];
-
+ 
+ 
     if (requestsType.payload.requestType != null) {
         for (var i = 0, ii = requestsType.payload.requestType.length; i < ii; i++) {
             if(requestsType.payload.requestType[i].active=="Y"){
@@ -99,20 +109,22 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
             }
         }
     }
-
+ 
+ 
     const getResponsibleFromRoom =() =>{
-    
+   
         for(let item of Object.keys(rooms.payload.rooms)) {
-            if(rooms.payload.rooms[item].roomnumber.toString() == roomValue.toString() && 
+            if(rooms.payload.rooms[item].roomnumber.toString() == roomValue.toString() &&
                 (user.payload.profession != "HOUSE STEWARD" && user.payload.profession != "PUBLIC AREA")
             ){
                 return rooms.payload.rooms[item].idpeople;
             }
         }
         return user.payload.idpeople;
-            
+           
     }
-
+ 
+ 
     return (
         <Center>
             <Modal avoidKeyboard={true} closeOnOverlayClick={false} size={"xl"} isOpen={showModal} onClose={() => {
@@ -128,20 +140,21 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                 <Modal.Content >
                     <Modal.CloseButton />
                     <Modal.Header>NEW REQUEST</Modal.Header>
+
                     <Modal.Body>
                         <VStack space={2}>
                             <HStack>
-                                <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 1 </Text>        
-                                <Divider {...NATIVEBASE_PROPS.DIVIDERS} />         
+                                <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 1 </Text>       
+                                <Divider {...NATIVEBASE_PROPS.DIVIDERS} />        
                             </HStack>
                             <Text {...NATIVEBASE_PROPS.TEXT}> SELECT ROOM AND PRIORITY: </Text>
                             <HStack {...NATIVEBASE_PROPS.HSTACK}>
                                 <VStack {...NATIVEBASE_PROPS.VSTACK_DETAILS_AMOUNT_ROOM}>
                                     <Text {...NATIVEBASE_PROPS.TEXT}> ROOM: </Text>
-                                    <Input 
-                                        {...NATIVEBASE_PROPS.INPUT} 
-                                        placeholder={"Room"} 
-                                        maxLength={3} 
+                                    <Input
+                                        {...NATIVEBASE_PROPS.INPUT}
+                                        placeholder={"Room"}
+                                        maxLength={3}
                                         value={roomValue}
                                         onChangeText={(room) =>{
                                             setRoomValue(room);
@@ -153,8 +166,8 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                                 return;
                                             }
                                             setSelectIsDisabled(false);
-                                            
-                                        }}          
+                                           
+                                        }}         
                                     />
                                 </VStack>
                                 <VStack {...NATIVEBASE_PROPS.VSTACK_CHECKBOX}>
@@ -168,39 +181,43 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 </VStack>
                             </HStack>
                             <HStack>
-                                <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 2 </Text>        
-                                <Divider {...NATIVEBASE_PROPS.DIVIDERS} />         
+                                <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 2 </Text>       
+                                <Divider {...NATIVEBASE_PROPS.DIVIDERS} />        
                             </HStack>
-                            
+                           
                             <Text {...NATIVEBASE_PROPS.TEXT}> YOUR REQUESTS: </Text>
-                            <ModalSelect 
+                            <ModalSelect
                                 setMultRequests={setMultRequests}
                                 requestTypeArray={requestTypeArray}
                                 selectIsDisabled={selectIsDisabled}
                                 setSaveButtonIsDisabled={setSaveButtonIsDisabled}
                                 multRequests={multRequests}
-                                
+                               
                             />
                             {multRequests.map((requests,index)=>{
-                                
+                               
                                         multRequests[index].responsible = getResponsibleFromRoom();
                                         multRequests[index].who_requested = user.payload.idpeople;
                                         multRequests[index].roomnumber = roomValue;
                                         multRequests[index].priority = priorityValue?"C":"N";
                                         multRequests[index].profession = user.payload.profession;
                                         multRequests[index].finaldescription = requests.name;
-
+ 
+ 
                                         return(
                                             <View
                                                 key={index}
                                             >
                                                 <HStack space={1}
                                                 >
-                                                    <Input 
-                                                        {...NATIVEBASE_PROPS.INPUT_REQUEST_AMOUNT} 
-                                                        placeholder={"1"} 
+                                                    <Input
+                                                        {...NATIVEBASE_PROPS.INPUT_REQUEST_AMOUNT}
+                                                        placeholder={"1"}
                                                         maxLength={2}
-                                                        key={requests.id} 
+                                                        key={requests.id}
+                                                        onFocus={() =>{
+                                                            setSaveButtonIsDisabled(true);
+                                                        }}
                                                         onEndEditing={(e)=>{
                                                             for(let item of Object.keys(multRequests)) {
                                                                 if(multRequests[item].id == requests.id){
@@ -208,6 +225,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                                                 }
                                                             }
                                                             setMultRequests(multRequests);
+                                                            setSaveButtonIsDisabled(false);
                                                         }}
                                                     >
                                                         {requests.amount}
@@ -217,14 +235,14 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                                         value={requests.name.toUpperCase()}
                                                         key={requests.name}
                                                     />
-                                                    <ModalSingleSelect 
-                                                        multRequests={multRequests} 
+                                                    <ModalSingleSelect
+                                                        multRequests={multRequests}
                                                         setMultRequests={setMultRequests}
                                                         requests_id={requests.id}
                                                         requests_type={requests.type}
                                                      />
                                                 </HStack>
-                                                <Divider 
+                                                <Divider
                                                     {...NATIVEBASE_PROPS.DIVIDE_REQUEST}
                                                 />
                                             </View>
@@ -233,9 +251,8 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 )
                             }
                         </VStack>
-                        
                     </Modal.Body>
-                    <Modal.Footer>                                 
+                    <Modal.Footer>                                
                         <Button.Group space={2}>
                             <Button variant="outline" borderWidth={2} borderColor="red.400" onPress={() => {
                                 setShowModal(false);
@@ -243,20 +260,22 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                 <Text {...NATIVEBASE_PROPS.TEXT}> CANCEL </Text>
                             </Button>
                             <Button
-                                disabled={saveButtonIsDisabled} 
+                                disabled={saveButtonIsDisabled}
                                 opacity={saveButtonIsDisabled?0.4:1}
                                 onPress={() => {
-
+                                setIsMounted(false);
+ 
                                 var joblevel = user.payload.joblevel;
                                 var token_api = user.payload.tokenapi;
                                 var idpeople = user.payload.idpeople;
-                                
+                               
                                 insertNewRequest(userAccess, multRequests, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal});
-                                
+                               
                                 if(requests.api_status === actionsTypesAPI.STATUS_OK){
                                     Toasts.showToast("Request Successfully Saved");
                                 }
-
+ 
+ 
                             }}>
                                 <Text color={"white"} {...NATIVEBASE_PROPS.TEXT}> SAVE </Text>
                             </Button>
@@ -271,9 +290,10 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
             <Alerts alertType={alertType} isOpenAlert={isOpenAlert} setIsOpenAlert={setIsOpenAlert}/>
         </Center>
     );
-};
-
-const NATIVEBASE_PROPS = {
+ };
+ 
+ 
+ const NATIVEBASE_PROPS = {
     VSTACK_DETAILS_AMOUNT_ROOM: {
         alignSelf: "center",
         alignItems: "center",
@@ -331,7 +351,7 @@ const NATIVEBASE_PROPS = {
         alignItems: "center"
     },
     TEXT: {
-        
+       
     },
     STEPS_TEXT: {
         fontWeight: "bold"
@@ -373,7 +393,8 @@ const NATIVEBASE_PROPS = {
         autoCompleteType: 'off',
         alignSelf: "center"
     },
-
+ 
+ 
     INPUT_REQUEST: {
         w: "60%",
         height: 50,
@@ -389,12 +410,13 @@ const NATIVEBASE_PROPS = {
         placeholderTextColor: "rgb(0,185,243)",
         autoCompleteType: 'off'
     },
-
+ 
+ 
     INPUT_REQUEST_AMOUNT: {
         w: "15%",
         height: 50,
         textAlign: "center",
-        keyboardType: "numeric",
+        keyboardType: "number-pad",
         autoCapitalize: "none",
         selectionColor: "black",
         color: "black",
@@ -406,6 +428,9 @@ const NATIVEBASE_PROPS = {
         autoCompleteType: 'off',
         alignSelf: "center",
     }
-}
-
-export default ModalNewRequest;
+ }
+ 
+ 
+ export default ModalNewRequest;
+ 
+ 

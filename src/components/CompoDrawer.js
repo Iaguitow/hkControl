@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, memo, useCallback } from "react";
-import { StatusBar, StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DrawerActions, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5, FontAwesome, EvilIcons, Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerContentScrollView, useDrawerStatus } from "@react-navigation/drawer";
@@ -10,7 +11,7 @@ import { allDrawerScreens } from "../utils/ConstDrawerScreens";
 import ScreenProfile from "../screens/ScreenProfile";
 import ScreenRequests from "../screens/ScreenRequests";
 import ScreenTasks from "../screens/ScreenTasks";
-import ScreenCheckList from "../screens/ScreenCheckList";
+//import ScreenCheckList from "../screens/ScreenCheckList";
 import ScreenListPeople from "../screens/ScreenListPeople";
 import ScreenConfig from "../screens/ScreenConfig";
 import ScreenAnalyticalCharts from "../screens/ScreenAnalyticalCharts";
@@ -19,6 +20,7 @@ import CompoNotificationList from "../components/CompoNotificationsList";
 import { ActionRooms } from "../Actions/ActionRooms.js";
 import { ActionRequestLog } from "../Actions/ActionRequestLog.js";
 import { PeopleActions } from "../Actions/ActionPeople";
+import { actions } from "../Actions/ActionLogin";
 import * as Notifications from 'expo-notifications';
 
 import {
@@ -165,7 +167,12 @@ function MyDrawer({ navigation }) {
             );
           },
         }}
-        drawerContent={(props) => <CustomDrawerContent {...props} countRequests={ countRequests } setCountRequests={ setCount_Requests } imageDrawerProfile={ imageDrawerProfile } />}
+        drawerContent={(props) => <CustomDrawerContent {...props} 
+          countRequests={ countRequests } 
+          setCountRequests={ setCount_Requests } 
+          imageDrawerProfile={ imageDrawerProfile }
+          navigations={ navigation } 
+        />}
       >
         {user.payload.screenAccess.PROFILE === "Y" && <Drawer.Screen name={allDrawerScreens.PROFILE} children={() => { return <ScreenProfile navigation={ navigation } setImageDrawerProfile={ setImageDrawerProfile }/>}} />}
         {user.payload.screenAccess.REQUESTS === "Y" && <Drawer.Screen name={allDrawerScreens.REQUESTS} children={() => { return (<ScreenRequests></ScreenRequests>)}} />}
@@ -174,31 +181,16 @@ function MyDrawer({ navigation }) {
         {user.payload.screenAccess.PEOPLE === "Y" && <Drawer.Screen name={allDrawerScreens.PEOPLE} children={() => { return <ScreenListPeople navigation={ navigation } />}} />}
         {user.payload.screenAccess.CHARTS === "Y" && <Drawer.Screen name={allDrawerScreens.CHARTS} children={() => { return <ScreenAnalyticalCharts navigation={ navigation } />}} />}
         {user.payload.screenAccess.CONFIG === "Y" && <Drawer.Screen name={allDrawerScreens.CONFIGURATION} children={() => { return <ScreenConfig navigation={ navigation } />}} />}
-        <Drawer.Screen name={allDrawerScreens.LOGOUT}
-        children={() =>{ 
-            Alert.alert(
-              'Warning',
-              'Are you sure about logout?',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                  style: 'cancel',
-                },
-                {text: 'Yes', onPress: () => {
-                  navigation.navigate("Login");
-                }},
-              ],
-              {cancelable: false},
-            );
-        }} />
-
+        <Drawer.Screen name={allDrawerScreens.LOGOUT} component={Component} />
       </Drawer.Navigator>
     </Box>
   );
 }
 
 function CustomDrawerContent(props) {
+
+  const dispatch = useDispatch();
+  const handleLogout = () => {dispatch(actions.logout())}
 
   const user = useSelector(state => state.reducerLogin);
   const isOpen = useDrawerStatus() === "open";
@@ -243,14 +235,14 @@ function CustomDrawerContent(props) {
 {/*****************************  DRAWER BODY ****************************/}
           <VStack divider={<Divider {...nativeBaseProps.Dividers} />} space="0">
             <VStack space="2">
-              <StatusBar barStyle={isOpen?"light-content":"light-content"} />
+              <StatusBar style={"light"} />
               {props.state.routeNames.map((name, index) => {
                 return (
                   <Box key={index}>
                     {name==="Logout"?<Divider {...nativeBaseProps.Dividers} />:null}
                     <Pressable
                       px="5"
-                      py={name==="Logout"?"2":"2"}
+                      py={"2"}
                       my={name==="Logout"?"1":"0"}
                       rounded="md"
                       bg={
@@ -259,6 +251,25 @@ function CustomDrawerContent(props) {
                           : "transparent"
                       }
                       onPress={(event) => {
+                        if(name==="Logout"){
+                          Alert.alert(
+                              'Warning',
+                              'Are you sure about logout?',
+                              [
+                                {
+                                  text: 'Cancel',
+                                  onPress: () => {},
+                                  style: 'cancel',
+                                },
+                                {text: 'Yes', onPress: () => {
+                                  props.navigations.navigate("Login");
+                                  handleLogout();
+                                }},
+                              ],
+                              {cancelable: false},
+                            );
+                            return;
+                        } 
                         props.navigation.navigate(name);
                       }}
                       key={index}

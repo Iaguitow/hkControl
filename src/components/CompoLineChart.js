@@ -5,14 +5,14 @@ import { ProfileActions } from "../Actions/ActionProfile";
 // import all the components we are going to use
 import {
   Text,
-  Dimensions,
-  View,
+  Dimensions
 } from 'react-native';
 
 import {
   Divider,
   HStack,
-  Stack
+  Stack,
+  View
 } from "native-base";
 
 // Import the chart component

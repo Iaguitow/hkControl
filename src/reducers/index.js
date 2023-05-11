@@ -28,4 +28,27 @@ const reducers = combineReducers({
     reducerCharts
 });
 
-export { reducers }
+const rootReducer = (state, action) => {
+
+    if (action.type === 'LOGOUT') {
+      return reducers({
+            reducerLogin: undefined,
+            reducerPeople: undefined,
+            reducerGdriver: undefined,
+            reducerRequests: undefined,
+            reducerProfile: undefined,
+            reducerJobCategory: undefined,
+            reducerTasks: undefined,
+            reducerCheckList: undefined,
+            reducerRequestType: undefined,
+            reducerRooms: undefined,
+            reducerRequestLog: undefined,
+            reducerCharts: undefined
+      }, action);
+    }
+  
+    return reducers(state, action)
+}
+  
+
+export { rootReducer }

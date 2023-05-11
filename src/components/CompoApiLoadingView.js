@@ -10,7 +10,7 @@ function ApiLoading() {
   useEffect(() =>{
     Animated.timing(fadeEffect,{
       toValue: 1,
-      duration: 1000,
+      duration: 250,
       useNativeDriver: true
     }).start();   
   },[]);

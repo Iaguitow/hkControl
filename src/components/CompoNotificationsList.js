@@ -143,10 +143,10 @@ function notificationList({ isOpen, onClose }) {
                                             <Text 
                                                 py={1.5} 
                                                 fontSize="14" 
-                                                color = {item.dtcancellation?"red.600":"green.600"}
+                                                color = {item.logtype.toString()=="CANCELED"?"red.600":"green.600"}
                                                 fontWeight={"bold"}
                                             >
-                                                { item.dtcancellation?"CANCELED":item.fulldtrequestdone?"DONE":"NEW REQUEST!" }
+                                                { item.logtype.toString()=="CANCELED"?"CANCELED":item.logtype.toString()=="UPDATED"?"UPDATED":"NEW REQUEST!" }
                                             </Text>
                                             </HStack>
                                         </VStack>

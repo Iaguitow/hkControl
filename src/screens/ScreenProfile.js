@@ -161,10 +161,12 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
     );
 
     return (
-        <ScrollView>
-            <Stack alignSelf="center">
+        <ScrollView
+            scrollIndicatorInsets={{ top: 1, bottom: 1 }}
+        >
+            <Stack alignSelf="center" >
                 <Box {...nativeBaseProps.FIRST_BOX}>
-                    <Box >
+                    <Box>
                         <Box>
                             <AspectRatio 
                                 {...nativeBaseProps.ASPECT_RATIO}>
@@ -293,12 +295,8 @@ const ScreenProfile = ({ navigation, setIsMounted, setImageDrawerProfile }) => {
                             </Stack>
                             <Divider {...nativeBaseProps.DIVIDERS} />
                             <VStack>
-
                                 <PerformanceLineChart setIsMounted={setIsMounted} />
                             </VStack>
-
-
-
                         </Stack>
                     </Box>
                 </Box>
@@ -345,6 +343,7 @@ const nativeBaseProps = {
         overflow:"hidden", 
         borderColor:"coolGray.300", 
         borderWidth:"2",
+        h:"100%"
     },
     ASPECT_RATIO:{
         w:"100%", 

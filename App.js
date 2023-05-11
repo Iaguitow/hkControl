@@ -17,7 +17,11 @@ import CompoProfile from "./src/components/CompoProfile";
 import CompoFloorConfig from './src/components/CompoFloorConfig';
 import CompoRequestConfig from './src/components/CompoRequestConfig';
 
-LogBox.ignoreLogs(["The contrast ratio"]);
+LogBox.ignoreLogs([
+  "The contrast ratio",
+  "Non-serializable values were found in the navigation",
+  "This can break usage such as persisting and restoring state",
+]);
 
 const Stack = createNativeStackNavigator();
 StatusBar.setHidden(false);

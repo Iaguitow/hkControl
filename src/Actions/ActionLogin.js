@@ -26,7 +26,7 @@ const actions = {
     },
     logout: ()=>({
         type: actionsTypes.LOGOUT,
-        payload: ""
+        payload: undefined
     })
 }
 

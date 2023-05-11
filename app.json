@@ -6,12 +6,35 @@
     "version": "1.0.0",
     "userInterfaceStyle": "automatic",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/second_icon_png.png",
     "scheme": "iowl",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/main_logo_png.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "build": {
+      "preview": {
+        "android": {
+          "buildType": "apk"
+        }
+      }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/second_icon_png.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
+    "notification": {
+      "icon": "./assets/second_icon_png.png",
+      "color": "#ffffff",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Updates from Colab.notes",
+      "iosDisplayInForeground": true
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -25,13 +48,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/second_icon_png.png",
         "backgroundColor": "#FFFFFF"
       },
+      "useNextNotificationsApi": true,
       "package": "iowl.app.android"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/second_icon_png.png"
     },
     "extra": {
       "eas": {
