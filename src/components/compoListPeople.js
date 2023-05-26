@@ -48,6 +48,15 @@ const ListPeople = ({navigation, setIsMounted}) => {
     getPeople(peopleList,idpeople,token_api,setIsMounted, setRefreshing);
 }, []);
 
+React.useEffect(() => {
+  const unsubscribe = navigation.addListener('focus', (test) => {
+    onRefresh();
+  });
+
+  return unsubscribe;
+}, [navigation]);
+
+
  return (
    <Box width={"100%"} flex={1}>
      <SafeAreaView>
@@ -134,7 +143,8 @@ const ListPeople = ({navigation, setIsMounted}) => {
                    navigation.navigate(
                     "CompoProfile",
                     
-                    {imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople", onRefresh: () => {onRefresh}}
+                    /*{imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople", onRefresh: () => {onRefresh}}*/
+                    {imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople"}
                    );
                  }}
                  endIcon={<Icon size={6} as={MaterialCommunityIcons} name="account-edit-outline"/>}

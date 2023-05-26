@@ -23,7 +23,8 @@ StatusBar.setHidden(false);
 LogBox.ignoreLogs([
   "The contrast ratio",
   'Non-serializable values were found in the navigation state',
-]);
+]
+);
 
 function App() {
 

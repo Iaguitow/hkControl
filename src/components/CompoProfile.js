@@ -99,9 +99,9 @@ const CompoProfileContext = ({ navigation }) => {
               {...nativeBaseProps.ICON_GOBACK}
               as={<MaterialIcons name="arrow-back-ios" />}
               onPress={() => {
-                if(route.params.from === "listpeople"){
+                /*if(route.params.from === "listpeople"){
                   route.params.onRefresh();
-                }
+                }*/
                   navigation.goBack(); 
                 }
               }

@@ -21,7 +21,8 @@
       "iosDisplayInForeground": true
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/0ea00c36-58f0-4763-ab6c-21310437666a"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -46,6 +47,9 @@
       "eas": {
         "projectId": "0ea00c36-58f0-4763-ab6c-21310437666a"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
