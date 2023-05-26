@@ -1,5 +1,5 @@
 import React, {useEffect, useState, memo} from "react"
-import { RefreshControl } from "react-native"
+import { RefreshControl, Platform } from "react-native"
 import { SafeAreaView } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { PeopleActions } from "../Actions/ActionPeople.js";
@@ -16,7 +16,6 @@ import {
  Icon,
  Button
 } from "native-base";
-
 
 const ListPeople = ({navigation, setIsMounted}) => {
 
@@ -150,7 +149,7 @@ React.useEffect(() => {
                  endIcon={<Icon size={6} as={MaterialCommunityIcons} name="account-edit-outline"/>}
                  backgroundColor={user.payload.screenFunctionAccess.EDIT_USER === "N"?"rgba(0,185,243,0.2)":"rgba(0,185,243,1)"}
                  disabled={user.payload.screenFunctionAccess.EDIT_USER === "N"?true:false}
-                 shadow={9}
+                 shadow={Platform.OS === "android" && user.payload.screenFunctionAccess.EDIT_USER === "N"?0:9}
                >
                  <Text fontSize={16} fontWeight={"bold"} color={"white"}>
                    Click to edit

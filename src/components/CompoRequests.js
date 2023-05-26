@@ -1,4 +1,5 @@
-import React, { useState, memo, useEffect } from "react"
+import React, { useState, memo, useEffect } from "react";
+import { Platform } from "react-native";
 import CompoRequestDetails from "./CompoRequestDetails.js";
 import { RefreshControl, Alert, AppState } from "react-native"
 import { useSelector, useDispatch } from "react-redux";
@@ -266,29 +267,14 @@ const CompoRequests = ({ setIsMounted }) => {
 
 
 const NativeBaseProps = {
-  DETAILS_BUTTON: {
-    mb: 2,
-    minW: "99%",
-    maxW: "99%",
-    borderTopRadius: 0,
-    borderBottomWidth: 4,
-    _text: {
-      fontWeight: "bold",
-      fontSize: "16",
-      color: "white"
-    },
-  },
   VSTACK_FLATLIST: {
     space: 3,
     mt: 3,
     bgColor: "trueGray.700",
     w: "98%",
-    h: "180",
+    h:  Platform.OS == "android"?"220":"195",
     alignSelf: "center",
-    pl: 5,
-    pb: 8,
-    pt: 2,
-    pr: 3,
+    p: 5,
     borderWidth: 3,
     borderRadius: 10,
     borderColor: "#06d9ff"

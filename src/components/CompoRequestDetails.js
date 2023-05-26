@@ -119,7 +119,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                         submitInput={ (inputText) => {
 
                         if(inputText == "" || inputText == undefined){
-                            alert("Please Enter Text");
+                            alert("Please Enter the reason for the cancellation.");
                             return;
                         }
 
