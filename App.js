@@ -1,6 +1,6 @@
 //PACKAGES
-import React, {memo} from 'react';
-import { StatusBar,LogBox } from 'react-native';
+import React, {memo, useEffect} from 'react';
+import { StatusBar, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NativeBaseProvider, View} from 'native-base';
@@ -17,14 +17,13 @@ import CompoProfile from "./src/components/CompoProfile";
 import CompoFloorConfig from './src/components/CompoFloorConfig';
 import CompoRequestConfig from './src/components/CompoRequestConfig';
 
-LogBox.ignoreLogs([
-  "The contrast ratio",
-  "Non-serializable values were found in the navigation",
-  "This can break usage such as persisting and restoring state",
-]);
-
 const Stack = createNativeStackNavigator();
 StatusBar.setHidden(false);
+
+LogBox.ignoreLogs([
+  "The contrast ratio",
+  'Non-serializable values were found in the navigation state',
+]);
 
 function App() {
 

@@ -10,34 +10,36 @@ import {
     Text,
     Checkbox,
     Divider,
-    View
- } from "native-base";
- 
- import React, { useState, useEffect, useRef } from "react"
- import { Animated } from 'react-native';
- import { useSelector, useDispatch } from "react-redux";
- import { Entypo,AntDesign } from "@expo/vector-icons";
- import CompoLoadingView from "../components/CompoApiLoadingView";
- import ModalSelect from "./CompoModalMultSelect";
- import ModalSingleSelect from "./CompoSingleSelectInOut";
- import { actionsTypesAPI } from "../Actions/ConstActionsApi";
- import generalUtils from "../utils/GeneralUtils";
- import Alerts from "./CompoAlerts";
- import Toasts from "./CompoToast";
- import { RequestActions } from "../Actions/ActionRequests";
- 
- 
- const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) => {
- 
- 
+    View,
+    KeyboardAvoidingView,
+    ScrollView
+} from "native-base";
+
+import React, { useState, useEffect, useRef } from "react"
+import { Animated } from 'react-native';
+import { useSelector, useDispatch } from "react-redux";
+import { Entypo, AntDesign } from "@expo/vector-icons";
+import CompoLoadingView from "../components/CompoApiLoadingView";
+import ModalSelect from "./CompoModalMultSelect";
+import ModalSingleSelect from "./CompoSingleSelectInOut";
+import { actionsTypesAPI } from "../Actions/ConstActionsApi";
+import generalUtils from "../utils/GeneralUtils";
+import Alerts from "./CompoAlerts";
+import Toasts from "./CompoToast";
+import { RequestActions } from "../Actions/ActionRequests";
+
+
+const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) => {
+
+
     const dispatch = useDispatch();
     const user = useSelector(state => state.reducerLogin);
     const rooms = useSelector(state => state.reducerRooms);
     const requests = useSelector(state => state.reducerRequests);
     const requestsType = useSelector(state => state.reducerRequestType);
-    const insertNewRequest = (userAccess, requestObj, token_api, idpeople, joblevel) => {dispatch(RequestActions.insertNewRequest(userAccess,requestObj, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal})) }
- 
- 
+    const insertNewRequest = (userAccess, requestObj, token_api, idpeople, joblevel) => { dispatch(RequestActions.insertNewRequest(userAccess, requestObj, token_api, idpeople, joblevel, { setIsMounted, startEffect, setShowModal, handleFeedbackToast })) }
+
+
     const [priorityValue, setPriorityValue] = useState(false);
     const [selectIsDisabled, setSelectIsDisabled] = useState(true);
     const [saveButtonIsDisabled, setSaveButtonIsDisabled] = useState(true);
@@ -45,17 +47,17 @@ import {
     const [roomValue, setRoomValue] = useState("");
     const [isOpenAlert, setIsOpenAlert] = React.useState(false);
     const [alertType, setIsAlertType] = React.useState("Error");
-    const [fadeEffect,setFadeEffect] = useState(new Animated.Value(0));
- 
- 
+    const [fadeEffect, setFadeEffect] = useState(new Animated.Value(0));
+
+
     const [multRequests, setMultRequests] = useState([]);
- 
- 
+
+
     const screenAccess = user.payload.screenAccess;
     const screenFunctionsAccess = user.payload.screenFunctionAccess
-    const userAccess = {screenAccess,screenFunctionsAccess}
- 
- 
+    const userAccess = { screenAccess, screenFunctionsAccess }
+
+
     useEffect(() => {
         setAmountValue(1);
         setRoomValue("");
@@ -65,146 +67,151 @@ import {
         setSelectIsDisabled(true);
         setSaveButtonIsDisabled(true);
         setFadeEffect(new Animated.Value(0));
-       
-        if(requests.api_status === actionsTypesAPI.STATUS_OK){
-            if(typeof requests.payload.requests == "boolean"){
+
+        if (requests.api_status === actionsTypesAPI.STATUS_OK) {
+            if (typeof requests.payload.requests == "boolean") {
                 setIsOpenAlert(!requests.payload.request);
                 return;
             }
         }
-       
-    },[requests.api_inserts_requests]);
- 
- 
-    const startEffect = () =>{
-        Animated.timing(fadeEffect,{
+
+    }, [requests.api_inserts_requests]);
+
+
+    const startEffect = () => {
+        Animated.timing(fadeEffect, {
             toValue: 1,
             duration: 1500,
             useNativeDriver: true
-          }).start(() =>{returnEffect();});
+        }).start(() => { returnEffect(); });
     }
- 
- 
-    const returnEffect = () =>{
-        Animated.timing(fadeEffect,{
+
+
+    const returnEffect = () => {
+        Animated.timing(fadeEffect, {
             toValue: 0,
             duration: 1500,
             useNativeDriver: true
-          }).start();
+        }).start();
     }
- 
- 
-    const requestTypeArray = [{name:"REQUESTS: ",id:0,children:[]}];
- 
- 
+
+
+    const requestTypeArray = [{ name: "REQUESTS: ", id: 0, children: [] }];
+
+
     if (requestsType.payload.requestType != null) {
         for (var i = 0, ii = requestsType.payload.requestType.length; i < ii; i++) {
-            if(requestsType.payload.requestType[i].active=="Y"){
+            if (requestsType.payload.requestType[i].active == "Y") {
                 requestTypeArray[0].children.push({
                     id: requestsType.payload.requestType[i].idrequests,
                     name: requestsType.payload.requestType[i].resquestdescription,
                     amount: 1,
-                    type:"IN"
+                    type: "IN"
                 });
             }
         }
     }
- 
- 
-    const getResponsibleFromRoom =() =>{
-   
-        for(let item of Object.keys(rooms.payload.rooms)) {
-            if(rooms.payload.rooms[item].roomnumber.toString() == roomValue.toString() &&
+
+
+    const getResponsibleFromRoom = () => {
+
+        for (let item of Object.keys(rooms.payload.rooms)) {
+            if (rooms.payload.rooms[item].roomnumber.toString() == roomValue.toString() &&
                 (user.payload.profession != "HOUSE STEWARD" && user.payload.profession != "PUBLIC AREA")
-            ){
+            ) {
                 return rooms.payload.rooms[item].idpeople;
             }
         }
         return user.payload.idpeople;
-           
+
     }
- 
- 
+
+    const handleFeedbackToast = () => {
+        Toasts.showToast("Request Successfully Saved");
+    }
+
+
     return (
         <Center>
-            <Modal avoidKeyboard={true} closeOnOverlayClick={false} size={"xl"} isOpen={showModal} onClose={() => {
-                    setAmountValue(1);
-                    setRoomValue("");
-                    setPriorityValue(false);
-                    setSelectIsDisabled(true);
-                    setIsOpenAlert(false);
-                    setSaveButtonIsDisabled(true);
-                    setFadeEffect(new Animated.Value(0));
-                    setShowModal(false);
-                }}>
-                <Modal.Content >
-                    <Modal.CloseButton />
-                    <Modal.Header>NEW REQUEST</Modal.Header>
+            <Modal closeOnOverlayClick={false} size={"xl"} isOpen={showModal} onClose={() => {
+                setAmountValue(1);
+                setRoomValue("");
+                setPriorityValue(false);
+                setSelectIsDisabled(true);
+                setIsOpenAlert(false);
+                setSaveButtonIsDisabled(true);
+                setFadeEffect(new Animated.Value(0));
+                setShowModal(false);
+            }}>
+                <KeyboardAvoidingView style={{ width: '100%' }} behavior="position">
+                    <Center>
+                        <Modal.Content >
+                            <Modal.CloseButton />
+                            <Modal.Header>NEW REQUEST</Modal.Header>
+                            <Modal.Body _scrollview={{nestedScrollEnabled:true, horizontal:false}}>
+                                <VStack space={2}>
+                                    <HStack>
+                                        <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 1 </Text>
+                                        <Divider {...NATIVEBASE_PROPS.DIVIDERS} />
+                                    </HStack>
+                                    <Text {...NATIVEBASE_PROPS.TEXT}> SELECT ROOM AND PRIORITY: </Text>
+                                    <HStack {...NATIVEBASE_PROPS.HSTACK}>
+                                        <VStack {...NATIVEBASE_PROPS.VSTACK_DETAILS_AMOUNT_ROOM}>
+                                            <Text {...NATIVEBASE_PROPS.TEXT}> ROOM: </Text>
+                                            <Input
+                                                {...NATIVEBASE_PROPS.INPUT}
+                                                placeholder={"Room"}
+                                                returnKeyType="done"
+                                                maxLength={3}
+                                                value={roomValue}
+                                                onChangeText={(room) => {
+                                                    setRoomValue(room);
+                                                }}
+                                                onEndEditing={() => {
+                                                    if (!generalUtils.validateRooms(roomValue, rooms)) {
+                                                        setIsOpenAlert(true);
+                                                        setSelectIsDisabled(true);
+                                                        return;
+                                                    }
+                                                    setSelectIsDisabled(false);
 
-                    <Modal.Body>
-                        <VStack space={2}>
-                            <HStack>
-                                <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 1 </Text>       
-                                <Divider {...NATIVEBASE_PROPS.DIVIDERS} />        
-                            </HStack>
-                            <Text {...NATIVEBASE_PROPS.TEXT}> SELECT ROOM AND PRIORITY: </Text>
-                            <HStack {...NATIVEBASE_PROPS.HSTACK}>
-                                <VStack {...NATIVEBASE_PROPS.VSTACK_DETAILS_AMOUNT_ROOM}>
-                                    <Text {...NATIVEBASE_PROPS.TEXT}> ROOM: </Text>
-                                    <Input
-                                        {...NATIVEBASE_PROPS.INPUT}
-                                        placeholder={"Room"}
-                                        maxLength={3}
-                                        value={roomValue}
-                                        onChangeText={(room) =>{
-                                            setRoomValue(room);
-                                        }}
-                                        onEndEditing={() =>{
-                                            if(!generalUtils.validateRooms(roomValue, rooms)){
-                                                setIsOpenAlert(true);
-                                                setSelectIsDisabled(true);
-                                                return;
-                                            }
-                                            setSelectIsDisabled(false);
-                                           
-                                        }}         
+                                                }}
+                                            />
+                                        </VStack>
+                                        <VStack {...NATIVEBASE_PROPS.VSTACK_CHECKBOX}>
+                                            <Text mt={-1.5} {...NATIVEBASE_PROPS.TEXT}> PRIORITY: </Text>
+                                            <Checkbox {...NATIVEBASE_PROPS.CHECKBOX}
+                                                isChecked={priorityValue}
+                                                onChange={(value) => {
+                                                    setPriorityValue(!priorityValue);
+                                                }}
+                                            />
+                                        </VStack>
+                                    </HStack>
+                                    <HStack>
+                                        <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 2 </Text>
+                                        <Divider {...NATIVEBASE_PROPS.DIVIDERS} />
+                                    </HStack>
+
+                                    <Text {...NATIVEBASE_PROPS.TEXT}> YOUR REQUESTS: </Text>
+                                    <ModalSelect
+                                        setMultRequests={setMultRequests}
+                                        requestTypeArray={requestTypeArray}
+                                        selectIsDisabled={selectIsDisabled}
+                                        setSaveButtonIsDisabled={setSaveButtonIsDisabled}
+                                        multRequests={multRequests}
+
                                     />
-                                </VStack>
-                                <VStack {...NATIVEBASE_PROPS.VSTACK_CHECKBOX}>
-                                    <Text mt={-1.5} {...NATIVEBASE_PROPS.TEXT}> PRIORITY: </Text>
-                                    <Checkbox {...NATIVEBASE_PROPS.CHECKBOX}
-                                        isChecked={priorityValue}
-                                        onChange={(value) =>{
-                                            setPriorityValue(!priorityValue);
-                                        }}
-                                        />
-                                </VStack>
-                            </HStack>
-                            <HStack>
-                                <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 2 </Text>       
-                                <Divider {...NATIVEBASE_PROPS.DIVIDERS} />        
-                            </HStack>
-                           
-                            <Text {...NATIVEBASE_PROPS.TEXT}> YOUR REQUESTS: </Text>
-                            <ModalSelect
-                                setMultRequests={setMultRequests}
-                                requestTypeArray={requestTypeArray}
-                                selectIsDisabled={selectIsDisabled}
-                                setSaveButtonIsDisabled={setSaveButtonIsDisabled}
-                                multRequests={multRequests}
-                               
-                            />
-                            {multRequests.map((requests,index)=>{
-                               
+                                    {multRequests.map((requests, index) => {
+
                                         multRequests[index].responsible = getResponsibleFromRoom();
                                         multRequests[index].who_requested = user.payload.idpeople;
                                         multRequests[index].roomnumber = roomValue;
-                                        multRequests[index].priority = priorityValue?"C":"N";
+                                        multRequests[index].priority = priorityValue ? "C" : "N";
                                         multRequests[index].profession = user.payload.profession;
                                         multRequests[index].finaldescription = requests.name;
- 
- 
-                                        return(
+
+                                        return (
                                             <View
                                                 key={index}
                                             >
@@ -214,14 +221,20 @@ import {
                                                         {...NATIVEBASE_PROPS.INPUT_REQUEST_AMOUNT}
                                                         placeholder={"1"}
                                                         maxLength={2}
+                                                        returnKeyType="done"
+                                                        selectTextOnFocus={true}
+                                                        selectionColor={"rgb(0,185,243)"}
+                                                        _focus={
+                                                            {selectionColor:"rgb(0,185,243)"}
+                                                        }
                                                         key={requests.id}
-                                                        onFocus={() =>{
+                                                        onFocus={() => {
                                                             setSaveButtonIsDisabled(true);
                                                         }}
-                                                        onEndEditing={(e)=>{
-                                                            for(let item of Object.keys(multRequests)) {
-                                                                if(multRequests[item].id == requests.id){
-                                                                    multRequests[item].amount = e.nativeEvent.text===""?1:parseInt(e.nativeEvent.text);
+                                                        onEndEditing={(e) => {
+                                                            for (let item of Object.keys(multRequests)) {
+                                                                if (multRequests[item].id == requests.id) {
+                                                                    multRequests[item].amount = e.nativeEvent.text === "" ? 1 : parseInt(e.nativeEvent.text);
                                                                 }
                                                             }
                                                             setMultRequests(multRequests);
@@ -240,7 +253,7 @@ import {
                                                         setMultRequests={setMultRequests}
                                                         requests_id={requests.id}
                                                         requests_type={requests.type}
-                                                     />
+                                                    />
                                                 </HStack>
                                                 <Divider
                                                     {...NATIVEBASE_PROPS.DIVIDE_REQUEST}
@@ -248,52 +261,54 @@ import {
                                             </View>
                                         )
                                     }
-                                )
-                            }
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>                                
-                        <Button.Group space={2}>
-                            <Button variant="outline" borderWidth={2} borderColor="red.400" onPress={() => {
-                                setShowModal(false);
-                            }}>
-                                <Text {...NATIVEBASE_PROPS.TEXT}> CANCEL </Text>
-                            </Button>
-                            <Button
-                                disabled={saveButtonIsDisabled}
-                                opacity={saveButtonIsDisabled?0.4:1}
-                                onPress={() => {
-                                setIsMounted(false);
- 
-                                var joblevel = user.payload.joblevel;
-                                var token_api = user.payload.tokenapi;
-                                var idpeople = user.payload.idpeople;
-                               
-                                insertNewRequest(userAccess, multRequests, token_api, idpeople, joblevel, {setIsMounted, startEffect, setShowModal});
-                               
-                                if(requests.api_status === actionsTypesAPI.STATUS_OK){
-                                    Toasts.showToast("Request Successfully Saved");
-                                }
- 
- 
-                            }}>
-                                <Text color={"white"} {...NATIVEBASE_PROPS.TEXT}> SAVE </Text>
-                            </Button>
-                            <Animated.View style={{opacity:fadeEffect}}>
-                                <Icon name="checkcircle" size={"lg"} color={"green.500"} alignSelf={"center"} as={AntDesign} />
-                            </Animated.View>
-                        </Button.Group>
-                    </Modal.Footer>
-                    {!isMounted && <CompoLoadingView />}
-                </Modal.Content>
+                                    )
+                                    }
+                                </VStack>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button.Group space={2}>
+                                    <Button variant="outline" borderWidth={2} borderColor="red.400" onPress={() => {
+                                        setShowModal(false);
+                                    }}>
+                                        <Text {...NATIVEBASE_PROPS.TEXT}> CANCEL </Text>
+                                    </Button>
+                                    <Button
+                                        disabled={saveButtonIsDisabled}
+                                        opacity={saveButtonIsDisabled ? 0.4 : 1}
+                                        onPress={() => {
+                                            setIsMounted(false);
+
+                                            var joblevel = user.payload.joblevel;
+                                            var token_api = user.payload.tokenapi;
+                                            var idpeople = user.payload.idpeople;
+
+                                            insertNewRequest(userAccess, multRequests, token_api, idpeople, joblevel, { setIsMounted, startEffect, setShowModal, handleFeedbackToast });
+
+                                            /*if(requests.api_status === actionsTypesAPI.STATUS_OK){
+                                                Toasts.showToast("Request Successfully Saved");
+                                            }*/
+
+
+                                        }}>
+                                        <Text color={"white"} {...NATIVEBASE_PROPS.TEXT}> SAVE </Text>
+                                    </Button>
+                                    <Animated.View style={{ opacity: fadeEffect }}>
+                                        <Icon name="checkcircle" size={"lg"} color={"green.500"} alignSelf={"center"} as={AntDesign} />
+                                    </Animated.View>
+                                </Button.Group>
+                            </Modal.Footer>
+                            {!isMounted && <CompoLoadingView />}
+                        </Modal.Content>
+                    </Center>
+                </KeyboardAvoidingView>
             </Modal>
-            <Alerts alertType={alertType} isOpenAlert={isOpenAlert} setIsOpenAlert={setIsOpenAlert}/>
+            <Alerts alertType={alertType} isOpenAlert={isOpenAlert} setIsOpenAlert={setIsOpenAlert} />
         </Center>
     );
- };
- 
- 
- const NATIVEBASE_PROPS = {
+};
+
+
+const NATIVEBASE_PROPS = {
     VSTACK_DETAILS_AMOUNT_ROOM: {
         alignSelf: "center",
         alignItems: "center",
@@ -304,7 +319,7 @@ import {
         alignSelf: "center",
         alignItems: "center"
     },
-    SELECT_ITEM:{
+    SELECT_ITEM: {
         borderBottomWidth: 3,
         borderColor: "#00b9f3",
     },
@@ -351,7 +366,7 @@ import {
         alignItems: "center"
     },
     TEXT: {
-       
+
     },
     STEPS_TEXT: {
         fontWeight: "bold"
@@ -376,7 +391,7 @@ import {
         placeholderTextColor: "rgb(0,185,243)",
         autoCompleteType: 'off',
         alignSelf: "center",
-        _disabled:{bgColor:"gray.200"}
+        _disabled: { bgColor: "gray.200" }
     },
     INPUT: {
         w: "100%",
@@ -393,8 +408,8 @@ import {
         autoCompleteType: 'off',
         alignSelf: "center"
     },
- 
- 
+
+
     INPUT_REQUEST: {
         w: "60%",
         height: 50,
@@ -410,8 +425,8 @@ import {
         placeholderTextColor: "rgb(0,185,243)",
         autoCompleteType: 'off'
     },
- 
- 
+
+
     INPUT_REQUEST_AMOUNT: {
         w: "15%",
         height: 50,
@@ -428,9 +443,8 @@ import {
         autoCompleteType: 'off',
         alignSelf: "center",
     }
- }
- 
- 
- export default ModalNewRequest;
- 
- 
+}
+
+
+export default ModalNewRequest;
+

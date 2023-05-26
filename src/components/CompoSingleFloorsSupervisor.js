@@ -59,8 +59,8 @@ const NATIVEBASE_PROPS = {
         alignSelf: "center",
         borderWidth: 2,
         borderColor: "#00b9f3",
-        accessibilityLabel: "Choose the Category",
-        placeholder: "Choose the Category",
+        accessibilityLabel: "Choose Supervisor",
+        placeholder: "Choose Supervisor",
         borderRadius: 10,
         _selectedItem: {
             bg: "#00b9f3",

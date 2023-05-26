@@ -13,39 +13,38 @@ export default function SingleSelect({multRequests, setMultRequests, requests_id
     },[multRequests]);
 
     return (
-        <Select
-            selectedValue={requestInOut}
-            onValueChange={itemValue => {
-                setRequestInOut(itemValue);
-                    for(let item of Object.keys(multRequests)) {
-                        if(multRequests[item].id == requests_id){
-                            multRequests[item].type = itemValue.toString();
-                        }
-                    }
-                    setMultRequests(multRequests);
-                }
-            }
-            textAlign={"center"}
-            {...NATIVEBASE_PROPS.SELECT}
-        >
-            {
-                arrayItems.map((item, index) => {
-                    return (
-                        <Select.Item
-                            _text={
-                                {
-                                    fontWeight: "bold",
-                                    color: item.dscarray.toString().includes("OUT")?"red.700":"green.700" 
-                                }
+            <Select
+                selectedValue={requestInOut}
+                onValueChange={itemValue => {
+                    setRequestInOut(itemValue);
+                        for(let item of Object.keys(multRequests)) {
+                            if(multRequests[item].id == requests_id){
+                                multRequests[item].type = itemValue.toString();
                             }
-                            {...NATIVEBASE_PROPS.SELECT_ITEM} key={index}
-                            label={item.dscarray} value={item.dscarray}
-                        />
-                    );
-                })
-            }
-        </Select>
-
+                        }
+                        setMultRequests(multRequests);
+                    }
+                }
+                textAlign={"center"}
+                {...NATIVEBASE_PROPS.SELECT}
+            >
+                {
+                    arrayItems.map((item, index) => {
+                        return (
+                            <Select.Item
+                                _text={
+                                    {
+                                        fontWeight: "bold",
+                                        color: item.dscarray.toString().includes("OUT")?"red.700":"green.700" 
+                                    }
+                                }
+                                {...NATIVEBASE_PROPS.SELECT_ITEM} key={index}
+                                label={item.dscarray} value={item.dscarray}
+                            />
+                        );
+                    })
+                }
+            </Select>
     );
 }
 

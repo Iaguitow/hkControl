@@ -1,7 +1,6 @@
 import { actionsTypes } from "./ConstActions";
 import dbRequests from "../classes/ClassDBRequests";
 
-
 const RequestActions = {
    getRequests: (userAccess, idpeople, joblevel, token_api, {setIsMounted, setRefreshing = ""}) => dispatch => {
        dbRequests.getRequests(userAccess, idpeople,joblevel,token_api).then(response =>{
@@ -38,9 +37,13 @@ const RequestActions = {
    },
 
 
-   insertNewRequest: (userAccess, requestObj, token_api, idpeople, joblevel,{setIsMounted, startEffect, setShowModal}) => dispatch => {
+   insertNewRequest: (userAccess, requestObj, token_api, idpeople, joblevel,{setIsMounted, startEffect, setShowModal, handleFeedbackToast}) => dispatch => {
        dbRequests.insertNewRequest(userAccess, requestObj, token_api, idpeople,joblevel).then(response =>{
            //startEffect();
+           if(typeof handleFeedbackToast === "function"){
+                handleFeedbackToast();
+                
+           }
            dispatch({
                type: actionsTypes.INSERT_NEW_REQUEST,
                payload: {requests:response.data, error_message: null},

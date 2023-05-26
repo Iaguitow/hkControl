@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "126627980373",
+    "project_id": "iowl-hkcontrol",
+    "storage_bucket": "iowl-hkcontrol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126627980373:android:e12a47b5d5b6b5df8320dc",
+        "android_client_info": {
+          "package_name": "iowl.app.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126627980373-2tr9ao53vrb03dkpb2pgaakcepdeidsp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBUXalfTS9u0LGnzkSG3Qb2BFXl_GlXeA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126627980373-2tr9ao53vrb03dkpb2pgaakcepdeidsp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

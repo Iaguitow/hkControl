@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Animated, Platform } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";

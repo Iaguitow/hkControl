@@ -29,6 +29,7 @@ const ListPeople = ({navigation, setIsMounted}) => {
  const [refreshing, setRefreshing] = useState(false);
 
  useEffect(() =>{
+  
    if (peopleList.payload.people !== null) {
        setMasterDataSource(peopleList.payload.people);
        setFilteredDataSource(peopleList.payload.people);
@@ -130,11 +131,16 @@ const ListPeople = ({navigation, setIsMounted}) => {
                      idpeople: item.id,
                      joblevel: item.joblevel
                    }
-                   navigation.navigate("CompoProfile",{imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople", onRefresh: onRefresh});
+                   navigation.navigate(
+                    "CompoProfile",
+                    
+                    {imgProfile:item.profileImg, profile:{payload:payload}, from:"listpeople", onRefresh: () => {onRefresh}}
+                   );
                  }}
                  endIcon={<Icon size={6} as={MaterialCommunityIcons} name="account-edit-outline"/>}
                  backgroundColor={user.payload.screenFunctionAccess.EDIT_USER === "N"?"rgba(0,185,243,0.2)":"rgba(0,185,243,1)"}
                  disabled={user.payload.screenFunctionAccess.EDIT_USER === "N"?true:false}
+                 shadow={9}
                >
                  <Text fontSize={16} fontWeight={"bold"} color={"white"}>
                    Click to edit

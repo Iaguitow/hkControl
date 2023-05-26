@@ -32,7 +32,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
         setShowLoading(false);
     }
 
-    const insertNewRquest_Log = (requestCancellationObj, token_api,setShowLoading) => {dispatch(ActionRequestLog.insertNewRequest(requestCancellationObj, token_api,setShowLoading, onRefresh)) }
+    const insertNewRquest_Log = (requestCancellationObj, token_api,setShowLoading) => {dispatch(ActionRequestLog.insertNewRequest(requestCancellationObj, token_api,setShowLoading, onRefresh, onClose)) }
 
     const [numberSecs, setNumberSecs] = useState(0);
     const [numberMin, setNumberMin] = useState(0);
@@ -131,8 +131,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
 
                         clearInterval(timerId);
                         setVisibleCancelDialog(false);
-                        insertNewRquest_Log(requestCancellationObj,token_api,setShowLoading, onRefresh);
-                        onClose();
+                        insertNewRquest_Log(requestCancellationObj,token_api,setShowLoading, onRefresh, onClose);
                     }}
                     closeDialog={() => {
                         handleDialogCancellaion();
@@ -140,8 +139,8 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                 </DialogInput>
 
                     <ScrollView w="100%">
-                        <Box flex={1} flexDir={"row"} alignItems={"center"} justifyContent="center">
-                            <HStack space={20}>
+                        <Box flex={1} flexDir={"row"} alignItems={"center"} >
+                            <HStack flex={1} justifyContent="space-between" pl={2} pr={2}>
                                 <Text fontSize="18" color="green.600" fontWeight={"bold"}>
                                     Room - {requestDetail.roomnumber}
                                 </Text>

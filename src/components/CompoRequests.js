@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RequestActions } from "../Actions/ActionRequests";
 import { actionsTypesAPI } from "../Actions/ConstActionsApi";
 import { useRoute } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
 import Toasts from "./CompoToast";
 import {
   Box,
@@ -16,7 +17,8 @@ import {
   VStack,
   Button,
   ScrollView,
-  useDisclose
+  useDisclose,
+  Icon
 } from "native-base";
 
 
@@ -116,34 +118,6 @@ const CompoRequests = ({ setIsMounted }) => {
 
   return (
     <Box flex={1} minWidth={"100%"} mb={8}>
-
-      <HStack
-        {...NativeBaseProps.HSTACK_HEADER}
-      >
-        <Text {...NativeBaseProps.TEXT_BY}>
-          BY. {/*WHO REQUESTED*/}
-        </Text>
-        <Divider {...NativeBaseProps.DIVIDER} />
-        <Text fontSize={13} {...NativeBaseProps.TEXT_TIME} >
-          TIME {/*DT REQUEST*/}
-        </Text>
-        <Divider {...NativeBaseProps.DIVIDER} />
-        <Text {...NativeBaseProps.TEXT_DESCRIPTION}>
-          DESCRIPTION {/*DESCRIPTION*/}
-        </Text>
-        <Divider {...NativeBaseProps.DIVIDER} />
-        <Text {...NativeBaseProps.TEXT_ROOM_NO}>
-          No.
-        </Text>
-        <Divider {...NativeBaseProps.DIVIDER} />
-        <Text {...NativeBaseProps.TEXT_TIME_DONE}>
-          T.D. {/*DT DONE*/}
-        </Text>
-        <Divider {...NativeBaseProps.DIVIDER} />
-        <Text {...NativeBaseProps.TEXT_DONE}>
-          DONE {/*DT DONE*/}
-        </Text>
-      </HStack>
       <ScrollView
         scrollIndicatorInsets={{ top: 1, bottom: 1 }}
         refreshControl={<RefreshControl tintColor={'white'} title={'UPDATING...'} titleColor={'white'} refreshing={refreshing} onRefresh={onRefresh} />}
@@ -154,31 +128,17 @@ const CompoRequests = ({ setIsMounted }) => {
               key={item.idresquests}
               {...NativeBaseProps.VSTACK_FLATLIST}
             >
-              <HStack
-                key={index}
-                {...NativeBaseProps.HSTACK_FLATLIST_ITEM}
-              >
-                <Text fontSize={12} {...NativeBaseProps.TEXT_BY}>
-                  {item.whoresquested}
+            <HStack space={2} alignItems={"center"} justifyContent={"space-between"}>
+              <HStack space={1} alignItems={"center"}>
+                <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE} >
+                  ROOM:
                 </Text>
-                <Divider {...NativeBaseProps.DIVIDER} />
-                <Text fontSize={11} {...NativeBaseProps.TEXT_TIME}>
-                  {item.dtrequested}
-                </Text>
-                <Divider {...NativeBaseProps.DIVIDER} />
-                <Text {...NativeBaseProps.TEXT_DESCRIPTION}>
-                  {item.requestdsc}
-                </Text>
-                <Divider {...NativeBaseProps.DIVIDER} />
-                <Text fontSize={12} {...NativeBaseProps.TEXT_ROOM_NO}>
+                <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} fontWeight={"bold"} fontSize={18}>
                   {item.roomnumber}
                 </Text>
-                <Divider {...NativeBaseProps.DIVIDER} />
-                <Text fontSize={11} {...NativeBaseProps.TEXT_TIME_DONE}>
-                  {item.dtrequestdone}
-                </Text>
-                <Divider {...NativeBaseProps.DIVIDER} />
-                <Switch
+              </HStack>
+
+              <Switch
                   disabled={item.dtcancellation != null || userAccess.screenFunctionsAccess.FINISH_REQUEST == "N" ? true : false}
                   onToggle={() => {
                     if (item.dtrequestdone !== null) {
@@ -215,18 +175,76 @@ const CompoRequests = ({ setIsMounted }) => {
                   offTrackColor={item.dtcancellation != null ? "black" : item.priority == "CRITICAL" ? "red.600" : "#FFFF00"}
                   {...NativeBaseProps.SWITCH}
                 />
+                </HStack>
+
+              <HStack space={2}>
+
+                <HStack space={1}>
+                  <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                    BY:
+                  </Text>
+                  <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                    {item.whoresquested}
+                  </Text>
+                </HStack>
+
+                <Divider {...NativeBaseProps.DIVIDER} />
+
+                <HStack space={1}>
+                  <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                    Time Req.:
+                  </Text>
+                  <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} fontWeight={"bold"}>
+                    {item.dtrequested}
+                  </Text>
+                </HStack>
+
+                <Divider {...NativeBaseProps.DIVIDER} />
+
+                <HStack space={1}>
+                  <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                    Time Done.:
+                  </Text>
+                  <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                    {item.dtrequestdone}
+                  </Text>
+                </HStack>
+
               </HStack>
-              <Button
-                {...NativeBaseProps.DETAILS_BUTTON}
-                borderBottomColor={item.dtcancellation != null ? "gray.500" : item.dtrequestdone == null ? item.priority == "CRITICAL" ? "red.600" : "#FFFF00" : "#00FF00"}
-                onPress={() => {
-                  setTimeStamp(dateNow.getTime());
-                  setRequestDetails(item);
-                  onOpen();
-                }}
-              >
-                SEE DETAILS...
-              </Button>
+
+              <HStack>
+                <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                  DSC:
+                </Text>
+                <Text {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                  {item.requestdsc}
+                </Text>
+              </HStack>
+
+              <HStack space={2} alignItems={"center"} justifyContent={"space-between"}>
+                <Button
+                  shadow={9}
+                  _text={
+                    {
+                      fontWeight: "bold",
+                      fontSize: "16",
+                    }
+                  }
+                  h={"40px"}
+                  w={"200px"}
+                  endIcon={<Icon size={9} as={MaterialIcons} name="read-more" />}
+                  onPress={() => {
+                    setTimeStamp(dateNow.getTime());
+                    setRequestDetails(item);
+                    onOpen();
+                  }}
+                >
+                  <Text justifyContent={"center"} {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
+                    DETAILS
+                  </Text>
+                </Button>
+              </HStack>
+
             </VStack>
           )
         })}
@@ -261,7 +279,19 @@ const NativeBaseProps = {
     },
   },
   VSTACK_FLATLIST: {
-    alignItems: "center"
+    space: 3,
+    mt: 3,
+    bgColor: "trueGray.700",
+    w: "98%",
+    h: "180",
+    alignSelf: "center",
+    pl: 5,
+    pb: 8,
+    pt: 2,
+    pr: 3,
+    borderWidth: 3,
+    borderRadius: 10,
+    borderColor: "#06d9ff"
   },
   DIVIDER: {
     bg: "gray.400",
@@ -269,52 +299,16 @@ const NativeBaseProps = {
     orientation: "vertical"
   },
   SWITCH: {
-    onTrackColor: "#00FF00",
-    maxW: "12%",
-    minW: "12%"
+    onTrackColor: "#00FF00"
   },
-  TEXT_DONE: {
-    maxW: "12%",
-    minW: "12%",
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "white"
+  TEXT_DESCRIPTION_REQUESTS: {
+    fontSize: 14,
+    color: "#06d9ff",
   },
-  TEXT_TIME_DONE: {
-    maxW: "9%",
-    minW: "9%",
-    textAlign: "center",
+  TEXT_DESCRIPTION_REQUESTS_TITLE: {
     fontWeight: "bold",
-    color: "white"
-  },
-  TEXT_ROOM_NO: {
-    maxW: "6%",
-    minW: "6%",
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "white"
-  },
-  TEXT_DESCRIPTION: {
-    maxW: "40%",
-    minW: "40%",
-    noOfLines: 2,
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "white"
-  },
-  TEXT_TIME: {
-    maxW: "9%",
-    minW: "9%",
-    textAlign: "center",
-    fontWeight: "bold",
+    fontSize: 14,
     color: "white",
-  },
-  TEXT_BY: {
-    maxW: "11%",
-    minW: "11%",
-    textAlign: "center",
-    fontWeight: "bold",
-    color: "white"
   },
   LINEAR_BACK_GROUND_COLOR: {
     colors: ['#00b9f3', '#061b21', '#061b21'],

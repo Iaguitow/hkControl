@@ -41,6 +41,7 @@ function Login({ navigation }) {
     /////////////VARIABLE TO HANDLE THE ANIMATIONS /////////////
     const [heightInput,] = useState(new Animated.Value(1));
     const [heightInput2,] = useState(new Animated.Value(1));
+    const [heightInput3,] = useState(new Animated.Value(1));
     const [offset,] = useState(new Animated.ValueXY({ x: 0, y: 80 }));
     const [opacity] = useState(new Animated.Value(0));
 
@@ -53,6 +54,9 @@ function Login({ navigation }) {
 
     /////////////VARIABLE TO HANDLE THE LOGIN BUTTON STATUS /////////////
     const [isLogin, setIslogin] = useState(false);
+
+
+    const [scrollViewPadding, setScrollViewPadding] = useState(5);
 
     /////////////VARIABLE AND FUNCTIONS TO HANDLE THE LOGIN BUTTON WITH REDUX /////////////
     const user = useSelector(state => state.reducerLogin);
@@ -111,14 +115,15 @@ function Login({ navigation }) {
                     <Box safeAreaTop flex={1} flexDirection={"column"} w={"100%"}>
                         {/*/////////////////////////////////// LOGO IMAGE  /////////////////////////////////*/}
                         <Stack flex={1} space={6} w="100%" alignItems="center">
-                            <View justifyContent={"center"} flex={1}>
+                            <Animated.View justifyContent={"center"} flex={1} style={{ transform: [{ scale: heightInput3 }] }}>
                                 <Logo width={150} height={150}> </Logo>
-                            </View>
+                            </Animated.View>
                             {/*/////////////////////////////////// EMAIL INPUT /////////////////////////////////*/}
                             <ScrollView
                                 flex={1}
                                 w={"100%"}
                                 scrollIndicatorInsets={{ top: 1, bottom: 1 }}
+                                pt={scrollViewPadding}
                             >
                                 <Stack flex={1} justifyContent={"center"} space={6} alignItems="center" marginBottom={10} >
 
@@ -129,6 +134,7 @@ function Login({ navigation }) {
                                             }}
                                             onFocus={() => {
                                                 setBorderFocusWidth(3);
+                                                setScrollViewPadding(15);
                                                 Animated.timing(
                                                     heightInput, {
                                                     toValue: 1.1,
@@ -136,11 +142,29 @@ function Login({ navigation }) {
                                                     useNativeDriver: true
                                                 }
                                                 ).start();
+
+                                                Animated.timing(
+                                                    heightInput3, {
+                                                    toValue: 0.7,
+                                                    duration: 300,
+                                                    useNativeDriver: true
+                                                }
+                                                ).start();
+
                                             }}
                                             onEndEditing={() => {
                                                 setBorderFocusWidth(1);
+                                                setScrollViewPadding(5);
                                                 Animated.timing(
                                                     heightInput, {
+                                                    toValue: 1,
+                                                    duration: 300,
+                                                    useNativeDriver: true
+                                                }
+                                                ).start();
+
+                                                Animated.timing(
+                                                    heightInput3, {
                                                     toValue: 1,
                                                     duration: 300,
                                                     useNativeDriver: true
@@ -170,6 +194,7 @@ function Login({ navigation }) {
                                             }}
                                             onFocus={() => {
                                                 setBorderFocusWidth2(3);
+                                                setScrollViewPadding(15);
                                                 Animated.timing(
                                                     heightInput2, {
                                                     toValue: 1.1,
@@ -177,11 +202,28 @@ function Login({ navigation }) {
                                                     useNativeDriver: true
                                                 }
                                                 ).start();
+
+                                                Animated.timing(
+                                                    heightInput3, {
+                                                    toValue: 0.7,
+                                                    duration: 300,
+                                                    useNativeDriver: true
+                                                }
+                                                ).start();
                                             }}
                                             onEndEditing={() => {
                                                 setBorderFocusWidth2(1);
+                                                setScrollViewPadding(5);
                                                 Animated.timing(
                                                     heightInput2, {
+                                                    toValue: 1,
+                                                    duration: 300,
+                                                    useNativeDriver: true
+                                                }
+                                                ).start();
+
+                                                Animated.timing(
+                                                    heightInput3, {
                                                     toValue: 1,
                                                     duration: 300,
                                                     useNativeDriver: true
@@ -378,6 +420,9 @@ const styless = {
         borderRadius: 10,
         height: 50,
         fontSize: "md",
+        _focus:{
+            selectionColor:"white"
+        },
     },
     ICON: {
         color: "{'rgb(0,185,243)'}",

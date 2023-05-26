@@ -2,7 +2,7 @@ import { actionsTypes } from "./ConstActions";
 import dbRequestLogs from "../classes/ClassDBRequestLog";
 
 const ActionRequestLog = {
-    getRequestLogs: (idpeople, token_api) => dispatch => {
+    getRequestLogs: (idpeople, token_api, setIsMounted) => dispatch => {
         dbRequestLogs.getRequestLogs(idpeople,token_api).then(response =>{
             dispatch({
                 type: actionsTypes.GET_REQUEST_LOG,
@@ -14,11 +14,14 @@ const ActionRequestLog = {
                 payload: {logs:null, error_message: error.message},
             });
         }).finally(endpoint =>{
-
+            if(typeof setIsMounted === "function"){
+                setIsMounted(true);
+            }
+            
         });
     },
 
-    insertNewRequest: (requestCancellationObj, token_api, setShowLoading, onRefresh, idpeople, joblevel) => dispatch => {
+    insertNewRequest: (requestCancellationObj, token_api, setShowLoading, onRefresh, onClose, idpeople, joblevel) => dispatch => {
         dbRequestLogs.insertNewRequestLog(requestCancellationObj, token_api, idpeople, joblevel).then(response =>{
             dispatch({
                 type: actionsTypes.INSERT_NEW_REQUEST_LOG,
@@ -39,6 +42,11 @@ const ActionRequestLog = {
             if(typeof onRefresh === "function"){
                 onRefresh();
             }
+
+            if(typeof onClose === "function"){
+                onClose();
+            }
+            
         });
     }
 }

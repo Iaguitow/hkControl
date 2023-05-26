@@ -3,7 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionRequestLog } from "../Actions/ActionRequestLog";
-
+import CompoApiLoadingView from './CompoApiLoadingView';
 import {
     Box,
     Text,
@@ -17,6 +17,8 @@ import {
 } from "native-base";
 
 function notificationList({ isOpen, onClose }) {
+
+    const [isMounted, setIsMounted] = useState(true);
 
     const navigations = useNavigation();
     const dispatch = useDispatch();
@@ -48,12 +50,13 @@ function notificationList({ isOpen, onClose }) {
     };
 
     const user = useSelector(state => state.reducerLogin);
-    const getRequestLog = (idpeople,token_api) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api)) }
+    const getRequestLog = (idpeople,token_api) => {dispatch(ActionRequestLog.getRequestLogs(idpeople,token_api, setIsMounted)) }
 
     useEffect(()=>{
+        setIsMounted(false);
         const token_api = user.payload.tokenapi;
         const idpeople = user.payload.idpeople;
-        getRequestLog(idpeople,token_api);
+        getRequestLog(idpeople,token_api, setIsMounted);
 
         return () =>{
             return;
@@ -158,6 +161,7 @@ function notificationList({ isOpen, onClose }) {
                                 })
                         }
                     </ScrollView>
+                    {!isMounted && <CompoApiLoadingView/>}
                 </Actionsheet.Content>
                 
             </Actionsheet>

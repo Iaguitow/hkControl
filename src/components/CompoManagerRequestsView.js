@@ -373,7 +373,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
                                             <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS_TITLE}>
                                                TIME REQ.:
                                             </Text>
-                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS}>
+                                            <Text  {...NativeBaseProps.TEXT_DESCRIPTION_REQUESTS} fontWeight={"bold"}>
                                               {portersRequests.timeRequested}
                                             </Text>
                                           </HStack>

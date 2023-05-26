@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Platform } from 'react-native';
+import { AppState } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { Text, Box, Heading, Stack, View, Button, ScrollView, HStack, Icon } from "native-base";
 import SingleSelectFloorResponsible from './CompoSingleSelectFloorsResponsibles';
