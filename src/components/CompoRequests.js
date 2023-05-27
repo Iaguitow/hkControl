@@ -148,7 +148,7 @@ const CompoRequests = ({ setIsMounted }) => {
                     }
                     Alert.alert(
                       'WARNING',
-                      'BE AWAREYOU WILL NOT BE ABLE TO GO BACK! ARE YOU SURE ABOUT TO FINISH THIS REQUEST FOR THE ROOM: ' + item.roomnumber + " ?!",
+                      'BE AWARE YOU WILL NOT BE ABLE TO GO BACK! ARE YOU SURE ABOUT TO FINISH THIS REQUEST FOR THE ROOM: ' + item.roomnumber + " ?!",
                       [
                         {
                           text: 'Cancel',
@@ -271,10 +271,11 @@ const NativeBaseProps = {
     space: 3,
     mt: 3,
     bgColor: "trueGray.700",
-    w: "98%",
-    h:  Platform.OS == "android"?"220":"195",
+    w: "90%",
+    h:  Platform.OS == "android"?"195":"195",
     alignSelf: "center",
     p: 5,
+    pt: Platform.OS == "android"?0:4,
     borderWidth: 3,
     borderRadius: 10,
     borderColor: "#06d9ff"
