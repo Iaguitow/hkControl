@@ -124,7 +124,7 @@ const CompoFloorConfig = ({ navigation }) => {
                                                     //var peopless = peopleList.payload.people.filter(data => data.profession === "HOUSE STEWARD" && data.active === "S");
                                                     //console.log(peopless);
                                                     updateFloor(floorToSave, token_api, setIsMounted, handleToastSavetion, setLoadingButton_floor);
-                                        
+                                                    // ADICIONAR O REQUESTLOG PARA CARREGAR O BELL NOVAMENTE //
                                                 }}
                                             >
                                                 {"SAVE " + item.floorname}

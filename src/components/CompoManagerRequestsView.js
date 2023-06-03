@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { RequestActions } from "../Actions/ActionRequests";
+import * as Notifications from 'expo-notifications';
 import {
   Box,
   HStack,
@@ -148,21 +149,37 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
   }
 
   const route = useRoute();
+  const notificationListener = React.useRef();
 
   useEffect(() => {
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      onRefresh();
+
+    });
+
     const appStateSubscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active') {
         onRefresh();
       }
     })
+
     if (route.params) {
       setRequestDetail(route.params.item);
       onOpen();
     } else {
-      return () => appStateSubscription.remove();
+      return () => {
+        appStateSubscription.remove()
+        Notifications.removeNotificationSubscription(notificationListener.current);
+      };
     }
-    return () => appStateSubscription.remove();
-  }, [route.params]);
+
+    return () => {
+      appStateSubscription.remove();
+      Notifications.removeNotificationSubscription(notificationListener.current);
+    };
+    
+  }, [route.params, notificationListener.current]);
 
 
   return (

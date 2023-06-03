@@ -8,6 +8,7 @@ import { actionsTypesAPI } from "../Actions/ConstActionsApi";
 import { useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Toasts from "./CompoToast";
+import * as Notifications from 'expo-notifications';
 import {
   Box,
   useToast,
@@ -92,11 +93,15 @@ const CompoRequests = ({ setIsMounted }) => {
     }
   }
 
-
   const route = useRoute();
-
+  const notificationListener = React.useRef();
 
   useEffect(() => {
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      onRefresh();
+
+    });
 
     const stateSubscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active') {
@@ -104,17 +109,21 @@ const CompoRequests = ({ setIsMounted }) => {
       }
     });
 
-
     if (route.params) {
       setRequestDetails(route.params.item);
       onOpen();
     } else {
-      return () => stateSubscription.remove();
+      return () => {
+        stateSubscription.remove()
+        Notifications.removeNotificationSubscription(notificationListener.current);
+      };
     }
 
-
-    return () => stateSubscription.remove();
-  }, [route.params]);
+    return () => {
+      stateSubscription.remove();
+      Notifications.removeNotificationSubscription(notificationListener.current);
+    };
+  }, [route.params, notificationListener.current]);
 
 
   return (
