@@ -20,6 +20,7 @@
     "accordion-collapse-react-native": "^1.1.1",
     "axios": "^0.24.0",
     "buffer": "^6.0.3",
+    "core-js": "^3",
     "css-select": "^4.2.0",
     "css-tree": "^2.0.4",
     "expo": "^47.0.0",

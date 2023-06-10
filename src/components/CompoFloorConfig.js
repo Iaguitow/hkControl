@@ -14,7 +14,7 @@ const CompoFloorConfig = ({ navigation }) => {
 
     const [isMounted, setIsMounted] = useState(false);
     const [loadingButton, setLoadingButton] = useState(null);
-    const setLoadingButton_floor = React.useCallback((index) =>{
+    const setLoadingButton_floor = React.useCallback((index) => {
         setLoadingButton(index);
     });
 
@@ -34,7 +34,7 @@ const CompoFloorConfig = ({ navigation }) => {
     const [floorMaped, setFloorMaped] = useState([]);
 
     useEffect(() => {
-        setIsMounted(false);
+
         const superviSors = peopleList.payload.people.filter(supervisors => supervisors.profession === "ROOM SUPERVISOR" && supervisors.active === "S");
         const porteRs = peopleList.payload.people.filter(porters => porters.profession === "HOUSE STEWARD" && porters.active === "S");
 
@@ -43,8 +43,13 @@ const CompoFloorConfig = ({ navigation }) => {
 
         if (!!peopleList.payload.people) {
             setFloorMaped(floors.payload_F.floors);
+            
+        }
+
+        return () =>{
             setIsMounted(true);
         }
+        
 
     }, [peopleList.payload.people]);
 
@@ -53,19 +58,29 @@ const CompoFloorConfig = ({ navigation }) => {
             <LinearGradient {...nativeBaseProps.LINEARCOLOR}>
                 <Box safeArea={true}>
                     <HStack>
-                        <Icon
-                            paddingLeft={3}
-                            {...nativeBaseProps.ICON_GOBACK}
-                            as={<MaterialIcons name="arrow-back-ios" />}
-                            onPress={() => { navigation.goBack(); }}
-                        />
+                        <Button
+                            h={10}
+                            backgroundColor={"transparent"}
+                            leftIcon={
+                                <Icon
+                                    size={7}
+                                    ml={2}
+                                    {...nativeBaseProps.ICON_GOBACK}
+                                    as={<MaterialIcons name="arrow-back-ios" />}
+                                />
+                            }
+                            onPress={() => {
+                                navigation.goBack();
+                            }
+                            }
+                        >
+                        </Button>
                         <Box {...nativeBaseProps.BOX_TITLE}>
                             <Text {...nativeBaseProps.TEXT_TITLE}> FLOOR CONFIGURATION </Text>
                         </Box>
                     </HStack>
                 </Box>
             </LinearGradient>
-
             <ScrollView>
                 <View mb={100}>
                     {floorMaped.map((item, index) => {
@@ -115,10 +130,10 @@ const CompoFloorConfig = ({ navigation }) => {
                                             />}
                                             <Button
                                                 {...nativeBaseProps.SAVE_BUTTON}
-                                                isLoading={loadingButton == index? true: false}
+                                                isLoading={loadingButton == index ? true : false}
                                                 onPress={(buttonPressed) => {
                                                     setIsMounted(false);
-                                                    !!buttonPressed?setLoadingButton_floor(index):null;
+                                                    !!buttonPressed ? setLoadingButton_floor(index) : null;
                                                     const token_api = user.payload.tokenapi;
                                                     var floorToSave = floorMaped.find(data => data.idfloors === item.idfloors);
                                                     //var peopless = peopleList.payload.people.filter(data => data.profession === "HOUSE STEWARD" && data.active === "S");
@@ -179,18 +194,14 @@ const nativeBaseProps = {
         color: "white",
         bold: true,
         fontSize: 16,
-        mr:"10"
+        mr: "10"
     },
     BOX_TITLE: {
         justifyContent: "center",
         w: "100%",
-        alignItems:"center"
+        alignItems: "center"
     },
     ICON_GOBACK: {
-        size: 7,
-        ml: 2,
-        mt: 2,
-        mb: 2,
         color: "rgb(255,255,255)"
     },
 

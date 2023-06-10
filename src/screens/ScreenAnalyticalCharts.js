@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useSelector, useDispatch } from "react-redux";
 import CompoLoadingView from "../components/CompoApiLoadingView";
 import CompoChartTotalRequests from '../components/CompoChartTotalRequests';
 import CompoChartLongerReqToBeDone from '../components/CompoChartLongerReqDone';
 import CompoChartPerfPorters from '../components/CompoChartPerfPorters';
 
-import { View, ScrollView } from "native-base";
+import { View, Center, ScrollView } from "native-base";
 
 const ScreenAnalyticalCharts = () => {
     const [isMounted, setIsMounted] = useState(false);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setIsMounted(false);
-            return () => {false};
-        }, [])
-    );
+    useEffect(()=>{
+        return () =>{
+            setIsMounted(true);
+        }
+    },[]);
 
     return (
-        <ScrollView>
-            <View flex={1} alignItems={"center"}>
-                <CompoChartTotalRequests isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartTotalRequests>
-                <CompoChartLongerReqToBeDone isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartLongerReqToBeDone>
-                <CompoChartPerfPorters isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartPerfPorters>
-                {!isMounted && <CompoLoadingView />}
+        <ScrollView flex={1} h={"100%"} horizontal={false} scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
+            <View flex={1} h={"100%"} justifyContent={"center"}>
+              
+                <View flex={1} alignItems={"center"} h={"100%"}>
+                    <CompoChartTotalRequests isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartTotalRequests>
+                    <CompoChartLongerReqToBeDone isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartLongerReqToBeDone>
+                    <CompoChartPerfPorters isMounted={isMounted} setIsMounted={setIsMounted}></CompoChartPerfPorters>
+                    {!isMounted&&<CompoLoadingView />}
+                </View>
             </View>
         </ScrollView>
+
     );
 };
 
