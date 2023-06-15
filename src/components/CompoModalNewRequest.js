@@ -12,7 +12,7 @@ import {
     Divider,
     View,
     KeyboardAvoidingView,
-    ScrollView
+    TextArea
 } from "native-base";
 
 import React, { useState, useEffect, useRef } from "react"
@@ -45,6 +45,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
     const [saveButtonIsDisabled, setSaveButtonIsDisabled] = useState(true);
     const [amountValue, setAmountValue] = useState(1);
     const [roomValue, setRoomValue] = useState("");
+    const [instructionValue, setInstructionValue] = useState("");
     const [isOpenAlert, setIsOpenAlert] = React.useState(false);
     const [alertType, setIsAlertType] = React.useState("Error");
     const [fadeEffect, setFadeEffect] = useState(new Animated.Value(0));
@@ -64,6 +65,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
         setMultRequests([]);
         setIsOpenAlert(false);
         setPriorityValue(false);
+        setInstructionValue("");
         setSelectIsDisabled(true);
         setSaveButtonIsDisabled(true);
         setFadeEffect(new Animated.Value(0));
@@ -137,6 +139,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                 setAmountValue(1);
                 setRoomValue("");
                 setPriorityValue(false);
+                setInstructionValue("");
                 setSelectIsDisabled(true);
                 setIsOpenAlert(false);
                 setSaveButtonIsDisabled(true);
@@ -149,7 +152,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                             <Modal.CloseButton />
                             <Modal.Header>NEW REQUEST</Modal.Header>
                             <Modal.Body _scrollview={{nestedScrollEnabled:true, horizontal:false}}>
-                                <VStack space={2}>
+                                <VStack space={4}>
                                     <HStack>
                                         <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 1 </Text>
                                         <Divider {...NATIVEBASE_PROPS.DIVIDERS} />
@@ -188,6 +191,13 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                             />
                                         </VStack>
                                     </HStack>
+                                    <Text {...NATIVEBASE_PROPS.TEXT}> ADD INSTRUCTIONS: </Text>
+                                    <TextArea
+                                        {...NATIVEBASE_PROPS.TEXTAREA}
+                                        onEndEditing={(e) => {
+                                            setInstructionValue(e.nativeEvent.text.toString());
+                                        }}
+                                    />
                                     <HStack>
                                         <Text {...NATIVEBASE_PROPS.STEPS_TEXT}> STEP 2 </Text>
                                         <Divider {...NATIVEBASE_PROPS.DIVIDERS} />
@@ -210,6 +220,7 @@ const ModalNewRequest = ({ isMounted, showModal, setShowModal, setIsMounted }) =
                                         multRequests[index].priority = priorityValue ? "C" : "N";
                                         multRequests[index].profession = user.payload.profession;
                                         multRequests[index].finaldescription = requests.name;
+                                        multRequests[index].instructions = instructionValue;
 
                                         return (
                                             <View
@@ -378,8 +389,9 @@ const NATIVEBASE_PROPS = {
     },
     TEXTAREA: {
         totalLines: 20,
-        h: 150,
-        placeholder: "DESCRIPTION",
+        maxLength:300,
+        h: 100,
+        placeholder: "INSTRUCTIONS",
         w: "100%",
         autoCapitalize: "none",
         selectionColor: "black",

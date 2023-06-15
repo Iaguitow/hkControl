@@ -96,6 +96,7 @@ const CompoManagerRequestsView = ({ setIsMounted }) => {
 
                     porterRequests.push({
                       requestdsc: requests[x].requestdsc,
+                      instructions: requests[x].instructions,
                       responsiblePhoneNumber: requests[x].responsiblePhoneNumber,
                       reason: requests[x].reason,
                       responsible: requests[x].responsible,

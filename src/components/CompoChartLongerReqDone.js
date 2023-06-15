@@ -57,10 +57,7 @@ export default function CompoChartLongerReqToBeDone({ isMounted, setIsMounted })
             { isMounted && <Stack p={0}>
                 <Center>
                     <Text fontWeight={"bold"}>
-                        5 LONGER REQUESTS TO BE DONE:
-                    </Text>
-                    <Text fontWeight={"bold"}>
-                        NUMBER MEANS MINUTES THAT IT TAKES TO BE DONE:
+                        TOP 5 TIME CONSUMING REQUESTS:
                     </Text>
                 <BarChart
                     yAxisSuffix='Min'

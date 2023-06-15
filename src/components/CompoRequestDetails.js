@@ -162,7 +162,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                     <Text {...NativeBaseProps.SUB_TEXT}>
                                         WHO REQUESTED:
                                     </Text>
-                                    <Text>
+                                    <Text {...NativeBaseProps.TEXT_DSC}>
                                         {requestDetail.fullwhoresquested}
                                     </Text>
                                 </VStack>
@@ -174,7 +174,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                         <Text {...NativeBaseProps.SUB_TEXT}>
                                             RESPONSIBLE:
                                         </Text>
-                                        <Text>
+                                        <Text {...NativeBaseProps.TEXT_DSC}>
                                             {requestDetail.responsible}
                                         </Text>
                                     </VStack>
@@ -197,7 +197,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                     <Text {...NativeBaseProps.SUB_TEXT}>
                                         DATE & TIME REQUESTED:
                                     </Text>
-                                    <Text>
+                                    <Text {...NativeBaseProps.TEXT_DSC}>
                                         {requestDetail.fulldtrequest}
                                     </Text>
                                 </VStack>
@@ -208,8 +208,19 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                     <Text {...NativeBaseProps.SUB_TEXT}>
                                         DATE & TIME DONE:
                                     </Text>
-                                    <Text>
+                                    <Text {...NativeBaseProps.TEXT_DSC}>
                                         {requestDetail.fulldtrequestdone}
+                                    </Text>
+                                </VStack>
+
+                                <Divider thickness={1}></Divider>
+
+                                <VStack>
+                                    <Text {...NativeBaseProps.SUB_TEXT}>
+                                        INSTRUCTIONS:
+                                    </Text>
+                                    <Text {...NativeBaseProps.TEXT_DSC}>
+                                        {requestDetail.instructions}
                                     </Text>
                                 </VStack>
 
@@ -219,12 +230,13 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                     <Text {...NativeBaseProps.SUB_TEXT}>
                                         DESCRIPTION:
                                     </Text>
-                                    <Text color={requestDetail.requestdsc.includes("IN |")?"green.500":requestDetail.requestdsc.includes("OUT |")?"red.500":"black"}>
+                                    <Text {...NativeBaseProps.TEXT_DSC} color={requestDetail.requestdsc.includes("IN |")?"green.500":requestDetail.requestdsc.includes("OUT |")?"red.500":"black"}>
                                         {requestDetail.requestdsc}
                                     </Text>
                                 </VStack>
 
                                 <Divider thickness={1}></Divider>
+
                                 
                                 <VStack>
                                     <Text {...NativeBaseProps.SUB_TEXT}>
@@ -268,7 +280,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                         <Text {...NativeBaseProps.SUB_TEXT}>
                                             CANCELLATION DATE:
                                         </Text>
-                                        <Text>
+                                        <Text {...NativeBaseProps.TEXT_DSC}>
                                             {requestDetail.dtcancellation}
                                         </Text>
                                     </VStack>
@@ -278,7 +290,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                         <Text {...NativeBaseProps.SUB_TEXT}>
                                             CANCELED BY:
                                         </Text>
-                                        <Text>
+                                        <Text {...NativeBaseProps.TEXT_DSC}>
                                             {requestDetail.whocancelled}
                                         </Text>
                                 </VStack>
@@ -287,7 +299,7 @@ function requestDetails({userAccess,id_whocancelled, token_api, joblevel, reques
                                     <Text {...NativeBaseProps.SUB_TEXT}>
                                         CANCELLATION REASON:
                                     </Text>
-                                    <Text>
+                                    <Text {...NativeBaseProps.TEXT_DSC}>
                                         {requestDetail.reason}
                                     </Text>
                                 </VStack>
@@ -307,8 +319,10 @@ const NativeBaseProps = {
     SUB_TEXT:{
         fontWeight:"bold", 
         color:"rgb(0,185,243)",
-        fontSize:"12px",
-        
+        fontSize:"16px",
+    },
+    TEXT_DSC:{
+        fontSize:"16px",
     }
 }
 
