@@ -392,7 +392,7 @@ const nativeBaseProps = {
     start: [0.5, 1],
     end: [0.5, 0],
     locations: [0, 0.9, 0.9],
-    height: Platform.OS === 'ios' ? 100 : 60
+    height: 100
   },
   TEXT_TITLE: {
     color: "white",

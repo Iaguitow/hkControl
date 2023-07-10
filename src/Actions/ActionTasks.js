@@ -18,8 +18,8 @@ const TasksActions = {
             setRefreshing(false);
         });
     },
-    updateTask: (idTask, taskdone, token_api, idpeople, {setIsMounted}) => dispatch => {
-        dbTasks.updateTasks(idTask, taskdone, token_api, idpeople).then(response =>{
+    updateTask: (idTask, taskdone, token_api, idpeople, joblevel, {setIsMounted}) => dispatch => {
+        dbTasks.updateTasks(idTask, taskdone, token_api, idpeople, joblevel).then(response =>{
             dispatch({
                 type: actionsTypes.UPDATE_TASKS ,
                 payload: {tasks:response.data, error_message: null},

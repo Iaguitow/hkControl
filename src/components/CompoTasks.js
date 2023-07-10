@@ -28,7 +28,7 @@ const CompoTasks = ({ setIsMounted }) => {
   const tasks = useSelector(state => state.reducerTasks);
   const user = useSelector(state => state.reducerLogin);
   const section = [];
-  const updateTask = (idTask, taskdone, token_api, idpeople) => { dispatch(TasksActions.updateTask(idTask, taskdone, token_api, idpeople, { setIsMounted })) }
+  const updateTask = (idTask, taskdone, token_api, idpeople, joblevel) => { dispatch(TasksActions.updateTask(idTask, taskdone, token_api, idpeople, joblevel, { setIsMounted })) }
 
   if (tasks.payload.tasks !== null) {
     for (var i = 0, ii = tasks.payload.tasks.length; i < ii; i++) {
@@ -141,9 +141,10 @@ const CompoTasks = ({ setIsMounted }) => {
                               setIsMounted(false);
                               const token_api = user.payload.tokenapi;
                               const idpeople = user.payload.idpeople;
+                              const joblevel = user.payload.joblevel;
                               const taskdone = item.checked == "N" ? !false : null;
                               const idTask = item.idtask;
-                              updateTask(idTask, taskdone, token_api, idpeople, { setIsMounted });
+                              updateTask(idTask, taskdone, token_api, idpeople, joblevel, { setIsMounted });
                             }}
                             isChecked={item.checked == "N" ? false : true}
                             {...NativeBaseProps.SWITCH}

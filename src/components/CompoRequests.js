@@ -85,14 +85,21 @@ const CompoRequests = ({ setIsMounted }) => {
 
   const item = [{ openReq: [],amountOpenNormal:0,amountOpenCritical:0, doneReq: [], amountDone:0, cancelledReq: [], amountCanceled:0 }];
 
-  if (requests.payload.requests !== null) {
+  if (!!requests.payload.requests) {
 
-    
-    item[0].amountCanceled = requests.payload.requests[0].amountCanceled;
-    item[0].amountDone = requests.payload.requests[0].amountDone;
-    item[0].amountOpenNormal = requests.payload.requests[0].amountOpenNormal;
-    item[0].amountOpenCritical = requests.payload.requests[0].amountOpenCritical;
- 
+    if(requests.payload.requests.length>0){
+      item[0].amountCanceled = requests.payload.requests[0].amountCanceled;
+      item[0].amountDone = requests.payload.requests[0].amountDone;
+      item[0].amountOpenNormal = requests.payload.requests[0].amountOpenNormal;
+      item[0].amountOpenCritical = requests.payload.requests[0].amountOpenCritical;
+
+    }else{
+      item[0].amountCanceled = 0;
+      item[0].amountDone = 0;
+      item[0].amountOpenNormal = 0;
+      item[0].amountOpenCritical = 0;
+      
+    }
 
     for (var i = 0, ii = requests.payload.requests.length; i < ii; i++) {
 

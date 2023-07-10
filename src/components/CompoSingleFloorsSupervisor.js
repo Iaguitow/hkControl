@@ -5,10 +5,11 @@ import { Entypo } from "@expo/vector-icons";
 export default function SingleSelectFloorSupervisor({supervisors, supervsiorSelected, setFloorMaped, floorMaped, idfloors}) {
 
     const [listofResponsible, setResponsible] = useState([]);
-    const [supervisorSelected, setSupervisorSelected] = useState(supervsiorSelected);
+    const [supervisorSelected, setSupervisorSelected] = useState(null);
 
     useEffect(()=>{
         setResponsible(supervisors);
+        setSupervisorSelected(supervsiorSelected);
     },[supervisors]);
 
     return (

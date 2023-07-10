@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ActionRooms } from "../Actions/ActionRooms.js";
 import CompoApiLoadingView from '../components/CompoApiLoadingView';
 import { RequestTypeActions } from "../Actions/ActionRequestType";
-import { PeopleActions } from "../Actions/ActionPeople.js";
+
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { View, Container, Heading, Text, VStack, Icon, Box, HStack, Button } from "native-base";
 
@@ -12,20 +12,14 @@ const ScreenConfig = ({ navigation }) => {
     const [isMounted, setIsMounted] = useState(false);
 
     const dispatch = useDispatch();
-    const getFloors = (token_api) => { dispatch(ActionRooms.getFloors(token_api, { setIsMounted })) }
     const getRequestType = (token_api) => {dispatch(RequestTypeActions.getRequestType(token_api,{setIsMounted})) }
-    const getPeople = (peopleList, idpeople, token_api) => { dispatch(PeopleActions.getPeople(peopleList, idpeople, token_api, setIsMounted)) }
     const user = useSelector(state => state.reducerLogin);
 
     useFocusEffect(
         React.useCallback(() => {
             setIsMounted(false);
             const token_api = user.payload.tokenapi;
-            const idpeople = user.payload.idpeople;
-            const peopleList = true;
             getRequestType(token_api, setIsMounted);
-            getFloors(token_api, setIsMounted);
-            getPeople(peopleList, idpeople, token_api, setIsMounted);
             return () => { false };
         }, [])
     );

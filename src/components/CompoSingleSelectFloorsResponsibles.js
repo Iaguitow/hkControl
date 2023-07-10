@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { CheckIcon, Icon, Select} from "native-base";
 import { Entypo } from "@expo/vector-icons";
 
-export default function SingleSelectFloorResponsible({responsible, responsibleSelected, setFloorMaped, floorMaped, idfloors}) {
+export default function SingleSelectFloorResponsible({responsible, responsibleSelected, setFloorMaped, floorMaped, idfloors, setIsMounted}) {
 
     const [listofResponsible, setResponsible] = useState([]);
-    const [porterSelected, setPorterSelected] = useState(responsibleSelected);
+    const [porterSelected, setPorterSelected] = useState(null);
 
     useEffect(()=>{
         setResponsible(responsible);
+        setPorterSelected(responsibleSelected);
+        return () =>{setIsMounted(true);}
     },[responsible]);
     
     return (

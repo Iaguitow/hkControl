@@ -6,6 +6,7 @@ import SingleSelectFloorResponsible from './CompoSingleSelectFloorsResponsibles'
 import SingleSelectFloorSupervisor from './CompoSingleFloorsSupervisor';
 import Toasts from "./CompoToast";
 import { ActionRooms } from "../Actions/ActionRooms.js";
+import { PeopleActions } from "../Actions/ActionPeople.js";
 import CompoApiLoadingView from './CompoApiLoadingView';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from "@expo/vector-icons";
@@ -23,6 +24,8 @@ const CompoFloorConfig = ({ navigation }) => {
     }
 
     const dispatch = useDispatch();
+    const getFloors = (token_api) => { dispatch(ActionRooms.getFloors(token_api, { setIsMounted })) }
+    const getPeople = (peopleList, idpeople, token_api) => { dispatch(PeopleActions.getPeople(peopleList, idpeople, token_api, setIsMounted)) }
     const updateFloor = (floorObj, token_api) => { dispatch(ActionRooms.updateFloors(floorObj, token_api, { setIsMounted, handleToastSavetion, setLoadingButton_floor })) }
 
     const floors = useSelector(state => state.reducerRooms);
@@ -33,28 +36,30 @@ const CompoFloorConfig = ({ navigation }) => {
     const [porters, setPorters] = useState([]);
     const [floorMaped, setFloorMaped] = useState([]);
 
+    useEffect(() =>{
+        const token_api = user.payload.tokenapi;
+        const idpeople = user.payload.idpeople;
+        const peopleList = true;
+        getFloors(token_api, setIsMounted);
+        getPeople(peopleList, idpeople, token_api, setIsMounted);
+    }, []);
+
     useEffect(() => {
-
-        const superviSors = peopleList.payload.people.filter(supervisors => supervisors.profession === "ROOM SUPERVISOR" && supervisors.active === "S");
-        const porteRs = peopleList.payload.people.filter(porters => porters.profession === "HOUSE STEWARD" && porters.active === "S");
-
-        setSupervisors(superviSors);
-        setPorters(porteRs);
-
-        if (!!peopleList.payload.people) {
+        if(!!floors.payload_F.floors){
             setFloorMaped(floors.payload_F.floors);
-            
-        }
-
-        return () =>{
-            setIsMounted(true);
         }
         
-
-    }, [peopleList.payload.people]);
+        if(!!peopleList.payload.people){
+            const superviSors = peopleList.payload.people.filter(supervisors => supervisors.profession === "ROOM SUPERVISOR" && supervisors.active === "S");
+            const porteRs = peopleList.payload.people.filter(porters => porters.profession === "HOUSE STEWARD" && porters.active === "S");
+    
+            setSupervisors(superviSors);
+            setPorters(porteRs);
+        }
+    }, [floors.payload_F.floors, peopleList.payload.people]);
 
     return (
-        <Box>
+        <Box flex={1}>
             <LinearGradient {...nativeBaseProps.LINEARCOLOR}>
                 <Box safeArea={true}>
                     <HStack>
@@ -83,7 +88,7 @@ const CompoFloorConfig = ({ navigation }) => {
             </LinearGradient>
             <ScrollView>
                 <View mb={100}>
-                    {floorMaped.map((item, index) => {
+                    {!!floorMaped && floorMaped.map((item, index) => {
                         return (
                             <Stack
                                 flex={1}
@@ -127,6 +132,7 @@ const CompoFloorConfig = ({ navigation }) => {
                                                 setFloorMaped={setFloorMaped}
                                                 floorMaped={floorMaped}
                                                 idfloors={item.idfloors}
+                                                setIsMounted={setIsMounted}
                                             />}
                                             <Button
                                                 {...nativeBaseProps.SAVE_BUTTON}

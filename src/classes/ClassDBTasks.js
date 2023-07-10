@@ -41,7 +41,7 @@ class Tasks{
         });
     }
 
-    updateTasks(idTask, taskdone, token_api, idpeople){
+    updateTasks(idTask, taskdone, token_api, idpeople, joblevel){
         return new Promise((resolve,reject) => {
             try {  
                 return axios({
@@ -51,7 +51,7 @@ class Tasks{
                     //SCHOOL IP
                     //url: "http://172.26.192.211:3000/routes/update/tasks",
                     withCredentials: true,
-                    data: {idTask,taskdone, idpeople},
+                    data: {idTask,taskdone, idpeople, joblevel},
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
