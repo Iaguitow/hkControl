@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { View, Animated } from 'react-native'
+import { Platform } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
 import Toast from "../components/CompoToast";
 import GeneralUtils from "../utils/GeneralUtils";

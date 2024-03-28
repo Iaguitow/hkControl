@@ -17,8 +17,7 @@ import {
   VStack,
   Button,
   ScrollView,
-  useDisclose,
-  Heading
+  useDisclose
 } from "native-base";
 
 const CompoManagerRequestsView = ({ setIsMounted }) => {

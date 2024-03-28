@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { Animated, View } from 'react-native';
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";

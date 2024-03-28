@@ -11,6 +11,8 @@ import CompoApiLoadingView from "../components/CompoApiLoadingView";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../assets/second_logo.svg';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
+
 
 import {
     Input,
