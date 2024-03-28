@@ -52,7 +52,7 @@ function Component(props) {
 const getIcon = (screenName) => {
   switch (screenName) {
     case allDrawerScreens.PROFILE:
-      return "ios-people-outline";
+      return "people-outline";
     case allDrawerScreens.REQUESTS:
       return "tasks";
     case allDrawerScreens.TASKS:

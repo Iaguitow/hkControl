@@ -282,7 +282,7 @@ const CompoRequests = ({ setIsMounted }) => {
                     >
                       <Icon
                         size={"45px"}
-                        as={<Ionicons name={chevronOpenReq ? "ios-folder-open" : "ios-folder"}
+                        as={<Ionicons name={chevronOpenReq ? "folder-open" : "folder"}
                         />}
                         color={chevronOpenReq ? "white" : "gray.800"}
                       />
@@ -481,7 +481,7 @@ const CompoRequests = ({ setIsMounted }) => {
                     >
                       <Icon
                         size={"45px"}
-                        as={<Ionicons name={chevronDoneReq ? "ios-folder-open" : "ios-folder"}
+                        as={<Ionicons name={chevronDoneReq ? "folder-open" : "folder"}
                         />}
                         color={chevronDoneReq ? "white" : "gray.800"}
                       />
@@ -680,7 +680,7 @@ const CompoRequests = ({ setIsMounted }) => {
                     >
                       <Icon
                         size={"45px"}
-                        as={<Ionicons name={chevronCancelReq ? "ios-folder-open" : "ios-folder"}
+                        as={<Ionicons name={chevronCancelReq ? "folder-open" : "folder"}
                         />}
                         color={chevronCancelReq ? "white" : "gray.800"}
                       />
