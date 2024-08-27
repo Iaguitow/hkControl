@@ -23,6 +23,7 @@ StatusBar.setHidden(false);
 LogBox.ignoreLogs([
   "The contrast ratio",
   'Non-serializable values were found in the navigation state',
+  'Warning: Unknown: Support for defaultProps will be removed from memo components'
 ]
 );
 
