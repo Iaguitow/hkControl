@@ -34,5 +34,5 @@ iagosv_91s@hotmail.com
 
 DOWNLOAD THE APP: Expo Go.
 
-LINK:
-https://expo.dev/preview/update?message=Updates%20to%20post%20into%20EAS%20system.&updateRuntimeVersion=exposdk%3A51.0.0&createdAt=2024-08-27T09%3A25%3A50.593Z&slug=exp&projectId=0ea00c36-58f0-4763-ab6c-21310437666a&group=0bcdcca4-dc79-4195-9fa6-2d245ac6ba5e
+LINK TO ACCESS THE PROJECT:
+https://expo.dev/preview/update?message=New%20React%20Native%20and%20Expo%20Version.&updateRuntimeVersion=exposdk%3A52.0.0&createdAt=2024-12-16T11%3A33%3A42.723Z&slug=exp&projectId=0ea00c36-58f0-4763-ab6c-21310437666a&group=32640512-e562-4ea4-91b7-ab86a3ffc568
