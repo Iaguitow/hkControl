@@ -29,7 +29,8 @@
     ],
     "ios": {
       "bundleIdentifier": "host.exp.exponent",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -38,7 +39,8 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "iowl.app.android",
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "newArchEnabled": true
     },
     "web": {
       "favicon": "./assets/main_icon_png.png"
